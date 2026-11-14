@@ -1,0 +1,7 @@
+dialect,method,macro_f1
+linalg,Zero-shot,0.4209515466001752
+torch,Zero-shot,0.5489777449979014
+linalg,6-shot mean,0.5084063480420378
+torch,6-shot mean,0.5540904332888484
+linalg,SFT,0.8082672434510935
+torch,SFT,0.8040530109555858

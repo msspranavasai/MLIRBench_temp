@@ -1,0 +1,933 @@
+{
+  "reference_status": "FINAL_ACCEPTED_MANUSCRIPT_CONFIRMED",
+  "source": {
+    "path": "paper/reference/arxiv-2611.14881v1.pdf",
+    "url": "https://arxiv.org/pdf/2611.14881v1",
+    "sha256": "5d7f6cf8785344209399a98c3fc7c2212e2dde69123a8bc7e6969f28c1c7bb10",
+    "kind": "author-identified accepted paper, arXiv v1; original PDF preserved"
+  },
+  "matched": 23,
+  "mismatched": 38,
+  "checks": [
+    {
+      "claim": "tab:dataset_summary total pairs",
+      "path": [
+        "dataset",
+        "pairs"
+      ],
+      "expected": 1768,
+      "paper_location": "page 7, Table 1",
+      "actual": 1768,
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:dataset_summary source programs",
+      "path": [
+        "dataset",
+        "source_programs"
+      ],
+      "expected": 40,
+      "paper_location": "page 7, Table 1",
+      "actual": 40,
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:dataset_summary Linalg pairs",
+      "path": [
+        "dataset",
+        "dialects",
+        "linalg"
+      ],
+      "expected": 888,
+      "paper_location": "page 7, Table 1",
+      "actual": 888,
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:dataset_summary Torch pairs",
+      "path": [
+        "dataset",
+        "dialects",
+        "torch"
+      ],
+      "expected": 880,
+      "paper_location": "page 7, Table 1",
+      "actual": 880,
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:dataset_summary Linalg rules",
+      "path": [
+        "dataset",
+        "mutation_rules",
+        "linalg"
+      ],
+      "expected": 24,
+      "paper_location": "page 7, Table 1",
+      "actual": 24,
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:dataset_summary Torch rules",
+      "path": [
+        "dataset",
+        "mutation_rules",
+        "torch"
+      ],
+      "expected": 22,
+      "paper_location": "page 7, Table 1",
+      "actual": 22,
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:reasoning_scale models",
+      "path": [
+        "summary",
+        "model_count"
+      ],
+      "expected": 9,
+      "paper_location": "page 7, Table 2",
+      "actual": 9,
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:reasoning_scale attempts",
+      "path": [
+        "reasoning_records",
+        "total"
+      ],
+      "expected": 15912,
+      "paper_location": "page 7, Table 2",
+      "actual": 15912,
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:reasoning_scoring mean aggregate over scored records",
+      "path": [
+        "summary",
+        "mean_aggregate_score_available_rows"
+      ],
+      "expected": "57.21",
+      "digits": 2,
+      "paper_location": "page 8, Table 3",
+      "actual": "57.21",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:reasoning_scoring mean_hard_label_accuracy_percent",
+      "path": [
+        "summary",
+        "mean_hard_label_accuracy_percent"
+      ],
+      "expected": "74.59",
+      "digits": 2,
+      "paper_location": "page 8, Table 3",
+      "actual": "74.59",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:reasoning_scoring mean_result_behavior_score",
+      "path": [
+        "summary",
+        "mean_result_behavior_score"
+      ],
+      "expected": "3.63",
+      "digits": 2,
+      "paper_location": "page 8, Table 3",
+      "actual": "3.63",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:reasoning_scoring mean_explanation_quality_score",
+      "path": [
+        "summary",
+        "mean_explanation_quality_score"
+      ],
+      "expected": "2.43",
+      "digits": 2,
+      "paper_location": "page 8, Table 3",
+      "actual": "2.43",
+      "status": "MATCH"
+    },
+    {
+      "claim": "sec:benchmark Gemini aggregate_score_available",
+      "path": [
+        "models",
+        {
+          "model": "gemini-3.1-pro-preview"
+        },
+        "aggregate_score_available"
+      ],
+      "expected": "74.18",
+      "digits": 2,
+      "paper_location": "page 8, section 5.2",
+      "actual": "74.18",
+      "status": "MATCH"
+    },
+    {
+      "claim": "sec:benchmark Gemini hard_label_accuracy_percent",
+      "path": [
+        "models",
+        {
+          "model": "gemini-3.1-pro-preview"
+        },
+        "hard_label_accuracy_percent"
+      ],
+      "expected": "92.65",
+      "digits": 2,
+      "paper_location": "page 8, section 5.2",
+      "actual": "92.65",
+      "status": "MATCH"
+    },
+    {
+      "claim": "sec:benchmark Gemini result_behavior_score",
+      "path": [
+        "models",
+        {
+          "model": "gemini-3.1-pro-preview"
+        },
+        "result_behavior_score"
+      ],
+      "expected": "5.04",
+      "digits": 2,
+      "paper_location": "page 8, section 5.2",
+      "actual": "5.04",
+      "status": "MATCH"
+    },
+    {
+      "claim": "sec:benchmark Gemini explanation_quality_score",
+      "path": [
+        "models",
+        {
+          "model": "gemini-3.1-pro-preview"
+        },
+        "explanation_quality_score"
+      ],
+      "expected": "3.17",
+      "digits": 2,
+      "paper_location": "page 8, section 5.2",
+      "actual": "3.17",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:level_results gemini-3.1-pro-preview L1",
+      "path": [
+        "by_level",
+        {
+          "model": "gemini-3.1-pro-preview",
+          "level": 1
+        },
+        "aggregate_score"
+      ],
+      "expected": "68.16",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "68.16",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:level_results gemini-3.1-pro-preview L2",
+      "path": [
+        "by_level",
+        {
+          "model": "gemini-3.1-pro-preview",
+          "level": 2
+        },
+        "aggregate_score"
+      ],
+      "expected": "68.58",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "68.58",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:level_results gemini-3.1-pro-preview L3",
+      "path": [
+        "by_level",
+        {
+          "model": "gemini-3.1-pro-preview",
+          "level": 3
+        },
+        "aggregate_score"
+      ],
+      "expected": "72.82",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "72.82",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:level_results gemini-3.1-pro-preview L4",
+      "path": [
+        "by_level",
+        {
+          "model": "gemini-3.1-pro-preview",
+          "level": 4
+        },
+        "aggregate_score"
+      ],
+      "expected": "67.57",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "67.57",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:level_results gemini-3.1-pro-preview L5",
+      "path": [
+        "by_level",
+        {
+          "model": "gemini-3.1-pro-preview",
+          "level": 5
+        },
+        "aggregate_score"
+      ],
+      "expected": "94.94",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "94.94",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:level_results claude-sonnet-4-5 L1",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-sonnet-4-5",
+          "level": 1
+        },
+        "aggregate_score"
+      ],
+      "expected": "63.82",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "63.85",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results claude-sonnet-4-5 L2",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-sonnet-4-5",
+          "level": 2
+        },
+        "aggregate_score"
+      ],
+      "expected": "60.72",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "60.72",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:level_results claude-sonnet-4-5 L3",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-sonnet-4-5",
+          "level": 3
+        },
+        "aggregate_score"
+      ],
+      "expected": "65.38",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "65.58",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results claude-sonnet-4-5 L4",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-sonnet-4-5",
+          "level": 4
+        },
+        "aggregate_score"
+      ],
+      "expected": "65.13",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "65.21",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results claude-sonnet-4-5 L5",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-sonnet-4-5",
+          "level": 5
+        },
+        "aggregate_score"
+      ],
+      "expected": "59.11",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "58.77",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-oss-120b L1",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-oss-120b",
+          "level": 1
+        },
+        "aggregate_score"
+      ],
+      "expected": "60.90",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "60.79",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-oss-120b L2",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-oss-120b",
+          "level": 2
+        },
+        "aggregate_score"
+      ],
+      "expected": "61.08",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "60.98",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-oss-120b L3",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-oss-120b",
+          "level": 3
+        },
+        "aggregate_score"
+      ],
+      "expected": "65.02",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "65.05",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-oss-120b L4",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-oss-120b",
+          "level": 4
+        },
+        "aggregate_score"
+      ],
+      "expected": "62.47",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "62.54",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-oss-120b L5",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-oss-120b",
+          "level": 5
+        },
+        "aggregate_score"
+      ],
+      "expected": "52.59",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "52.30",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results kimi-k2.6 L1",
+      "path": [
+        "by_level",
+        {
+          "model": "kimi-k2.6",
+          "level": 1
+        },
+        "aggregate_score"
+      ],
+      "expected": "57.48",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "57.44",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results kimi-k2.6 L2",
+      "path": [
+        "by_level",
+        {
+          "model": "kimi-k2.6",
+          "level": 2
+        },
+        "aggregate_score"
+      ],
+      "expected": "56.52",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "56.43",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results kimi-k2.6 L3",
+      "path": [
+        "by_level",
+        {
+          "model": "kimi-k2.6",
+          "level": 3
+        },
+        "aggregate_score"
+      ],
+      "expected": "63.62",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "63.71",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results kimi-k2.6 L4",
+      "path": [
+        "by_level",
+        {
+          "model": "kimi-k2.6",
+          "level": 4
+        },
+        "aggregate_score"
+      ],
+      "expected": "62.11",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "62.11",
+      "status": "MATCH"
+    },
+    {
+      "claim": "tab:level_results kimi-k2.6 L5",
+      "path": [
+        "by_level",
+        {
+          "model": "kimi-k2.6",
+          "level": 5
+        },
+        "aggregate_score"
+      ],
+      "expected": "51.67",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "51.33",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results claude-haiku-4-5 L1",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-haiku-4-5",
+          "level": 1
+        },
+        "aggregate_score"
+      ],
+      "expected": "59.14",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "59.17",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results claude-haiku-4-5 L2",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-haiku-4-5",
+          "level": 2
+        },
+        "aggregate_score"
+      ],
+      "expected": "56.70",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "56.85",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results claude-haiku-4-5 L3",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-haiku-4-5",
+          "level": 3
+        },
+        "aggregate_score"
+      ],
+      "expected": "56.29",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "56.53",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results claude-haiku-4-5 L4",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-haiku-4-5",
+          "level": 4
+        },
+        "aggregate_score"
+      ],
+      "expected": "60.54",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "60.63",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results claude-haiku-4-5 L5",
+      "path": [
+        "by_level",
+        {
+          "model": "claude-haiku-4-5",
+          "level": 5
+        },
+        "aggregate_score"
+      ],
+      "expected": "53.57",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "53.37",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results glm-5.1 L1",
+      "path": [
+        "by_level",
+        {
+          "model": "glm-5.1",
+          "level": 1
+        },
+        "aggregate_score"
+      ],
+      "expected": "59.34",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "59.37",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results glm-5.1 L2",
+      "path": [
+        "by_level",
+        {
+          "model": "glm-5.1",
+          "level": 2
+        },
+        "aggregate_score"
+      ],
+      "expected": "58.40",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "58.43",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results glm-5.1 L3",
+      "path": [
+        "by_level",
+        {
+          "model": "glm-5.1",
+          "level": 3
+        },
+        "aggregate_score"
+      ],
+      "expected": "61.50",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "61.60",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results glm-5.1 L4",
+      "path": [
+        "by_level",
+        {
+          "model": "glm-5.1",
+          "level": 4
+        },
+        "aggregate_score"
+      ],
+      "expected": "61.69",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "61.84",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results glm-5.1 L5",
+      "path": [
+        "by_level",
+        {
+          "model": "glm-5.1",
+          "level": 5
+        },
+        "aggregate_score"
+      ],
+      "expected": "32.78",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "32.50",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-4.1-mini L1",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-4.1-mini",
+          "level": 1
+        },
+        "aggregate_score"
+      ],
+      "expected": "61.23",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "61.32",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-4.1-mini L2",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-4.1-mini",
+          "level": 2
+        },
+        "aggregate_score"
+      ],
+      "expected": "55.90",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "56.07",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-4.1-mini L3",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-4.1-mini",
+          "level": 3
+        },
+        "aggregate_score"
+      ],
+      "expected": "53.46",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "53.60",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-4.1-mini L4",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-4.1-mini",
+          "level": 4
+        },
+        "aggregate_score"
+      ],
+      "expected": "59.82",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "59.95",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results gpt-4.1-mini L5",
+      "path": [
+        "by_level",
+        {
+          "model": "gpt-4.1-mini",
+          "level": 5
+        },
+        "aggregate_score"
+      ],
+      "expected": "26.88",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "26.41",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results qwen3-coder-next L1",
+      "path": [
+        "by_level",
+        {
+          "model": "qwen3-coder-next",
+          "level": 1
+        },
+        "aggregate_score"
+      ],
+      "expected": "56.62",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "56.67",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results qwen3-coder-next L2",
+      "path": [
+        "by_level",
+        {
+          "model": "qwen3-coder-next",
+          "level": 2
+        },
+        "aggregate_score"
+      ],
+      "expected": "52.21",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "52.18",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results qwen3-coder-next L3",
+      "path": [
+        "by_level",
+        {
+          "model": "qwen3-coder-next",
+          "level": 3
+        },
+        "aggregate_score"
+      ],
+      "expected": "58.23",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "57.93",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results qwen3-coder-next L4",
+      "path": [
+        "by_level",
+        {
+          "model": "qwen3-coder-next",
+          "level": 4
+        },
+        "aggregate_score"
+      ],
+      "expected": "57.95",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "58.10",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results qwen3-coder-next L5",
+      "path": [
+        "by_level",
+        {
+          "model": "qwen3-coder-next",
+          "level": 5
+        },
+        "aggregate_score"
+      ],
+      "expected": "21.18",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "21.08",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results llama-4 L1",
+      "path": [
+        "by_level",
+        {
+          "model": "llama-4",
+          "level": 1
+        },
+        "aggregate_score"
+      ],
+      "expected": "52.42",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "52.50",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results llama-4 L2",
+      "path": [
+        "by_level",
+        {
+          "model": "llama-4",
+          "level": 2
+        },
+        "aggregate_score"
+      ],
+      "expected": "49.36",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "49.40",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results llama-4 L3",
+      "path": [
+        "by_level",
+        {
+          "model": "llama-4",
+          "level": 3
+        },
+        "aggregate_score"
+      ],
+      "expected": "52.54",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "52.44",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results llama-4 L4",
+      "path": [
+        "by_level",
+        {
+          "model": "llama-4",
+          "level": 4
+        },
+        "aggregate_score"
+      ],
+      "expected": "53.63",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "53.77",
+      "status": "MISMATCH"
+    },
+    {
+      "claim": "tab:level_results llama-4 L5",
+      "path": [
+        "by_level",
+        {
+          "model": "llama-4",
+          "level": 5
+        },
+        "aggregate_score"
+      ],
+      "expected": "18.15",
+      "digits": 2,
+      "paper_location": "page 8, Table 4",
+      "actual": "17.88",
+      "status": "MISMATCH"
+    }
+  ]
+}

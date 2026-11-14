@@ -1,0 +1,1337 @@
+{
+  "mode": "saved_prediction_metric_replay",
+  "comparisons": 76,
+  "mismatches": 0,
+  "split_checks": [
+    {
+      "task": "DT1_ELEMENTWISE",
+      "fold": 0,
+      "train_rows": 564,
+      "validation_rows": 129,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT1_ELEMENTWISE",
+      "fold": 1,
+      "train_rows": 543,
+      "validation_rows": 150,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT1_ELEMENTWISE",
+      "fold": 2,
+      "train_rows": 541,
+      "validation_rows": 152,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT1_ELEMENTWISE",
+      "fold": 3,
+      "train_rows": 562,
+      "validation_rows": 131,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT1_ELEMENTWISE",
+      "fold": 4,
+      "train_rows": 562,
+      "validation_rows": 131,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT1_TORCH_OPT",
+      "fold": 0,
+      "train_rows": 550,
+      "validation_rows": 137,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT1_TORCH_OPT",
+      "fold": 1,
+      "train_rows": 552,
+      "validation_rows": 135,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT1_TORCH_OPT",
+      "fold": 2,
+      "train_rows": 551,
+      "validation_rows": 136,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT1_TORCH_OPT",
+      "fold": 3,
+      "train_rows": 549,
+      "validation_rows": 138,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT1_TORCH_OPT",
+      "fold": 4,
+      "train_rows": 546,
+      "validation_rows": 141,
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT2",
+      "partitions": [
+        "train",
+        "val"
+      ],
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT2",
+      "partitions": [
+        "train",
+        "test"
+      ],
+      "overlapping_families": [],
+      "status": "PASS"
+    },
+    {
+      "task": "DT2",
+      "partitions": [
+        "val",
+        "test"
+      ],
+      "overlapping_families": [],
+      "status": "PASS"
+    }
+  ],
+  "split_leakage_checks_failed": 0,
+  "excluded_prediction_rows": 0,
+  "gpu_inference_rerun": false,
+  "fine_tuning_rerun": false,
+  "dt1": [
+    {
+      "task": "Linalg fusion",
+      "method": "Zero-shot",
+      "n": 693,
+      "accuracy": 0.3189033189033189,
+      "balanced_accuracy": 0.3985955904560556,
+      "macro_f1": 0.26797221664771337,
+      "f1_low": 0.0,
+      "f1_medium": 0.4065656565656566,
+      "f1_high": 0.3973509933774834
+    },
+    {
+      "task": "Linalg fusion",
+      "method": "Few-shot mean",
+      "n": null,
+      "macro_f1": 0.24134116222853347,
+      "balanced_accuracy": 0.3716653301256349,
+      "f1_high": 0.5825472747497219,
+      "accuracy": 0.36363636363636365,
+      "f1_low": 0.02040816326530612,
+      "f1_medium": 0.12106804867057233
+    },
+    {
+      "task": "Linalg fusion",
+      "method": "SFT",
+      "n": 693,
+      "accuracy": 0.6219336219336219,
+      "balanced_accuracy": 0.6054933572174952,
+      "macro_f1": 0.6090385776154372,
+      "f1_low": 0.7444444444444445,
+      "f1_medium": 0.41445783132530123,
+      "f1_high": 0.6682134570765661
+    },
+    {
+      "task": "Torch simplification",
+      "method": "Zero-shot",
+      "n": 687,
+      "accuracy": 0.15429403202328967,
+      "balanced_accuracy": 0.3319617288906731,
+      "macro_f1": 0.09286415024825749,
+      "f1_low": 0.0,
+      "f1_medium": 0.010050251256281407,
+      "f1_high": 0.26854219948849106
+    },
+    {
+      "task": "Torch simplification",
+      "method": "Few-shot mean",
+      "n": null,
+      "macro_f1": 0.22099085392406018,
+      "balanced_accuracy": 0.40207432649537206,
+      "f1_high": 0.34224613052336655,
+      "accuracy": 0.23774866569626396,
+      "f1_low": 0.13502819615628728,
+      "f1_medium": 0.18569823509252661
+    },
+    {
+      "task": "Torch simplification",
+      "method": "Balanced SFT",
+      "n": 687,
+      "accuracy": 0.5807860262008734,
+      "balanced_accuracy": 0.4765879813639535,
+      "macro_f1": 0.47960481227942126,
+      "f1_low": 0.73992673992674,
+      "f1_medium": 0.33707865168539325,
+      "f1_high": 0.36180904522613067
+    }
+  ],
+  "dt2": [
+    {
+      "method": "Zero-shot",
+      "n": 344,
+      "accuracy": 0.5784883720930233,
+      "balanced_accuracy": 0.4706361430182618,
+      "macro_f1": 0.4850685949757157,
+      "f1_equiv": 0.6968325791855203,
+      "f1_diverge": 0.19696969696969696,
+      "f1_error": 0.5614035087719298,
+      "false_equiv_rate": 0.5912408759124088
+    },
+    {
+      "method": "6-shot mean",
+      "n": 344,
+      "f1_equiv": 0.6415298184961107,
+      "macro_f1": 0.5318548235489653,
+      "false_equiv_rate": 0.2737226277372263,
+      "balanced_accuracy": 0.5678014065950379,
+      "f1_diverge": 0.31949649954034365,
+      "accuracy": 0.561046511627907,
+      "f1_error": 0.6345381526104418
+    },
+    {
+      "method": "SFT",
+      "n": 344,
+      "accuracy": 0.8430232558139535,
+      "balanced_accuracy": 0.8012890695070731,
+      "macro_f1": 0.8086804076051388,
+      "f1_equiv": 0.8811188811188811,
+      "f1_diverge": 0.5967741935483871,
+      "f1_error": 0.9481481481481482,
+      "false_equiv_rate": 0.24087591240875914
+    }
+  ],
+  "by_dialect": [
+    {
+      "dialect": "linalg",
+      "method": "Zero-shot",
+      "macro_f1": 0.4209515466001752
+    },
+    {
+      "dialect": "torch",
+      "method": "Zero-shot",
+      "macro_f1": 0.5489777449979014
+    },
+    {
+      "dialect": "linalg",
+      "method": "6-shot mean",
+      "macro_f1": 0.5084063480420378
+    },
+    {
+      "dialect": "torch",
+      "method": "6-shot mean",
+      "macro_f1": 0.5540904332888484
+    },
+    {
+      "dialect": "linalg",
+      "method": "SFT",
+      "macro_f1": 0.8082672434510935
+    },
+    {
+      "dialect": "torch",
+      "method": "SFT",
+      "macro_f1": 0.8040530109555858
+    }
+  ],
+  "by_class": [
+    {
+      "method": "Zero-shot",
+      "class": "EQUIV",
+      "f1": 0.6968325791855203
+    },
+    {
+      "method": "Zero-shot",
+      "class": "DIVERGE",
+      "f1": 0.19696969696969696
+    },
+    {
+      "method": "Zero-shot",
+      "class": "ERROR",
+      "f1": 0.5614035087719298
+    },
+    {
+      "method": "6-shot mean",
+      "class": "EQUIV",
+      "f1": 0.6415298184961107
+    },
+    {
+      "method": "6-shot mean",
+      "class": "DIVERGE",
+      "f1": 0.31949649954034365
+    },
+    {
+      "method": "6-shot mean",
+      "class": "ERROR",
+      "f1": 0.6345381526104418
+    },
+    {
+      "method": "SFT",
+      "class": "EQUIV",
+      "f1": 0.8811188811188811
+    },
+    {
+      "method": "SFT",
+      "class": "DIVERGE",
+      "f1": 0.5967741935483871
+    },
+    {
+      "method": "SFT",
+      "class": "ERROR",
+      "f1": 0.9481481481481482
+    }
+  ],
+  "comparison_details": [
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Zero-shot"
+      },
+      "metric": "n",
+      "expected": 693.0,
+      "actual": 693.0,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Zero-shot"
+      },
+      "metric": "accuracy",
+      "expected": 0.3189033189033189,
+      "actual": 0.3189033189033189,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Zero-shot"
+      },
+      "metric": "balanced_accuracy",
+      "expected": 0.3985955904560556,
+      "actual": 0.3985955904560556,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Zero-shot"
+      },
+      "metric": "macro_f1",
+      "expected": 0.26797221664771337,
+      "actual": 0.26797221664771337,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Zero-shot"
+      },
+      "metric": "f1_low",
+      "expected": 0.0,
+      "actual": 0.0,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Zero-shot"
+      },
+      "metric": "f1_medium",
+      "expected": 0.4065656565656566,
+      "actual": 0.4065656565656566,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Zero-shot"
+      },
+      "metric": "f1_high",
+      "expected": 0.3973509933774834,
+      "actual": 0.3973509933774834,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Few-shot mean"
+      },
+      "metric": "accuracy",
+      "expected": 0.36363636363636365,
+      "actual": 0.36363636363636365,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Few-shot mean"
+      },
+      "metric": "balanced_accuracy",
+      "expected": 0.3716653301256348,
+      "actual": 0.3716653301256349,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Few-shot mean"
+      },
+      "metric": "macro_f1",
+      "expected": 0.24134116222853347,
+      "actual": 0.24134116222853347,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Few-shot mean"
+      },
+      "metric": "f1_low",
+      "expected": 0.02040816326530612,
+      "actual": 0.02040816326530612,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Few-shot mean"
+      },
+      "metric": "f1_medium",
+      "expected": 0.12106804867057233,
+      "actual": 0.12106804867057233,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "Few-shot mean"
+      },
+      "metric": "f1_high",
+      "expected": 0.5825472747497219,
+      "actual": 0.5825472747497219,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "SFT"
+      },
+      "metric": "n",
+      "expected": 693.0,
+      "actual": 693.0,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "SFT"
+      },
+      "metric": "accuracy",
+      "expected": 0.6219336219336219,
+      "actual": 0.6219336219336219,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "SFT"
+      },
+      "metric": "balanced_accuracy",
+      "expected": 0.6054933572174952,
+      "actual": 0.6054933572174952,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "SFT"
+      },
+      "metric": "macro_f1",
+      "expected": 0.6090385776154372,
+      "actual": 0.6090385776154372,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "SFT"
+      },
+      "metric": "f1_low",
+      "expected": 0.7444444444444445,
+      "actual": 0.7444444444444445,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "SFT"
+      },
+      "metric": "f1_medium",
+      "expected": 0.41445783132530123,
+      "actual": 0.41445783132530123,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Linalg fusion",
+        "method": "SFT"
+      },
+      "metric": "f1_high",
+      "expected": 0.6682134570765661,
+      "actual": 0.6682134570765661,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Zero-shot"
+      },
+      "metric": "n",
+      "expected": 687.0,
+      "actual": 687.0,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Zero-shot"
+      },
+      "metric": "accuracy",
+      "expected": 0.15429403202328967,
+      "actual": 0.15429403202328967,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Zero-shot"
+      },
+      "metric": "balanced_accuracy",
+      "expected": 0.3319617288906731,
+      "actual": 0.3319617288906731,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Zero-shot"
+      },
+      "metric": "macro_f1",
+      "expected": 0.09286415024825749,
+      "actual": 0.09286415024825749,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Zero-shot"
+      },
+      "metric": "f1_low",
+      "expected": 0.0,
+      "actual": 0.0,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Zero-shot"
+      },
+      "metric": "f1_medium",
+      "expected": 0.010050251256281407,
+      "actual": 0.010050251256281407,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Zero-shot"
+      },
+      "metric": "f1_high",
+      "expected": 0.26854219948849106,
+      "actual": 0.26854219948849106,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Few-shot mean"
+      },
+      "metric": "accuracy",
+      "expected": 0.23774866569626396,
+      "actual": 0.23774866569626396,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Few-shot mean"
+      },
+      "metric": "balanced_accuracy",
+      "expected": 0.40207432649537195,
+      "actual": 0.40207432649537206,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Few-shot mean"
+      },
+      "metric": "macro_f1",
+      "expected": 0.22099085392406018,
+      "actual": 0.22099085392406018,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Few-shot mean"
+      },
+      "metric": "f1_low",
+      "expected": 0.13502819615628728,
+      "actual": 0.13502819615628728,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Few-shot mean"
+      },
+      "metric": "f1_medium",
+      "expected": 0.18569823509252661,
+      "actual": 0.18569823509252661,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Few-shot mean"
+      },
+      "metric": "f1_high",
+      "expected": 0.3422461305233666,
+      "actual": 0.34224613052336655,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Balanced SFT"
+      },
+      "metric": "n",
+      "expected": 687.0,
+      "actual": 687.0,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Balanced SFT"
+      },
+      "metric": "accuracy",
+      "expected": 0.5807860262008734,
+      "actual": 0.5807860262008734,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Balanced SFT"
+      },
+      "metric": "balanced_accuracy",
+      "expected": 0.47658798136395353,
+      "actual": 0.4765879813639535,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Balanced SFT"
+      },
+      "metric": "macro_f1",
+      "expected": 0.47960481227942126,
+      "actual": 0.47960481227942126,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Balanced SFT"
+      },
+      "metric": "f1_low",
+      "expected": 0.73992673992674,
+      "actual": 0.73992673992674,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Balanced SFT"
+      },
+      "metric": "f1_medium",
+      "expected": 0.33707865168539325,
+      "actual": 0.33707865168539325,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "task": "Torch simplification",
+        "method": "Balanced SFT"
+      },
+      "metric": "f1_high",
+      "expected": 0.36180904522613067,
+      "actual": 0.36180904522613067,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot"
+      },
+      "metric": "n",
+      "expected": 344.0,
+      "actual": 344.0,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot"
+      },
+      "metric": "accuracy",
+      "expected": 0.5784883720930233,
+      "actual": 0.5784883720930233,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot"
+      },
+      "metric": "macro_f1",
+      "expected": 0.4850685949757157,
+      "actual": 0.4850685949757157,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot"
+      },
+      "metric": "f1_equiv",
+      "expected": 0.6968325791855203,
+      "actual": 0.6968325791855203,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot"
+      },
+      "metric": "f1_diverge",
+      "expected": 0.19696969696969696,
+      "actual": 0.19696969696969696,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot"
+      },
+      "metric": "f1_error",
+      "expected": 0.5614035087719298,
+      "actual": 0.5614035087719298,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot"
+      },
+      "metric": "false_equiv_rate",
+      "expected": 0.5912408759124088,
+      "actual": 0.5912408759124088,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean"
+      },
+      "metric": "n",
+      "expected": 344.0,
+      "actual": 344.0,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean"
+      },
+      "metric": "accuracy",
+      "expected": 0.561046511627907,
+      "actual": 0.561046511627907,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean"
+      },
+      "metric": "macro_f1",
+      "expected": 0.5318548235489653,
+      "actual": 0.5318548235489653,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean"
+      },
+      "metric": "f1_equiv",
+      "expected": 0.6415298184961107,
+      "actual": 0.6415298184961107,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean"
+      },
+      "metric": "f1_diverge",
+      "expected": 0.31949649954034365,
+      "actual": 0.31949649954034365,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean"
+      },
+      "metric": "f1_error",
+      "expected": 0.6345381526104418,
+      "actual": 0.6345381526104418,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean"
+      },
+      "metric": "false_equiv_rate",
+      "expected": 0.2737226277372263,
+      "actual": 0.2737226277372263,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT"
+      },
+      "metric": "n",
+      "expected": 344.0,
+      "actual": 344.0,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT"
+      },
+      "metric": "accuracy",
+      "expected": 0.8430232558139535,
+      "actual": 0.8430232558139535,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT"
+      },
+      "metric": "macro_f1",
+      "expected": 0.8086804076051388,
+      "actual": 0.8086804076051388,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT"
+      },
+      "metric": "f1_equiv",
+      "expected": 0.8811188811188811,
+      "actual": 0.8811188811188811,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT"
+      },
+      "metric": "f1_diverge",
+      "expected": 0.5967741935483871,
+      "actual": 0.5967741935483871,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT"
+      },
+      "metric": "f1_error",
+      "expected": 0.9481481481481482,
+      "actual": 0.9481481481481482,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT"
+      },
+      "metric": "false_equiv_rate",
+      "expected": 0.24087591240875914,
+      "actual": 0.24087591240875914,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "dialect": "linalg",
+        "method": "Zero-shot"
+      },
+      "metric": "macro_f1",
+      "expected": 0.42095154660017525,
+      "actual": 0.4209515466001752,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "dialect": "linalg",
+        "method": "6-shot mean"
+      },
+      "metric": "macro_f1",
+      "expected": 0.5084063480420378,
+      "actual": 0.5084063480420378,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "dialect": "linalg",
+        "method": "SFT"
+      },
+      "metric": "macro_f1",
+      "expected": 0.8082672434510935,
+      "actual": 0.8082672434510935,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "dialect": "torch",
+        "method": "Zero-shot"
+      },
+      "metric": "macro_f1",
+      "expected": 0.5489777449979014,
+      "actual": 0.5489777449979014,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "dialect": "torch",
+        "method": "6-shot mean"
+      },
+      "metric": "macro_f1",
+      "expected": 0.5540904332888484,
+      "actual": 0.5540904332888484,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "dialect": "torch",
+        "method": "SFT"
+      },
+      "metric": "macro_f1",
+      "expected": 0.8040530109555858,
+      "actual": 0.8040530109555858,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot",
+        "class": "EQUIV"
+      },
+      "metric": "f1",
+      "expected": 0.6968325791855203,
+      "actual": 0.6968325791855203,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot",
+        "class": "DIVERGE"
+      },
+      "metric": "f1",
+      "expected": 0.19696969696969696,
+      "actual": 0.19696969696969696,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "Zero-shot",
+        "class": "ERROR"
+      },
+      "metric": "f1",
+      "expected": 0.5614035087719298,
+      "actual": 0.5614035087719298,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean",
+        "class": "EQUIV"
+      },
+      "metric": "f1",
+      "expected": 0.6415298184961107,
+      "actual": 0.6415298184961107,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean",
+        "class": "DIVERGE"
+      },
+      "metric": "f1",
+      "expected": 0.31949649954034365,
+      "actual": 0.31949649954034365,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "6-shot mean",
+        "class": "ERROR"
+      },
+      "metric": "f1",
+      "expected": 0.6345381526104418,
+      "actual": 0.6345381526104418,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT",
+        "class": "EQUIV"
+      },
+      "metric": "f1",
+      "expected": 0.8811188811188811,
+      "actual": 0.8811188811188811,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT",
+        "class": "DIVERGE"
+      },
+      "metric": "f1",
+      "expected": 0.5967741935483871,
+      "actual": 0.5967741935483871,
+      "status": "MATCH"
+    },
+    {
+      "row": {
+        "method": "SFT",
+        "class": "ERROR"
+      },
+      "metric": "f1",
+      "expected": 0.9481481481481482,
+      "actual": 0.9481481481481482,
+      "status": "MATCH"
+    }
+  ],
+  "input_provenance": [
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_0_val_predictions.csv",
+      "sha256": "3ed3f98b4b7beabfcf48870106a37f89d093a2ad0431020a5f215ccb6521f873",
+      "valid_rows": 129,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_1_val_predictions.csv",
+      "sha256": "9326a6ffd0c537d52dd1c9ea1bfcc3d780f1cbcc145a76ebe30bd75574d2da4d",
+      "valid_rows": 150,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_2_val_predictions.csv",
+      "sha256": "f8062ab6f444638cfaaa5c48ee9457043907566a34f73d3e6f5eddb51d5b60c0",
+      "valid_rows": 152,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_3_val_predictions.csv",
+      "sha256": "9008119ea0711ed94ca1720ff705b5fa7d60178fd1ac9fd9412df3b1bedae949",
+      "valid_rows": 131,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_4_val_predictions.csv",
+      "sha256": "b54e1cef7e979c469830bbe77cdb5dc2121f46fda87f171e5913ad5e65e44593",
+      "valid_rows": 131,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_0_val_predictions.csv",
+      "sha256": "9cf029bdc79f9f1309d59611151ada310d853f72ee61924e75dc8151e5995c00",
+      "valid_rows": 129,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_1_val_predictions.csv",
+      "sha256": "87907ddf465fa3d4e3061310af2a9f083a7d414c131f4853b01461cf2d5b110e",
+      "valid_rows": 150,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_2_val_predictions.csv",
+      "sha256": "e4cbf2f3b5ab10e1d0f61f5e8961becf81f007b4bd58a71d277df50df52f53ee",
+      "valid_rows": 152,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_3_val_predictions.csv",
+      "sha256": "9ac1ed674dfb2698b5d33464fa99fdd003750b76f7b644388ba0c7359938beb5",
+      "valid_rows": 131,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_4_val_predictions.csv",
+      "sha256": "6869c184d40035c96f5adba07636af82350a95960949735104db67025f458767",
+      "valid_rows": 131,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_0_val_predictions.csv",
+      "sha256": "26bc49fcb12b63724cd85b4980cd546a3f7e12f772ba03d3c45ae76840a4dd28",
+      "valid_rows": 129,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_1_val_predictions.csv",
+      "sha256": "84395d75c69f609d7d1b90bbd55c7274f46f5c33b2d52c70911959eb6cdb9398",
+      "valid_rows": 150,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_2_val_predictions.csv",
+      "sha256": "f54aea3be3b404880f230ef453d5bc9b0aed7ab35577a96343ab463118b8c5f6",
+      "valid_rows": 152,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_3_val_predictions.csv",
+      "sha256": "a4376805c334edff00065f51d599453cc40e6ffaf1a71fb43a9f31f88b6c72e9",
+      "valid_rows": 131,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_4_val_predictions.csv",
+      "sha256": "63b937a814b67f842b407095ada411fd14e5d70872b6ba8808c807113d31c8cb",
+      "valid_rows": 131,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/val_predictions.csv",
+      "sha256": "495cc21e7875a866a22abe86bd9173faa9a5dcf4c2447f039b9269f91531cfd6",
+      "valid_rows": 129,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/val_predictions.csv",
+      "sha256": "d735e7c8a2be989240cb9696a56ed73582ad31eb62b3b16e465c0077ea4c0052",
+      "valid_rows": 150,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/val_predictions.csv",
+      "sha256": "404c2e00308e3e818e186182f275e3b4289b2e277b3e4787da898fc2d3717c60",
+      "valid_rows": 152,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/val_predictions.csv",
+      "sha256": "4b22c0234cf2d4243b5dc1558edf2a62f02f647dc9b2a163c8f2741eb6c8f061",
+      "valid_rows": 131,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/val_predictions.csv",
+      "sha256": "16384607ea653d38fa8983039ee3b4af0b1a565843ddaa60dcef583a288cce76",
+      "valid_rows": 131,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/zero/fold_0_val_predictions.csv",
+      "sha256": "3338c0a4e8adcdf5f19fee82a1a40b7f20dc0ece62216787e6741db8b251fc49",
+      "valid_rows": 137,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/zero/fold_1_val_predictions.csv",
+      "sha256": "d405c2ffe6404dd143f66fe345d9949e7d3539c655c2d17120c485cd22aa9d71",
+      "valid_rows": 135,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/zero/fold_2_val_predictions.csv",
+      "sha256": "f9923eb6b5734be7d619a610f637f57a266fc5978b1f67ec58defa1f42c4729e",
+      "valid_rows": 136,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/zero/fold_3_val_predictions.csv",
+      "sha256": "58a41b7ee86c2fba370a169e1289e02c6742664b95acd1ffd5636fdaa54efdfc",
+      "valid_rows": 138,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/zero/fold_4_val_predictions.csv",
+      "sha256": "f3f6a0877ab4e42d426d53beaacf50078b443858eb87186925256802dda0791d",
+      "valid_rows": 141,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_0_val_predictions.csv",
+      "sha256": "b65693b77ea486d5e129bd8552022a1c14bec7d7472001adbcdcefa11f3e808e",
+      "valid_rows": 137,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_1_val_predictions.csv",
+      "sha256": "83883de7155b1b992da5d4a11e6a29bfe6071310a9e4c3a8c83d78af49245d8c",
+      "valid_rows": 135,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_2_val_predictions.csv",
+      "sha256": "605b32645e342cd8ae275be728b75a49bf0b1a709ca3b5111cb132d28a1f60d9",
+      "valid_rows": 136,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_3_val_predictions.csv",
+      "sha256": "4d6fa414145e60efd5a12514e6c8c9df6280d2917747449e1289197e8c0606b2",
+      "valid_rows": 138,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_4_val_predictions.csv",
+      "sha256": "99b5936f0f7266f062117390f34e11999737e48b2541dae88df253a927c59c15",
+      "valid_rows": 141,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_0_val_predictions.csv",
+      "sha256": "aa1311c9b2d97457302e5772801a4f5c198a5cde52cf9b9b3fbc09b89893c907",
+      "valid_rows": 137,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_1_val_predictions.csv",
+      "sha256": "83c9df70b8b4a5d685139fe9cedb92fc8c243415affbbc7c8a683b784d4d2f4b",
+      "valid_rows": 135,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_2_val_predictions.csv",
+      "sha256": "508d63474e4241184ad1d5ee1a1144ca58eeef639e1b4bca8e374488b1f3fa5f",
+      "valid_rows": 136,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_3_val_predictions.csv",
+      "sha256": "d1650505886a95baee21b3ab8707287570095b2a4036add5ef769514301b608b",
+      "valid_rows": 138,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_4_val_predictions.csv",
+      "sha256": "a6fd5dacb751d40ecf57adda76db1a4b283f2458eb6f2679a416a6630aad613e",
+      "valid_rows": 141,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_0_val_predictions.csv",
+      "sha256": "44fffd66ed45e7ac571e7af7b9b9774b6822873a68648f464eb8e3fc39807c5c",
+      "valid_rows": 137,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_1_val_predictions.csv",
+      "sha256": "a9918315f83a6eb4617c61490b105e0b593f6947be5abf93812732302066c01a",
+      "valid_rows": 135,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_2_val_predictions.csv",
+      "sha256": "102076dd59323cd0f4be19ed1ef36f722a33878cb3ffc190e5916b760b3b5813",
+      "valid_rows": 136,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_3_val_predictions.csv",
+      "sha256": "0a7f86d8ab260bfeec0fca0891b1e6bfea3b49f785280fa0e6f1ae95cfc560ab",
+      "valid_rows": 138,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_4_val_predictions.csv",
+      "sha256": "9fa4cf3ddccc8568c2b9a3bdb33d115dce4caa3af288b10ac57a12ae0d6a0cdb",
+      "valid_rows": 141,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/val_predictions.csv",
+      "sha256": "d88868c69b47a562747a8424954823fc68a1f6051566866b9c6346a084049b11",
+      "valid_rows": 137,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/val_predictions.csv",
+      "sha256": "c4b9b2af1a1ef99631bde5447e9c2e5c98d16d185705501c9ecdbd1b59ad549f",
+      "valid_rows": 135,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/val_predictions.csv",
+      "sha256": "ef84a9d8b88181cbe9be3e82f464f71551d92ad042e309ad58af1a3f8321c83d",
+      "valid_rows": 136,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/val_predictions.csv",
+      "sha256": "fb7c44a64c085b5167e3073b85f2f22c7ec16e2cc87e58a5ef03eb23acaf5105",
+      "valid_rows": 138,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/val_predictions.csv",
+      "sha256": "9623b6b3e604b11cb5e7916114933b7ce3d740e4baa590024ff3ba047b386e15",
+      "valid_rows": 141,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/outputs/dt2_all-dataset/predictions/all-dataset_zero_shot_predictions.csv",
+      "sha256": "ab50805040f97e20d6e3c170e0378e367bbf532c56cf5f38b485a8d7d789d616",
+      "valid_rows": 344,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_predictions.csv",
+      "sha256": "dc2ef56190d3662f366d401d7253d5f8fab1e4d6a0278bb3485e9088b3999046",
+      "valid_rows": 344,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_predictions.csv",
+      "sha256": "368113d81b70a37142e3b216da660ffae79326e5f8b1dace16cd14ec6cd27233",
+      "valid_rows": 344,
+      "excluded_rows": 0
+    },
+    {
+      "path": "/app/data/downstream/records/outputs/dt2_all-dataset/predictions/all-dataset_sft_test_predictions.csv",
+      "sha256": "6e0e53660a5ab367767a6a30e0f0b2b9a4e6313e11b7b93620baa073746612c6",
+      "valid_rows": 344,
+      "excluded_rows": 0
+    }
+  ]
+}
