@@ -34,3 +34,13 @@ class ArtifactBundle(unittest.TestCase):
             root = Path(temp); bundle = root / 'bundle'; bundle.mkdir()
             (bundle / 'manifest.json').write_text(json.dumps({'../outside': {}}))
             with self.assertRaises(ValueError): unpack(bundle, root / 'processed')
+
+    def test_pack_excludes_hidden_cache_and_is_deterministic(self):
+        from scripts.package_artifact_data import package
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); source = root / 'source'; (source / '.cache').mkdir(parents=True)
+            (source / '.cache/state.json').write_text('{}')
+            (source / 'master.jsonl').write_text('{"label":"False"}\n')
+            package(source, root / 'one'); package(source, root / 'two')
+            self.assertEqual(json.loads((root / 'one/manifest.json').read_text()).keys(), {'master.jsonl'})
+            self.assertEqual((root / 'one/master.jsonl.gz').read_bytes(), (root / 'two/master.jsonl.gz').read_bytes())
