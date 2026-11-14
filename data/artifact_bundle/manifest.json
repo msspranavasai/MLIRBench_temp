@@ -1,0 +1,112 @@
+{
+  "MLIRBench/.cache/huggingface/trees/5d525bb4d2349d9f20edaa82cbdf736543f79f05.json": {
+    "bytes": 5762,
+    "gzip_sha256": "8178558f3efcc1353dc753da806e67d718f331e062b5e15f4815b4b4bbe071a5",
+    "sha256": "00c339637a96ed7de8e0e64addeed522f3b41a9c493387fa03e92e0bb7616bf5"
+  },
+  "MLIRBench/README.md": {
+    "bytes": 11274,
+    "gzip_sha256": "2329989429ee5a529098d3e6a4b348578b415a257489065c2a281ce858cf31cd",
+    "sha256": "3a6c76f901afa2b83dade5d3bb8246ceae4cb7ff5031a661080a1eab11aba1e2"
+  },
+  "MLIRBench/core/core.jsonl": {
+    "bytes": 20452544,
+    "gzip_sha256": "628df4ccb2da9a5a410f7e3053be8c900e35721ef32f4852163c49bc6cf8e932",
+    "sha256": "d0d344ded304576213c39a8f5ea728541a1c1bb708d95c9ed096a9f6b76fb52a"
+  },
+  "MLIRBench/core/dataset_info.json": {
+    "bytes": 366,
+    "gzip_sha256": "0b4d870c22f0b74e09996081dfe3dc421a06965b1b820a534ebfcd35ae259290",
+    "sha256": "ec42763f4b0a2e13af2f0bd5b9ce74e6134b9eb9ff36c5fc6e8899ea8b94512e"
+  },
+  "MLIRBench/datasets.json": {
+    "bytes": 374,
+    "gzip_sha256": "f122c8d54f6f1e3eea5699b7c4f631ff61c662475b152c412bd34f8b6f8038fc",
+    "sha256": "c55b86237084a47338c80c45f7a0e1e6740b15db937e7f00100fad7e4ff7982c"
+  },
+  "MLIRBench/difficulty/dataset_info.json": {
+    "bytes": 225,
+    "gzip_sha256": "f35cb3f7fe3f1878b12031a39eb02cebce74a5700d1be5aec2980ff04b6a284c",
+    "sha256": "2886c0de27eb7ea669881d2527ca9ff25c871f2a137ae1549fa10e2ce4fab883"
+  },
+  "MLIRBench/difficulty/difficulty.jsonl": {
+    "bytes": 297782,
+    "gzip_sha256": "c76bb1e8860c405db49e4e042a566fc280a0838d824cb8946b73de5903c6fd42",
+    "sha256": "b1b9b0f32211edde677d3d738ade9e0b38552f804cbc4e83928c1e24ee12a852"
+  },
+  "MLIRBench/errors/dataset_info.json": {
+    "bytes": 337,
+    "gzip_sha256": "b75ade1f26b226bf438673d1a209073d1f32caddd90b3cf54faa518e15455509",
+    "sha256": "d3f1f2b2ce4bf525b551ea47bec84a5b3f0c031cf0de3c415ace5915a9ab22f6"
+  },
+  "MLIRBench/errors/errors.jsonl": {
+    "bytes": 188219326,
+    "gzip_sha256": "86c8536fd5795c51bca496beb88ff052711d622757b70809149f10305e14066a",
+    "sha256": "45a00b2da122d985a8364bee062871b9a72b3373db3447f99f822b05b535a1bf"
+  },
+  "MLIRBench/evaluation/dataset_info.json": {
+    "bytes": 377,
+    "gzip_sha256": "e26f6da5ac133f19e39efb845bdd38a5a8b476ed1f4fbb7b3b601744c5a7c92b",
+    "sha256": "e087ea188c6124c68b3eb547a205c3173313b0642c18ef87a52850383e99d84f"
+  },
+  "MLIRBench/evaluation/evaluation.jsonl": {
+    "bytes": 5938743,
+    "gzip_sha256": "3c76f28cf0429378aa5f7095f63bf0dd6347c5f991bc494fe2d22aff11eddcfd",
+    "sha256": "6a49709a1ce94fb07cd29f0fccd3c539c9967af7d8dbb235f5d2aaf3d61391e7"
+  },
+  "MLIRBench/master/dataset_info.json": {
+    "bytes": 922,
+    "gzip_sha256": "d0a59a81b3f2c3e67249a5de05583d38b010934acf86544f604f92300d7eda74",
+    "sha256": "90dcd74ca92a8444cbe2f86fdff9e7b872da237d05ec9208a3285e222a0b3be1"
+  },
+  "MLIRBench/master/master.jsonl": {
+    "bytes": 39604667,
+    "gzip_sha256": "6015504363fa1d457c9d4b41affbe57f6f2022c0fb077c6281983850bec6ea1d",
+    "sha256": "84718efccae10e5bbd66fd7c4455ca9f22a8957c968151465b830855335a0541"
+  },
+  "MLIRBench/model_arena/dataset_info.json": {
+    "bytes": 307,
+    "gzip_sha256": "e69f7d2f4ffec74970abaa56aef55d05d0279ec977429ebfa0281e30065201e2",
+    "sha256": "b7b4aa42a5f3cfaa8a2c8334de1e13dc09001e8e992259c1c82258bb7c82464e"
+  },
+  "MLIRBench/model_arena/model_arena.jsonl": {
+    "bytes": 4904940,
+    "gzip_sha256": "4e3c52ef7473b4d39aecba8efb79252a28f7835b723d90cb3c5eaec421fd86f3",
+    "sha256": "b33b9d8f317b63ba941d4ef4293130dffe0ba9af99e2ecf210b0ea3b36258917"
+  },
+  "MLIRBench/mutation_provenance/dataset_info.json": {
+    "bytes": 265,
+    "gzip_sha256": "2a0d8ca3802e1a781bfc008df2e3203f7ff95d3e71809f6542b3ee622173c1f8",
+    "sha256": "67db6a943611a9b3c6ec341a95dc33592d5c8bd73d78449b380d6af138bcee84"
+  },
+  "MLIRBench/mutation_provenance/mutation_provenance.jsonl": {
+    "bytes": 18800011,
+    "gzip_sha256": "63950fe2b3571625bec8122780c05a397e33952287271ddb1febf10b584533b4",
+    "sha256": "239041edc82bd4a1f09bde44664d41a73a22df7f489a74cbffe90b37ca4d6d52"
+  },
+  "MLIRBench/performance/dataset_info.json": {
+    "bytes": 266,
+    "gzip_sha256": "b54bbd331634bd03a46ebdcd1f939dce14241128aade3ee38564e7939e316f1b",
+    "sha256": "161dd6467e894406c2875dfa0d50c7b96eb9b11cefffac326c6da873d0c4421c"
+  },
+  "MLIRBench/performance/performance.jsonl": {
+    "bytes": 18074815,
+    "gzip_sha256": "28ba7270532a4855e87714264fb76f547a3250e4c5d21a6ce1949aa0f100eba4",
+    "sha256": "aca929a865edb13975a276cbe779e63bc33cfe362164a8ac293f1bca32a5b4c3"
+  },
+  "MLIRBench/reasoning/dataset_info.json": {
+    "bytes": 472,
+    "gzip_sha256": "6ee683c16920271644f70b0a1a434368f9890ae176b1cfaa6910ea8da9f88f1c",
+    "sha256": "3a3741444292901be1e16127275a619ad56b0bce07f30503451123d983a3cf73"
+  },
+  "MLIRBench/reasoning/gemini_provenance.jsonl": {
+    "bytes": 3748215,
+    "gzip_sha256": "953fd1c0ff49f82c1074ed21e8e571fb7b496e514b809619153647af6cbd90a1",
+    "sha256": "5578dc4ffaed5141aa1ea1f079fad35e1d8765db8ac4545691516c88a5181538"
+  },
+  "MLIRBench/reasoning/reasoning.jsonl": {
+    "bytes": 201904591,
+    "gzip_sha256": "485fecb9a9d27fab78d0d8f7458bdd021ed36f523dad806ebe16396ce05df90e",
+    "sha256": "65c0f5ef07d83059b0ad6144ef7076b929218c2932ac585d870a015d12c8a356"
+  }
+}

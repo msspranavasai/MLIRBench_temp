@@ -218,3 +218,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+old_readme.txt
+
+# Immutable working copies; the hash-verified artifact bundle is versioned instead.
+/data/raw/
+/data/processed/
+/runs/
+
+.DS_Store

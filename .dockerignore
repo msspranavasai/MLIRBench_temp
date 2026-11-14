@@ -1,0 +1,20 @@
+.git
+.env
+.env.*
+!.env.example
+**/__pycache__
+**/*.pyc
+**/.DS_Store
+.venv
+.pytest_cache
+.ruff_cache
+runs
+results
+logs
+reports
+# Published processed data is packaged; raw archives stay immutable on the host.
+data/raw
+data/processed
+*.zip
+*.tar
+*.tar.gz
