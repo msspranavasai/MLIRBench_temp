@@ -24,4 +24,5 @@ Run ./ae.sh quickstart and read the generated results/<run>/START_HERE.md. It re
 
 The checked-in baseline is evidence/preparation-2026-11-14/VERIFICATION.md. Full quickstart runtime was 39.055 seconds on the local emulated CPU setup.
 
-Native CPU update: 35 tests and all 76 downstream comparisons passed on ARM64 without emulation; offline quickstart took 11.441 seconds. Explicit AMD64 emulation also passed. See evidence/native-cpu-2026-11-14/VERIFICATION.md. Native AMD64 hardware remains unverified.
+
+Native CPU update: 35 tests and all 76 downstream comparisons passed on ARM64 without emulation; offline quickstart took 12.867 seconds. Explicit AMD64 emulation also passed. See evidence/native-cpu-2026-11-14-final/VERIFICATION.md. Native AMD64 hardware remains unverified.

@@ -48,6 +48,7 @@ RUN python -c "import iree.compiler; import iree.runtime" && \
 
 # Maintained offline code and verified data only.
 COPY Dockerfile ae.sh pyproject.toml README.md ARTIFACT.md LICENSE run.py /app/
+COPY requirements/core.txt /app/requirements/core.txt
 COPY src /app/src
 COPY tools /app/tools
 COPY tests /app/tests
