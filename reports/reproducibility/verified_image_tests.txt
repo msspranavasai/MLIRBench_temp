@@ -1,0 +1,32 @@
+test_changed_op (integration.test_execution.IreeExecution.test_changed_op) ... ok
+test_identical_and_ssa_renamed (integration.test_execution.IreeExecution.test_identical_and_ssa_renamed) ... ok
+test_node_no_external_explanation_or_benchmark (integration.test_execution.IreeExecution.test_node_no_external_explanation_or_benchmark) ... === EXECUTION ===
+ok
+test_torch_identity_requires_explicit_lowering (integration.test_execution.IreeExecution.test_torch_identity_requires_explicit_lowering) ... ok
+test_valid_gather_and_replay (integration.test_execution.IreeExecution.test_valid_gather_and_replay) ... ok
+test_byte_exact_unpack_and_no_overwrite (unit.test_artifact_bundle.ArtifactBundle.test_byte_exact_unpack_and_no_overwrite) ... ok
+test_corrupt_bundle_is_rejected (unit.test_artifact_bundle.ArtifactBundle.test_corrupt_bundle_is_rejected) ... ok
+test_pack_excludes_hidden_cache_and_is_deterministic (unit.test_artifact_bundle.ArtifactBundle.test_pack_excludes_hidden_cache_and_is_deterministic) ... ok
+test_path_traversal_is_rejected (unit.test_artifact_bundle.ArtifactBundle.test_path_traversal_is_rejected) ... ok
+test_version (unit.test_package.Package.test_version) ... ok
+test_classification_with_controlled_runtime (unit.test_pair_validation.Contracts.test_classification_with_controlled_runtime) ... ok
+test_exact_value_contract (unit.test_pair_validation.Contracts.test_exact_value_contract) ... ok
+test_gather_generation_and_invalid_indices (unit.test_pair_validation.Contracts.test_gather_generation_and_invalid_indices) ... ok
+test_incompatible_dtype_never_compiles (unit.test_pair_validation.Contracts.test_incompatible_dtype_never_compiles) ... ok
+test_input_suite_and_repeat_contract (unit.test_pair_validation.Contracts.test_input_suite_and_repeat_contract) ... ok
+test_judge_skips_unverified_ground_truth_without_credentials (unit.test_pair_validation.Contracts.test_judge_skips_unverified_ground_truth_without_credentials) ... === JUDGE ===
+ok
+test_linalg_denominator_uses_declared_precision (unit.test_pair_validation.Contracts.test_linalg_denominator_uses_declared_precision) ... ok
+test_literal_division_log_and_sqrt_domains (unit.test_pair_validation.Contracts.test_literal_division_log_and_sqrt_domains) ... ok
+test_malformed_recorded_inputs (unit.test_pair_validation.Contracts.test_malformed_recorded_inputs) ... ok
+test_string_labels (unit.test_pair_validation.Contracts.test_string_labels) ... ok
+test_typed_roundtrip_scalars_empty_and_signed_zero (unit.test_pair_validation.Contracts.test_typed_roundtrip_scalars_empty_and_signed_zero) ... ok
+test_unknown_dynamic_and_missing_signatures (unit.test_pair_validation.Contracts.test_unknown_dynamic_and_missing_signatures) ... ok
+test_unsupported_operation_and_nonfinite_input (unit.test_pair_validation.Contracts.test_unsupported_operation_and_nonfinite_input) ... ok
+test_missing_predictions_count_against_full_denominator (unit.test_recorded_scores.RecordedScores.test_missing_predictions_count_against_full_denominator) ... ok
+test_recorded_master_disagreement_is_exposed (unit.test_recorded_scores.RecordedScores.test_recorded_master_disagreement_is_exposed) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 47.622s
+
+OK

@@ -1,0 +1,52 @@
+{
+  "source_commit": "12ff06c3287577a4c006ddaf348c177cc9515a7e",
+  "image": {
+    "id": "sha256:989cb18d05148998c4aec5711d8f89d0e9d03ed700a2720ac940d4186fe21039",
+    "architecture": "amd64",
+    "tags": [
+      "mlirbench:aec",
+      "mlirbench:aec-verified"
+    ],
+    "size_bytes": 2805361762
+  },
+  "tests": {
+    "passed": 25,
+    "seconds": 47.622
+  },
+  "compiler_smoke": {
+    "linalg": "NO_DIFFERENCE_OBSERVED",
+    "torch": "NO_DIFFERENCE_OBSERVED"
+  },
+  "dataset": {
+    "records": 1768,
+    "sha256": "84718efccae10e5bbd66fd7c4455ca9f22a8957c968151465b830855335a0541",
+    "labels": {
+      "False": 1152,
+      "True": 275,
+      "N/A": 341
+    },
+    "dialects": {
+      "linalg": 888,
+      "torch": 880
+    },
+    "statuses": {
+      "success": 1400,
+      "expected_invalid": 338,
+      "compile_error": 3,
+      "runtime_error": 24,
+      "None": 3
+    }
+  },
+  "sample_records": 26,
+  "sample_verdicts": {
+    "NO_DIFFERENCE_OBSERVED": 10,
+    "INCOMPARABLE_INPUT_SIGNATURES": 2,
+    "DIVERGE": 6,
+    "UNSUPPORTED_INPUT_PRECONDITIONS": 3,
+    "COMPILE_ERROR": 5
+  },
+  "policy_v3_prior_program_input_rechecks": 160,
+  "published_raw_processed_files_preserved": 200,
+  "historical_candidate_status": "HISTORICAL_OUTPUTS_REPRODUCED",
+  "stored_gather_metadata_verdict": "INVALID_INPUT"
+}

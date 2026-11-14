@@ -1,0 +1,408 @@
+{
+  "program_id": "seed1_linalg_prog7_L1_R2",
+  "mode": "independent_embedding_hypothesis",
+  "semantic_verdict": "NOT_APPLICABLE",
+  "environment": {
+    "python": "3.11.18",
+    "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "packages": {
+      "numpy": "2.4.6",
+      "iree-compiler": "20241104.1068",
+      "iree-runtime": "20241104.1068",
+      "torch-mlir": "20261101"
+    },
+    "compiler_flags": [
+      "--iree-llvmcpu-target-cpu=generic",
+      "--iree-llvmcpu-loop-vectorization=false",
+      "--iree-llvmcpu-slp-vectorization=false",
+      "--iree-llvmcpu-loop-interleaving=false",
+      "--iree-llvmcpu-loop-unrolling=false"
+    ],
+    "code_sha256": {
+      "execution.py": "c1207ac8aceed97905f706f6600d3b3e4d278279e8d381f9f1ac9e232c218bb7",
+      "input_policy.py": "c26cb2ec9e4222c6bd744d566d74b45b2654a042b84102c71e76419a5d0415c0",
+      "pair_validation.py": "f01c58e671757e78c885beae36de8c75d697af840a21c0e5cb8723d3c74f3dd0"
+    }
+  },
+  "evidence": {
+    "historical_fields": {
+      "judge__compilation_status_A": "success",
+      "judge__compilation_status_B": "success",
+      "judge__embedded_inputs_json": "{\"%arg0\": [[0.0, 11.0, 11.9, 12.0], [12.1, 13.0, -1.0, -0.1], [0.1, 1.0, 799999.0, 799999.9]]}",
+      "judge__outputs_diverge": "True",
+      "judge__outputs_diverge_is_missing": "false",
+      "judge__outputs_diverge_missing_reason": "present",
+      "judge__programA_output_is_missing": "false",
+      "judge__programA_output_json": "[false, 799999.875, [false, false, false], [false, false, false, false], 1.0, 0.0833333358168602]",
+      "judge__programA_output_missing_reason": "present",
+      "judge__programB_output_is_missing": "false",
+      "judge__programB_output_json": "[false, 800001.0, [false, false, false], [false, false, false, false], 1.0, 0.0833333358168602]",
+      "judge__programB_output_missing_reason": "present",
+      "judge__source_file": "judge_payloads_linalg_seed1_explained.jsonl",
+      "pairs__backend_json": "{\"device\": \"cpu\", \"target\": \"local-task\"}",
+      "pairs__compile_status_A": "success",
+      "pairs__compile_status_B": "success",
+      "pairs__input_spec_json": "[]",
+      "pairs__run_config_json": "{\"iterations\": 30, \"warmup\": 10}",
+      "pairs__source_file": "pairs_benchmark_linalg_seed1.jsonl",
+      "pairs__status": "success"
+    },
+    "program_id": "seed1_linalg_prog7_L1_R2",
+    "provenance": {
+      "row_sha256": "745cbd6fb5adb601982d7fc7a75ccee7ad0071928e96abd6b503339d4cc818de",
+      "source_filename": "execution_agent_unified_rows.csv",
+      "source_sha256": "08a14fa1f9f14ffdda5ec2e9191334113ebd44bcb3a73956eb15eb5bea6eff17"
+    },
+    "source_sha256": [
+      "f623fafd4ae712ddc1c7a07da19c4e54bb01645f9ecbca95895db8edcbdbc907",
+      "64cf7f2eec07c313f7b6d169ba7eb687fb2b2f40315d9187f1603307a65e9112"
+    ]
+  },
+  "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+  "programs": [
+    {
+      "inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            4
+          ],
+          "data": [
+            [
+              0.0,
+              11.0,
+              11.899999618530273,
+              12.0
+            ],
+            [
+              12.100000381469727,
+              13.0,
+              -1.0,
+              -0.10000000149011612
+            ],
+            [
+              0.10000000149011612,
+              1.0,
+              799999.0,
+              799999.875
+            ]
+          ],
+          "bytes_b64": "AAAAAAAAMEFmZj5BAABAQZqZQUEAAFBBAACAv83MzL3NzMw9AACAP/BPQ0n+T0NJ"
+        }
+      ],
+      "runs": [
+        {
+          "compilation_status": "success",
+          "execution_status": "success",
+          "output": [
+            false,
+            799999.875,
+            [
+              false,
+              false,
+              false
+            ],
+            [
+              false,
+              false,
+              false,
+              false
+            ],
+            1.0,
+            0.0833333358168602
+          ],
+          "output_typed": {
+            "kind": "sequence",
+            "items": [
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [],
+                "bytes_b64": "AA=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "/k9DSQ=="
+              },
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [
+                  3
+                ],
+                "bytes_b64": "AAAA"
+              },
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [
+                  4
+                ],
+                "bytes_b64": "AAAAAA=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "AACAPw=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "q6qqPQ=="
+              }
+            ]
+          },
+          "error_message": null
+        },
+        {
+          "compilation_status": "success",
+          "execution_status": "success",
+          "output": [
+            false,
+            799999.875,
+            [
+              false,
+              false,
+              false
+            ],
+            [
+              false,
+              false,
+              false,
+              false
+            ],
+            1.0,
+            0.0833333358168602
+          ],
+          "output_typed": {
+            "kind": "sequence",
+            "items": [
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [],
+                "bytes_b64": "AA=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "/k9DSQ=="
+              },
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [
+                  3
+                ],
+                "bytes_b64": "AAAA"
+              },
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [
+                  4
+                ],
+                "bytes_b64": "AAAAAA=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "AACAPw=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "q6qqPQ=="
+              }
+            ]
+          },
+          "error_message": null
+        }
+      ]
+    },
+    {
+      "inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            4
+          ],
+          "data": [
+            [
+              0.0,
+              -1.0,
+              -0.10000000149011612,
+              0.10000000149011612
+            ],
+            [
+              1.0,
+              799999.0,
+              799999.875,
+              800000.0
+            ],
+            [
+              800000.125,
+              800001.0,
+              11.0,
+              11.899999618530273
+            ]
+          ],
+          "bytes_b64": "AAAAAAAAgL/NzMy9zczMPQAAgD/wT0NJ/k9DSQBQQ0kCUENJEFBDSQAAMEFmZj5B"
+        }
+      ],
+      "runs": [
+        {
+          "compilation_status": "success",
+          "execution_status": "success",
+          "output": [
+            false,
+            800001.0,
+            [
+              false,
+              false,
+              false
+            ],
+            [
+              false,
+              false,
+              false,
+              false
+            ],
+            1.0,
+            0.0833333358168602
+          ],
+          "output_typed": {
+            "kind": "sequence",
+            "items": [
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [],
+                "bytes_b64": "AA=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "EFBDSQ=="
+              },
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [
+                  3
+                ],
+                "bytes_b64": "AAAA"
+              },
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [
+                  4
+                ],
+                "bytes_b64": "AAAAAA=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "AACAPw=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "q6qqPQ=="
+              }
+            ]
+          },
+          "error_message": null
+        },
+        {
+          "compilation_status": "success",
+          "execution_status": "success",
+          "output": [
+            false,
+            800001.0,
+            [
+              false,
+              false,
+              false
+            ],
+            [
+              false,
+              false,
+              false,
+              false
+            ],
+            1.0,
+            0.0833333358168602
+          ],
+          "output_typed": {
+            "kind": "sequence",
+            "items": [
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [],
+                "bytes_b64": "AA=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "EFBDSQ=="
+              },
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [
+                  3
+                ],
+                "bytes_b64": "AAAA"
+              },
+              {
+                "kind": "array",
+                "dtype": "|b1",
+                "shape": [
+                  4
+                ],
+                "bytes_b64": "AAAAAA=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "AACAPw=="
+              },
+              {
+                "kind": "array",
+                "dtype": "<f4",
+                "shape": [],
+                "bytes_b64": "q6qqPQ=="
+              }
+            ]
+          },
+          "error_message": null
+        }
+      ]
+    }
+  ],
+  "matches_original_outputs": [
+    true,
+    true
+  ],
+  "inputs_equal": false
+}

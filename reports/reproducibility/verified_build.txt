@@ -1,0 +1,114 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.14kB done
+#1 WARN: FromPlatformFlagConstDisallowed: FROM --platform flag should not use constant value "linux/amd64" (line 1)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim@sha256:07d4824036af339fa1b6ef769cc99d9c10a141769538b52b3b597c84f7a7b535
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 294B done
+#3 DONE 0.0s
+
+#4 [ 1/21] FROM docker.io/library/python:3.11-slim@sha256:07d4824036af339fa1b6ef769cc99d9c10a141769538b52b3b597c84f7a7b535
+#4 resolve docker.io/library/python:3.11-slim@sha256:07d4824036af339fa1b6ef769cc99d9c10a141769538b52b3b597c84f7a7b535 done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 24.93MB 0.1s done
+#5 DONE 0.1s
+
+#6 [ 7/21] RUN python -m pip install --no-cache-dir     torch-mlir==20261101
+#6 CACHED
+
+#7 [ 6/21] RUN python -m pip install --no-cache-dir     -r /tmp/requirements.txt
+#7 CACHED
+
+#8 [ 3/21] RUN apt-get update &&     apt-get install -y --no-install-recommends         ca-certificates         curl         git         libgomp1         llvm         mlir-19-tools     && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [ 5/21] COPY requirements.txt /tmp/requirements.txt
+#9 CACHED
+
+#10 [ 4/21] RUN MLIR_BIN="$(find /usr/bin -maxdepth 1         -name 'mlir-opt-*' | sort -V | tail -n 1)" &&     test -n "$MLIR_BIN" &&     ln -s "$MLIR_BIN" /usr/local/bin/mlir-opt
+#10 CACHED
+
+#11 [ 2/21] WORKDIR /app
+#11 CACHED
+
+#12 [ 8/21] RUN python -c "import iree.compiler; import iree.runtime" &&     command -v mlir-opt &&     command -v torch-mlir-opt &&     command -v iree-compile &&     command -v iree-benchmark-module &&     mlir-opt --version &&     torch-mlir-opt --version &&     iree-compile --version
+#12 CACHED
+
+#13 [ 9/21] COPY pyproject.toml README.md ARTIFACT.md LICENSE artifact.py recorded_scores.py run.py /app/
+#13 DONE 0.0s
+
+#14 [10/21] COPY src /app/src
+#14 DONE 0.0s
+
+#15 [11/21] COPY agents /app/agents
+#15 DONE 0.0s
+
+#16 [12/21] COPY graph /app/graph
+#16 DONE 0.0s
+
+#17 [13/21] COPY services /app/services
+#17 DONE 0.0s
+
+#18 [14/21] COPY scripts /app/scripts
+#18 DONE 0.0s
+
+#19 [15/21] COPY tests /app/tests
+#19 DONE 0.0s
+
+#20 [16/21] COPY docs /app/docs
+#20 DONE 0.0s
+
+#21 [17/21] COPY data/artifact_bundle /app/data/artifact_bundle
+#21 DONE 0.0s
+
+#22 [18/21] RUN python scripts/unpack_artifact_data.py
+#22 1.355 Verified and unpacked 21 published files
+#22 DONE 1.7s
+
+#23 [19/21] COPY data/replay /app/data/replay
+#23 DONE 0.0s
+
+#24 [20/21] COPY data/manifests /app/data/manifests
+#24 DONE 0.0s
+
+#25 [21/21] RUN python -m pip install --no-cache-dir --no-deps . && test ! -f /app/.env
+#25 1.037 Processing /app
+#25 1.041   Installing build dependencies: started
+#25 5.093   Installing build dependencies: finished with status 'done'
+#25 5.094   Getting requirements to build wheel: started
+#25 5.554   Getting requirements to build wheel: finished with status 'done'
+#25 5.556   Preparing metadata (pyproject.toml): started
+#25 6.013   Preparing metadata (pyproject.toml): finished with status 'done'
+#25 6.016 Building wheels for collected packages: mlirbench
+#25 6.018   Building wheel for mlirbench (pyproject.toml): started
+#25 6.470   Building wheel for mlirbench (pyproject.toml): finished with status 'done'
+#25 6.471   Created wheel for mlirbench: filename=mlirbench-0.1.0-py3-none-any.whl size=7038 sha256=a14698af3be502186646991baaef9c61250f962a8818c06a565c86e6e57d8a2c
+#25 6.471   Stored in directory: /tmp/pip-ephem-wheel-cache-lx3uk1vz/wheels/57/0f/98/bb57b2b57b95807699b822a35c022f139d38a02c27922f27ce
+#25 6.476 Successfully built mlirbench
+#25 6.477 Installing collected packages: mlirbench
+#25 6.489 Successfully installed mlirbench-0.1.0
+#25 6.489 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#25 6.674 
+#25 6.674 [notice] A new release of pip is available: 24.0 -> 26.3
+#25 6.674 [notice] To update, run: pip install --upgrade pip
+#25 DONE 6.7s
+
+#26 exporting to image
+#26 exporting layers
+#26 exporting layers 2.1s done
+#26 exporting manifest sha256:943e70bd44f816130a9d79332bb3c9f9ef1628bbe76e67749c730839cd304580 done
+#26 exporting config sha256:bcf1edd5c6ee4fca3e958e1a44bb6411bbda148ad688b38c3e93325a30b9e88d done
+#26 exporting attestation manifest sha256:3e928558d8ab056eb35827d3ae0a75461f0e7801f6743974b456e9bb9c245dfb done
+#26 exporting manifest list sha256:989cb18d05148998c4aec5711d8f89d0e9d03ed700a2720ac940d4186fe21039 done
+#26 naming to docker.io/library/mlirbench:aec-verified done
+#26 DONE 2.1s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - FromPlatformFlagConstDisallowed: FROM --platform flag should not use constant value "linux/amd64" (line 1)
