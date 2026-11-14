@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "verified_files": 21,
+  "master_sha256": "84718efccae10e5bbd66fd7c4455ca9f22a8957c968151465b830855335a0541",
+  "bundle_manifest_sha256": "56ede7359293f993b2f14bb8dd530f51407aab7142db129242dcebf524753dd1",
+  "verified_downstream_files": 288
+}

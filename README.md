@@ -8,7 +8,7 @@ Start with one command:
 ./ae.sh quickstart
 ~~~
 
-It builds one Linux AMD64 image, verifies the data, executes compiler and core tests, and recomputes archived benchmark and downstream metrics **without API keys or runtime network access**.
+It builds one Linux image for the Docker host CPU (ARM64 on Apple Silicon, AMD64 on Intel/AMD), verifies the data, executes compiler and core tests, and recomputes archived benchmark and downstream metrics **without API keys or runtime network access**. Native execution avoids instruction emulation; the selected platform and available CPU count are recorded in the environment report.
 
 Read the generated results/<run>/START_HERE.md first. It distinguishes working software from unresolved submission requirements. **The current artifact is not submission-ready.**
 

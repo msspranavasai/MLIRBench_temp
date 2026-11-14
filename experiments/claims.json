@@ -34,7 +34,7 @@
       "paper": "CPU execution",
       "command": "quickstart on native AMD64",
       "status": "open",
-      "remaining": "Local verification uses AMD64 emulation on Apple Silicon."
+      "remaining": "The default launcher now uses native ARM64 on Apple Silicon. Native AMD64 evaluator verification remains outstanding; ARM64 success does not establish AMD64 native performance."
     },
     {
       "id": "dependency_freeze",

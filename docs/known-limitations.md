@@ -12,6 +12,6 @@ Published labels and paper results are preserved. New audits do not silently rep
 - The original downstream figure script filters invalid labels. Replay reports every exclusion and readiness cannot pass that gate silently.
 - Saved-prediction replay is distinct from inference or training. Checkpoint weights remain on the author cluster; portable GPU execution and reviewer access need validation.
 - Original GPU scripts retain historical absolute paths. They are provenance, not advertised portable commands.
-- Local CPU verification uses AMD64 emulation. Native AMD64 verification and a frozen apt/build snapshot remain outstanding.
+- The launcher builds for the Docker host's native ARM64 or AMD64 architecture by default. Native ARM64 is tested locally on Apple Silicon; native AMD64 verification and a frozen apt/build snapshot remain outstanding. Explicit cross-architecture runs use emulation and are identified in environment evidence. CPU timings across architectures are not directly interchangeable.
 
 - Compiler/RISC-V source and scan records are archived, but fresh backend code generation is a separate unfinished reproduction path.

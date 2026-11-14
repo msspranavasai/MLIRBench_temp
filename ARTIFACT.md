@@ -8,7 +8,7 @@ The artifact remains under preparation. STATUS.md and experiments/claims.json id
 
 ## Start
 
-Prerequisites: Docker, Linux AMD64 execution, and space for compiler tools and unpacked data. Apple Silicon can use emulation; native AMD64 remains the intended evaluator target. Building requires network access to pinned package sources. Runtime networking is disabled.
+Prerequisites: Docker on an ARM64 or AMD64 host, and space for compiler tools and unpacked data. The launcher selects the Docker daemon's architecture, including when using a remote Docker context. Apple Silicon uses native Linux ARM64; Intel/AMD hosts use Linux AMD64. Both platforms use the same pinned compiler/runtime versions. Building requires network access to pinned package sources. Runtime networking is disabled.
 
 ~~~bash
 ./ae.sh quickstart
@@ -30,11 +30,21 @@ This builds current source and creates a fresh result directory containing data 
 
 Use fresh output names. Outputs are JSON and, where appropriate, CSV/Markdown. Readiness exits 2 while requirements remain open. Quickstart exits nonzero for functional environment/test failure and separately reports submission readiness.
 
-Direct container use:
+Images are tagged mlirbench-ae:dev-arm64 or mlirbench-ae:dev-amd64 so the two architectures remain distinguishable. The environment report records the Docker host architecture, container architecture, emulation status and visible CPU counts. Runs through ./ae.sh supply the host metadata needed to verify native execution. A direct Docker run without that metadata reports native execution as unverified.
+
+To explicitly test emulation or build for another supported platform:
 
 ~~~bash
-docker build --platform linux/amd64 -t mlirbench-ae:dev .
-docker run --rm --platform linux/amd64 --network none mlirbench-ae:dev dataset-info
+AE_PLATFORM=linux/amd64 ./ae.sh quickstart
+~~~
+
+The launcher reports when this differs from the Docker host. AMD64 names the x86-64 instruction set used by both Intel and AMD; it is not a processor speed or quality rating. The native platform avoids instruction emulation, but actual performance also depends on CPU, memory and Docker resource allocation. The launcher adds no CPU limit; Docker Desktop's VM allocation still applies. Canonical semantic audits retain their existing deterministic compiler flags and do not become optimized performance measurements.
+
+Direct container use (ARM64 example; replace arm64 with amd64 on an Intel/AMD Docker host):
+
+~~~bash
+docker build --platform linux/arm64 -t mlirbench-ae:dev-arm64 .
+docker run --rm --platform linux/arm64 --network none mlirbench-ae:dev-arm64 dataset-info
 ~~~
 
 ## What is recomputed

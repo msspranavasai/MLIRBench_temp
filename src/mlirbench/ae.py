@@ -1,7 +1,9 @@
 """Reviewer workflows and explicit readiness reporting."""
 import hashlib
 import json
+import os
 from pathlib import Path
+import platform
 import shutil
 import time
 import unittest
@@ -15,9 +17,26 @@ def save(path, value):
         stream.write('\n')
 
 
+def cpu_execution():
+    """Report architecture compatibility using the Docker daemon, not the client CPU."""
+    aliases = {'aarch64': 'arm64', 'arm64': 'arm64', 'x86_64': 'amd64', 'amd64': 'amd64'}
+    machine = platform.machine()
+    host = os.environ.get('MLIRBENCH_DOCKER_HOST_ARCH')
+    host_arch = aliases.get(host)
+    container_arch = aliases.get(machine)
+    return {'machine': machine, 'container_arch': container_arch,
+            'docker_host_arch': host_arch,
+            'image_arch': os.environ.get('MLIRBENCH_IMAGE_ARCH'),
+            'requested_platform': os.environ.get('MLIRBENCH_DOCKER_PLATFORM'),
+            'emulated': host_arch != container_arch if host_arch and container_arch else None,
+            'logical_cpus': os.cpu_count(),
+            'affinity_cpus': len(os.sched_getaffinity(0)) if hasattr(os, 'sched_getaffinity') else None}
+
+
 def check_environment():
     from .execution.pair_validation import environment, validate_pair
     report = environment()
+    report['cpu_execution'] = cpu_execution()
     report['executables'] = {n: shutil.which(n) for n in ('mlir-opt', 'torch-mlir-opt', 'iree-compile', 'iree-benchmark-module')}
     programs = {
         'linalg': 'module { func.func @main(%arg0: tensor<2xf32>) -> tensor<2xf32> { return %arg0 : tensor<2xf32> } }',
@@ -34,6 +53,7 @@ def source_fingerprint(root):
     from .evaluation.reproduce import sha256
     files = sorted(p for folder in ('src', 'tests', 'tools', 'experiments') for p in (root / folder).rglob('*')
                    if p.is_file() and p.suffix in ('.py', '.json') and '__pycache__' not in p.parts)
+    files += [root / name for name in ('Dockerfile', 'ae.sh', 'requirements/core.txt') if (root / name).is_file()]
     return hashlib.sha256(json.dumps({str(p.relative_to(root)): sha256(p) for p in files}, sort_keys=True).encode()).hexdigest()
 
 
@@ -97,6 +117,18 @@ def readiness(root, results):
             gates.append({'id': name, 'status': 'PASS' if passed else 'FAIL', 'evidence': str(path)})
         else:
             gates.append({'id': name, 'status': 'NOT_RUN', 'evidence': str(path)})
+    environment_path = results / 'environment.json'
+    if environment_path.exists():
+        environment = json.loads(environment_path.read_text())
+        cpu = environment.get('cpu_execution', {})
+        native = cpu.get('emulated') is False and environment.get('passed') is True
+        gates.append({'id': 'native_cpu_execution',
+                      'status': 'PASS' if native else 'REVIEW_REQUIRED',
+                      'cpu_execution': cpu,
+                      'reason': 'Native execution verified.' if native else
+                      'Use ./ae.sh on the Docker host architecture; direct Docker runs without host metadata cannot establish native execution.'})
+    else:
+        gates.append({'id': 'native_cpu_execution', 'status': 'NOT_RUN'})
     comparison = results / 'paper_metrics/paper_comparison.json'
     if comparison.exists():
         record = json.loads(comparison.read_text())

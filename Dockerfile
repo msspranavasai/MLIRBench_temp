@@ -1,4 +1,7 @@
-FROM --platform=linux/amd64 python:3.11-slim@sha256:07d4824036af339fa1b6ef769cc99d9c10a141769538b52b3b597c84f7a7b535
+FROM python:3.11-slim@sha256:07d4824036af339fa1b6ef769cc99d9c10a141769538b52b3b597c84f7a7b535
+
+ARG TARGETARCH
+ENV MLIRBENCH_IMAGE_ARCH=${TARGETARCH}
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -29,7 +32,7 @@ RUN MLIR_BIN="$(find /usr/bin -maxdepth 1 \
 
 COPY requirements/core.txt /tmp/requirements.txt
 
-# Install the original pinned pipeline dependencies.
+# Install the same pinned compiler/runtime versions for the selected architecture.
 RUN python -m pip install --no-cache-dir \
     -r /tmp/requirements.txt
 
@@ -44,7 +47,7 @@ RUN python -c "import iree.compiler; import iree.runtime" && \
     iree-compile --version
 
 # Maintained offline code and verified data only.
-COPY pyproject.toml README.md ARTIFACT.md LICENSE run.py /app/
+COPY Dockerfile ae.sh pyproject.toml README.md ARTIFACT.md LICENSE run.py /app/
 COPY src /app/src
 COPY tools /app/tools
 COPY tests /app/tests
