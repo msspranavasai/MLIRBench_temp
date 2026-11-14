@@ -13,3 +13,5 @@ Published labels and paper results are preserved. New audits do not silently rep
 - Saved-prediction replay is distinct from inference or training. Checkpoint weights remain on the author cluster; portable GPU execution and reviewer access need validation.
 - Original GPU scripts retain historical absolute paths. They are provenance, not advertised portable commands.
 - Local CPU verification uses AMD64 emulation. Native AMD64 verification and a frozen apt/build snapshot remain outstanding.
+
+- Compiler/RISC-V source and scan records are archived, but fresh backend code generation is a separate unfinished reproduction path.

@@ -10,7 +10,7 @@
     },
     {
       "id": "archived_downstream_metrics",
-      "paper": "DT1/DT2 final figures",
+      "paper": "DT1/DT2 classification metrics from saved predictions (not fresh compiler/backend execution)",
       "command": "reproduce-downstream --output /results/downstream-run",
       "status": "verified",
       "remaining": "Saved-prediction replay is implemented; evaluator-run evidence is separate."
@@ -49,6 +49,13 @@
       "command": null,
       "status": "open",
       "remaining": "Locate and package the frozen 100-pair/900-response judging study, saved scores and aggregation script; rerunning paid judging is optional."
+    },
+    {
+      "id": "compiler_backend_experiments",
+      "paper": "DT1 transformation coverage and RISC-V backend analysis",
+      "command": null,
+      "status": "open",
+      "remaining": "Port and test the original compiler/RISC-V experiment drivers. Source and archived scan records are present; new code generation has not been reproduced."
     }
   ]
 }

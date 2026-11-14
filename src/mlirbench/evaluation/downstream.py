@@ -69,7 +69,15 @@ def pooled(root, method, provenance):
         path = next((p for p in choices if p.exists()), None)
         if path is None:
             raise FileNotFoundError(f'Missing {method} fold {fold}')
-        for row in load_predictions(path, BENEFIT, provenance):
+        heldout = json.loads((root / 'data/folds' / f'fold_{fold}/val.json').read_text())
+        gold = {r.get('dt1_id') or r.get('program_id'): normalize(r.get('fusion_benefit', r.get('simplification_benefit')), BENEFIT) for r in heldout}
+        predicted = load_predictions(path, BENEFIT, provenance)
+        identifiers = [r.get('dt1_id') or r.get('program_id') for r in predicted]
+        if len(gold) != len(heldout) or set(identifiers) != set(gold):
+            raise ValueError(f'DT1 {method} fold {fold} predictions differ from the original held-out split')
+        if any(r['_gold'] != gold[r.get('dt1_id') or r.get('program_id')] for r in predicted):
+            raise ValueError(f'DT1 {method} fold {fold} gold labels disagree with the original split')
+        for row in predicted:
             identifier = row.get('dt1_id') or row.get('program_id')
             if not identifier or identifier in ids:
                 raise ValueError(f'Missing/duplicate held-out prediction ID: {path}/{identifier}')
@@ -184,7 +192,7 @@ def reproduce_downstream(root, output):
         write_csv(output / f'{name}.csv', data)
     lines = ['# Downstream archived-prediction reproduction', '',
              f"Comparisons with archived final-figure CSVs: {len(comparisons) - summary['mismatches']} match / {summary['mismatches']} differ.",
-             f"DT1 family split checks: {len(splits) - summary['split_leakage_checks_failed']} pass / {summary['split_leakage_checks_failed']} overlap.",
+             f"Family-split checks (DT1 + DT2): {len(splits) - summary['split_leakage_checks_failed']} pass / {summary['split_leakage_checks_failed']} overlap.",
              f"Invalid-label rows excluded under the original figure protocol: {summary['excluded_prediction_rows']}.",
              '', 'Metrics were recomputed from per-example predictions. Model inference and fine-tuning were not rerun.', '',
              '| Task / method | n | Accuracy (%) | Macro-F1 (%) |', '|---|---:|---:|---:|']

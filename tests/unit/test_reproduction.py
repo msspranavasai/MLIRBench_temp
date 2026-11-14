@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from mlirbench.evaluation.reproduce import summarize, compare_reference
-from mlirbench.evaluation.downstream import classification_metrics, load_predictions, SEMANTIC
+from mlirbench.evaluation.downstream import classification_metrics, load_predictions, pooled, SEMANTIC
 from mlirbench.ae import readiness
 
 
@@ -69,6 +69,17 @@ class DownstreamReplay(unittest.TestCase):
             records = load_predictions(p, SEMANTIC, provenance)
             self.assertEqual(len(records), 1)
             self.assertEqual(provenance[0]['excluded_rows'], 1)
+
+
+    def test_prediction_file_must_match_original_heldout_ids(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            predictions = root/'outputs/final_cv/zero'; predictions.mkdir(parents=True)
+            (predictions/'fold_0_val_predictions.csv').write_text('dt1_id,fusion_benefit,prediction\nwrong,LOW,LOW\n')
+            split = root/'data/folds/fold_0'; split.mkdir(parents=True)
+            (split/'val.json').write_text(json.dumps([{'dt1_id':'correct', 'fusion_benefit':'LOW'}]))
+            with self.assertRaisesRegex(ValueError, 'held-out split'):
+                pooled(root, 'zero', [])
 
 
 class Readiness(unittest.TestCase):
