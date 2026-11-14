@@ -546,12 +546,12 @@ def compile_mlir(
     child_env = os.environ.copy()
     existing_pythonpath = child_env.get("PYTHONPATH")
     if existing_pythonpath:
-        child_env["PYTHONPATH"] = os.pathsep.join([project_root, existing_pythonpath])
+        child_env["PYTHONPATH"] = os.pathsep.join([os.path.join(project_root, "src"), existing_pythonpath])
     else:
-        child_env["PYTHONPATH"] = project_root
+        child_env["PYTHONPATH"] = os.path.join(project_root, "src")
 
     runner_code = (
-        "from agents.execution_sandbox_agent.tools.execution import _compile_mlir_worker; "
+        "from mlirbench.execution.execution import _compile_mlir_worker; "
         "import sys; "
         "_compile_mlir_worker(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])"
     )
@@ -644,9 +644,9 @@ def run_compiled(
     child_env = os.environ.copy()
     existing_pythonpath = child_env.get("PYTHONPATH")
     if existing_pythonpath:
-        child_env["PYTHONPATH"] = os.pathsep.join([project_root, existing_pythonpath])
+        child_env["PYTHONPATH"] = os.pathsep.join([os.path.join(project_root, "src"), existing_pythonpath])
     else:
-        child_env["PYTHONPATH"] = project_root
+        child_env["PYTHONPATH"] = os.path.join(project_root, "src")
 
     inputs_path: str | None = None
     try:
@@ -720,7 +720,7 @@ def run_compiled(
             module_file.flush()
 
             runner_code = (
-                "from agents.execution_sandbox_agent.tools.execution import _run_compiled_from_file; "
+                "from mlirbench.execution.execution import _run_compiled_from_file; "
                 "import json, sys; "
                 "inputs_file = sys.argv[4] if len(sys.argv) > 4 else None; "
                 "result = _run_compiled_from_file(sys.argv[1], sys.argv[2], inputs_file); "

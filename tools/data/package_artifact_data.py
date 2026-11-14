@@ -29,7 +29,7 @@ def package(source, target):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--source', type=Path, default=Path('data/processed'))
-    ap.add_argument('--destination', type=Path, default=Path('data/artifact_bundle'))
+    ap.add_argument('--destination', type=Path, default=Path('data/bundle'))
     args = ap.parse_args()
     print(json.dumps(package(args.source, args.destination), indent=2))
 

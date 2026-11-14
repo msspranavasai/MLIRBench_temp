@@ -4,7 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from scripts.unpack_artifact_data import unpack
+from tools.data.unpack_artifact_data import unpack
 
 
 class ArtifactBundle(unittest.TestCase):
@@ -36,7 +36,7 @@ class ArtifactBundle(unittest.TestCase):
             with self.assertRaises(ValueError): unpack(bundle, root / 'processed')
 
     def test_pack_excludes_hidden_cache_and_is_deterministic(self):
-        from scripts.package_artifact_data import package
+        from tools.data.package_artifact_data import package
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp); source = root / 'source'; (source / '.cache').mkdir(parents=True)
             (source / '.cache/state.json').write_text('{}')

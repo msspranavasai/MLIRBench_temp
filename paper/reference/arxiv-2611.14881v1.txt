@@ -1,0 +1,1631 @@
+                                         MLIRBench - A Benchmark and Dataset for Compiler
+                                                 and Hardware-Aware Reasoning
+                                                    Pranava Sai Maganti∗                     Meghasyam Peddireddy∗                    Muzakker Hossain
+                                                      pranava7@iastate.edu                       syam@iastate.edu                     muzakker@iastate.edu
+                                                      Iowa State University                    Iowa State University                  Iowa State University
+                                                        Ames, Iowa, USA                           Ames, Iowa, USA                       Ames, Iowa, USA
+
+                                                          Kaining Gao∗                           Farhan Ahmed                             Ali Jannesari
+                                                       kaigao@iastate.edu                      fahmed@iastate.edu                      jannesar@iastate.edu
+                                                      Iowa State University                    Iowa State University                   Iowa State University
+
+
+
+
+arXiv:2611.14881v1 [cs.PL] 11 Nov 2026
+                                                        Ames, Iowa, USA                          Ames, Iowa, USA                         Ames, Iowa, USA
+                                         Abstract                                                           execution-grounded evaluation, machine learning for com-
+                                         In recent years, large language models (LLMs) have become          pilers, compiler optimization
+                                         increasingly popular in software engineering and have per-
+                                         formed well on different programming tasks. However, it is         1   Introduction
+                                         still difficult to know whether these models truly understand      LLMs have recently shown strong performance in many soft-
+                                         program behavior or whether they mainly rely on patterns           ware engineering tasks such as code generation, bug fixing,
+                                         learned from their training data. This distinction is particu-     test generation, and program understanding. Most existing
+                                         larly important for intermediate representations (IRs), where      studies and benchmarks evaluate these models on source-
+                                         operations, dataflow, and execution semantics are explic-          level programming languages like Python, C++, or Java. In
+                                         itly represented. In this paper, we introduce MLIRBench,           these settings, models can often use natural language con-
+                                         a benchmark for evaluating how LLMs reason about MLIR              text and patterns learned from large amounts of training
+                                         programs. MLIRBench uses a multi-agent pipeline to gen-            data. However, much less is known about how well LLMs
+                                         erate program mutations, validate their behavior through           can understand and reason about compiler intermediate rep-
+                                         execution, and construct reasoning tasks from torch and            resentations (IRs), which describe programs at a lower level
+                                         linalg program pairs. The dataset contains 1,768 validated         and expose more of the underlying program behavior.
+                                         pairs, including 888 linalg pairs and 880 torch pairs, la-            Compiler IRs present a fundamentally different reasoning
+                                         beled as EQUIV, DIVERGE, or ERROR. We evaluated nine               challenge from source code. Rather than expressing high-
+                                         models, including five open-weight and four proprietary            level programming abstractions, they expose the representa-
+                                         models. Gemini 3.1 Pro achieved the highest hard-label accu-       tions that compilers use to analyze, transform, and optimize
+                                         racy of 92.65% across all 1,768 pairs, counting unsuccessful       programs. Reasoning about IRs often requires understanding
+                                         predictions as incorrect. Across its 1,768 scored predictions,     dataflow dependencies, tensor shapes, type systems, mem-
+                                         it achieved an aggregate score of 74.18 and a judge-assigned       ory movement, and dialect-specific semantics. Consequently,
+                                         result-behavior score of 5.04/10. These results show that          strong performance on source-code tasks does not necessar-
+                                         strong semantic classification does not necessarily imply ac-      ily translate to compiler reasoning. A model may generate
+                                         curate prediction of detailed execution behavior, highlighting     correct code yet still struggle to determine whether two IR
+                                         a gap in current LLM reasoning over compiler IRs. By ex-           programs are semantically equivalent, whether a transfor-
+                                         posing this gap through execution-validated program pairs,         mation preserves behavior, or whether a program should fail
+                                         MLIRBench provides a reproducible foundation for studying          during verification, compilation, or execution.
+                                         semantic reasoning over compiler IRs and related tasks such           The MLIR framework has become an important compiler
+                                         as program repair and semantic classification.                     infrastructure in areas such as machine learning, domain-
+                                                                                                            specific languages, heterogeneous computing, and high-
+                                         CCS Concepts: • Computing methodologies → Artificial               performance computing. MLIR is particularly interesting
+                                         intelligence; Machine learning; Supervised learning; • Soft-       for evaluating LLMs because it combines higher-level pro-
+                                         ware and its engineering → Compilers; Runtime environ-             gram structure with lower-level compiler details. Through its
+                                         ments; Software performance.                                       different dialects, MLIR can represent tensor computations,
+                                         Keywords: MLIR, compiler benchmarking, multi-agent sys-            linear algebra operations, hardware-specific transformations,
+                                         tems, large language models (LLMs), program semantics,             and multiple stages of compiler lowering. As MLIR continues
+                                         ∗ These authors contributed equally to this work.
+                                                                                                            to gain adoption, it is useful to understand whether LLMs
+                                                                                                            can assist with compiler-related tasks such as debugging,
+                                                                                                                                                                                                                                         Maganti et al.
+
+
+Benchmark construction
+                                                 Mutation Agent
+   PyTorch program                                                                                            A    %cst = arith.constant 0xFF800000 : f32                                                                 Judge Agent
+                                                 Dialect-specific analysis
+         40 curated                             extracts structural metadata                                  B    %cst = arith.constant 0.000000e+00 : f32                                                            Ground truth: execution record
+                                                                                                                                                                                                                      Also given: A, B, dialect guidance
+
+                  Torch-MLIR lowering
+                                                  Rule selection (L1–L5)                                                                                                                  Ground-truth                   Hard-label accuracy
+                                                                                                                                   Execution Sandbox Agent                                   label y                     deterministic (0 or 1)
+      Seed program                                                                             Program pair                                IREE compile and run
+                                                                                                                                         fixed deterministic inputs                             Equiv
+       torch or linalg                          LLM candidate generation                             (A, B)                                 bit-exact comparison                             same outputs
+                                                input: seed, rule, metadata                                                                                                                    Diverge
+                                                                                                                                           FP reordering disabled
+                                                                                                                                                                                             outputs differ            Result-behavior accuracy
+                                                                        invalid                                                        latency recorded, not scored                                                      LLM judge (r, 0–10)
+                                                                                                                                                                                                Error
+                                                                                                                                                                                              A or B fails
+    Mutation record                    logged   Dialect-specific validation
+    rule, analysis metadata,                      up to 3 regenerations
+       validation history,                                                                                                                                                                                                Explanation quality
+                                                                                                                                                                                                       context only
+      generation statistics                                                                                                                             Reference explanation                                             LLM judge (q, 0–4)
+                                                                                                                                                   gemini-2.5-flash, from a structural diff
+                                                                mutation metadata
+                                                                                                                                                                                                                           Aggregate score S
+                                                                                                                                                               execution results withheld from the evaluated model
+                                                                                                                                                                                                                          equal-weight mean, 0–100
+Execution-hidden evaluation
+      Mutation levels                                                                             LLM Reasoning Agent (9 evaluated models)
+      L1 syntactic, semantics-preserving
+      L2 parameter or attribute change                                                                         Given: A, B, dialect tag, input values
+      L3 operator substitution                                                                          Predicts output of A, then output of B, then label ŷ
+      L4 structural or dataflow rewrite
+      L5 error-inducing                                                             Returns schema-checked JSON: outputs, label, confidence, key differences, explanation
+
+
+
+
+Figure 1. Overview of MLIRBench. Benchmark construction (upper): PyTorch programs are lowered to torch and linalg
+seeds. The Mutation Agent transforms a seed 𝐴 into 𝐵, guided by dialect-specific structural analysis, and records the mutation
+metadata. The Execution Sandbox Agent executes 𝐴 and 𝐵 on fixed inputs to determine the ground-truth label 𝑦. Execution-
+hidden evaluation (lower): each evaluated model receives only 𝐴, 𝐵, the dialect tag, and input values. The Judge Agent scores
+the model response using the execution record, mutation metadata, and reference explanation; only execution determines 𝑦.
+Blue boxes denote LLM calls. The code example shows a row-wise max reduction whose initial value is changed from −∞
+(0xFF800000 in MLIR) to 0.0.
+optimization, transformation validation, and compiler devel-                                                                    Finally, the Judge Agent compares model predictions with
+opment.                                                                                                                         the execution-grounded labels and computes benchmark
+   Current benchmarks do not fully evaluate these capabil-                                                                      scores.
+ities. Many existing code benchmarks focus on code gen-                                                                            MLIRBench focuses on three semantic outcomes: EQUIV,
+eration quality, compilation success, or passing unit tests.                                                                    DIVERGE, and ERROR. An EQUIV pair contains programs
+While these metrics are useful, they do not directly mea-                                                                       that behave the same even if their structure differs. A
+sure whether a model understands the semantic impact of                                                                         DIVERGE pair contains programs that compile and execute
+compiler transformations. In MLIR, two programs may look                                                                        successfully but produce different results. An ERROR pair
+very different while still producing the same output. On the                                                                    contains programs that fail during verification, compilation,
+other hand, a small modification to an operation, attribute,                                                                    or execution. Although these labels are simple, correctly iden-
+or indexing map can completely change program behavior.                                                                         tifying them often requires deep reasoning about compiler
+Some changes may even create invalid programs that fail                                                                         semantics and program behavior.
+verification, compilation, or execution. Therefore, evaluating                                                                     The benchmark includes multiple mutation levels and
+semantic reasoning in compiler IRs requires a benchmark                                                                         MLIR dialects. These mutation levels range from simple
+that is grounded in actual execution behavior.                                                                                  syntax-preserving changes to more challenging modifica-
+   To address this challenge, we introduce MLIRBench, an                                                                        tions such as parameter updates, operator substitutions, struc-
+execution-grounded benchmark designed to evaluate seman-                                                                        tural transformations, and error-inducing mutations. This
+tic reasoning over MLIR programs. Figure 1 shows the overall                                                                    setup allows us to analyze not only overall model accuracy
+framework. MLIRBench uses a multi-agent pipeline to gen-                                                                        but also the types of reasoning that are most difficult. For
+erate controlled mutations of MLIR programs, validate them                                                                      example, a model may correctly handle variable renaming
+through compilation and execution, and evaluate whether                                                                         but struggle when tensor shapes, affine mappings, or opera-
+language models can correctly reason about their behavior.                                                                      tion semantics are changed. Because of this, MLIRBench can
+The Mutation Agent creates modified versions of programs                                                                        serve both as an evaluation benchmark and as a source of
+at different mutation levels. The Execution Sandbox Agent                                                                       training data for compiler-aware language models.
+verifies, compiles, executes, and tests these programs to es-                                                                      Our work is guided by five research questions. RQ1: Can
+tablish ground-truth behavior. The LLM Reasoning Agent                                                                          large language models accurately determine semantic equiv-
+receives only the original and mutated MLIR programs and                                                                        alence and behavioral differences directly from MLIR pro-
+predicts their relationship without seeing execution results.                                                                   grams without execution feedback? RQ2: How does model
+MLIRBench
+
+
+performance vary across different mutation levels, from sim-       structure, iterator semantics, and dialect-specific verifier con-
+ple edits to complex structural changes and failures? RQ3:         straints that determine whether a construct is well formed.
+What reasoning mistakes do models make when evaluated us-          These properties are key ones a semantic analysis must re-
+ing execution-grounded labels, and how do these differ from        spect, and they are explicit in the IR rather than inferred.
+results reported by traditional code benchmarks? RQ4: Can          This makes MLIR a useful target for evaluating semantic
+execution-grounded supervision from MLIRBench general-             reasoning: whether two MLIR programs behave identically
+ize to unseen program families across MLIR dialects? RQ5:          generally requires following the structure the dialects en-
+Can MLIRBench support compiler-grounded optimization-              code, which is difficult to approximate from textual pattern
+benefit prediction, and how does IR-level benefit relate to        matching alone.
+downstream RISC-V code generation?
+   Our contributions are:                                          2.2   Execution-Grounded Compiler Testing and
+                                                                         Program Equivalence
+     • We introduce MLIRBench, a benchmark for evalu-
+       ating semantic reasoning over MLIR programs using           A long line of compiler validation work treats observed pro-
+       execution-grounded labels.                                  gram behavior as the reference for correctness. Differential
+     • We develop a multi-agent framework that automati-           testing compares outputs across programs or compilation
+       cally generates, validates, executes, and labels MLIR       settings and treats any observable difference as evidence of a
+       program mutations across different reasoning levels.        semantic change [Le et al. 2014; Yang et al. 2011]. The same
+     • We create large-scale datasets of MLIR program pairs        methodology has been extended to MLIR through structured
+       with execution-validated labels for equivalence, diver-     IR generation and fuzzing [Suo et al. 2024; Wang et al. 2023]
+       gence, and error behavior.                                  and to deep-learning compilers through model-level test gen-
+     • We evaluate both frontier and open-source language          eration [Liu et al. 2023b]. Grounding evaluation in execution
+       models on MLIR reasoning tasks and analyze their            is stronger than relying on annotations produced by a model
+       strengths and weaknesses across mutation categories         or a heuristic, because the label reflects what the compiled
+       and dialects.                                               program actually computes rather than what an annotator
+     • We further explore MLIRBench as a source of compiler-       believes it should compute.
+       grounded supervision for optimization-benefit pre-             Cast in these terms, comparing two programs under identi-
+       diction and semantic classification, including family-      cal inputs yields three outcomes of interest: behavioral equiv-
+       disjoint evaluation across linalg and torch and             alence, behavioral divergence, and compilation or runtime
+       RISC-V backend analysis.                                    failure. MLIRBench uses exactly this distinction, labeling
+                                                                   each program pair Eqiv, Diverge, or Error from execu-
+2     Background & Related Work                                    tion rather than from any model judgment. One subtlety is
+2.1   MLIR and Compiler Intermediate                               that not all behaviorally significant differences are visible
+      Representations                                              by inspection: floating-point arithmetic is not associative,
+                                                                   so a reordering that is algebraically neutral can still change
+Compiler intermediate representations differ from source-          the computed result [Goldberg 1991]. Because the labels are
+level programs in what they make explicit. Most source code        derived from bit-level output comparison under a fixed con-
+leaves dataflow, types, memory layout, and iteration struc-        figuration, such differences are captured rather than assumed
+ture largely implicit, to be recovered by the front end; an        away.
+IR fixes these properties as first-class structure so that later
+passes can analyze and transform programs soundly. Rea-            2.3   LLMs for Code Reasoning and Compiler IR
+soning about an IR therefore means reasoning about the rep-        Most existing benchmarks for code-capable language models
+resentation the compiler actually operates on, rather than         operate at the source level. They measure program synthe-
+about surface syntax.                                              sis from natural-language specifications [Chen et al. 2021],
+   MLIR is a multi-level compiler infrastructure organized         probe code understanding through input–output and exe-
+around extensible dialects, allowing a program to be repre-        cution prediction [Gu et al. 2024; Liu et al. 2024], evaluate
+sented at several abstraction levels and lowered progressively     under contamination-resistant conditions [Jain et al. 2025],
+from framework-level operators toward backend-specific             extend to real-world repository tasks [Jimenez et al. 2024;
+code [Lattner et al. 2021]. MLIRBench works with two of            Roy et al. 2026], and test semantic equivalence across pro-
+these dialects, torch and linalg, which together capture           gram variants [Wei et al. 2025]. A related line measures
+both framework-level operators and structured tensor com-          whether models can produce performant kernels rather than
+putation; they are a subset of the MLIR ecosystem rather           merely correct ones [Ouyang et al. 2025]. These efforts char-
+than its full extent. Within this design, a program exposes        acterize source-level and performance-oriented capability,
+SSA dataflow, tensor shapes and element types, indexing            but they do not directly target multi-level compiler IRs such
+                                                                   as MLIR.
+                                                                                                                        Maganti et al.
+
+
+   A smaller body of work targets compiler IRs directly.            correct label without correctly tracing program behavior, a
+Models have been trained and evaluated on low-level IR              distinction that matters directly for compiler-internal analy-
+and assembly for optimization and related tasks [Cummins            sis and for tools that would depend on such reasoning.
+et al. 2025], and studies of reasoning over single-level IR
+report that models parse IR syntax competently while strug-         3     MLIRBench Framework
+gling with instruction-level execution reasoning [Jiang et al.      3.1   Framework Overview
+2025b]. Reasoning over MLIR is distinct from both source-           MLIRBench is a multi-agent benchmarking framework de-
+level reasoning and single-level IR reasoning: a model must         signed to evaluate semantic reasoning over MLIR programs
+track SSA dependencies, shape and element-type propaga-             using execution-grounded evaluation. Figure 1 presents the
+tion, indexing and iterator structure, and dialect-specific le-     complete workflow.
+gality, and it must do so across multiple levels of abstraction.
+                                                                       Starting from an input MLIR program and a target muta-
+We do not claim that any single prior result settles whether
+                                                                    tion level, the Mutation Agent generates controlled program
+models possess such reasoning ability; the consistent obser-        variations. The Execution Sandbox Agent validates, compiles,
+vation is that compiler-internal reasoning is a separate and        and executes both programs to establish execution-derived
+harder capability than source-level code competence.                ground truth. The LLM Reasoning Agent receives only the
+2.4   Benchmarking Compiler-Aware LLM Reasoning                     original and mutated programs and predicts their behavior
+                                                                    without access to execution artifacts. Finally, the Judge Agent
+Relative to these efforts, MLIRBench occupies a specific posi-      compares model predictions against the execution-derived
+tion. Source-level reasoning and synthesis benchmarks [Chen         ground truth and produces the final benchmark scores.
+et al. 2021; Gu et al. 2024; Jain et al. 2025; Jimenez et al.          This design separates benchmark generation, execution,
+2024; Liu et al. 2024; Roy et al. 2026] do not operate on           reasoning, and evaluation, which enables reproducible and
+compiler-internal representations; equivalence and kernel           execution-grounded assessment of compiler-oriented rea-
+benchmarks [Ouyang et al. 2025; Wei et al. 2025] evaluate
+                                                                    soning capabilities.
+source-level program equivalence and performance-oriented
+kernel generation, but do not target MLIR dialect semantics         3.2   Mutation Agent
+or MLIR verifier behavior; compiler testing and fuzzing [Le         The mutation agent is responsible for generating controlled
+et al. 2014; Liu et al. 2023b; Suo et al. 2024; Wang et al. 2023;   variations of an input MLIR program. Its primary objective
+Yang et al. 2011] generate programs or mutations to test
+                                                                    is to produce program pairs that require varying levels of
+compiler correctness, but do not evaluate whether language
+                                                                    semantic reasoning, while maintaining a well-defined rela-
+models can reason about the resulting IR semantics; and             tionship between the original and the mutated program.
+compiler-IR language-model work [Cummins et al. 2025;                  Given an input program, a dialect identifier, and a muta-
+Jiang et al. 2025b] focuses primarily on LLVM IR or assembly        tion level, the agent first performs a dialect-specific analysis.
+rather than MLIR’s multi-level, dialect-based structure. The        Separate analysis pipelines are implemented for the linalg
+gap these leave open is the direct evaluation of execution-
+                                                                    and torch dialects to extract structural metadata, which is
+hidden semantic reasoning over MLIR program pairs: a set-
+                                                                    used to guide mutation generation and reduce invalid trans-
+ting in which the evaluated model sees only the program             formations.
+pair, the dialect tag, and deterministic inputs when avail-            MLIRBench organizes mutations into five increasingly
+able, while executed outputs and execution-derived labels           challenging levels: L1: semantic-preserving syntactic trans-
+are withheld and used only for scoring. LLM-as-judge meth-          formations; L2: modifications of parameters and attributes;
+ods such as G-Eval evaluate natural-language outputs us-
+                                                                    L3: operator substitutions; L4: structural and data-flow trans-
+ing an LLM-based scoring process [Liu et al. 2023a], while
+                                                                    formations; L5: error-inducing mutations that violate com-
+ICE-Score applies LLM-based evaluation to code-generation           piler constraints and trigger verification, compilation, or
+outputs [Zhuo 2024]. However, neither directly measures             runtime errors.
+execution-grounded MLIR semantics, dialect-specific legal-             For each dialect and mutation level, MLIRBench maintains
+ity, or compiler/runtime failure behavior, so MLIRBench de-         a collection of mutation requirements. These requirements
+rives hard labels from compilation, execution, and output
+                                                                    describe the target transformation as well as the constraints
+comparison.
+                                                                    that must be adhered to during generation. Examples include
+   MLIRBench targets this gap, and it does so with a measure-       the renaming of SSA variables, operand substitution, oper-
+ment that holds distinct abilities apart. Rather than reporting     ation swapping, structural rewriting, and mutations specif-
+a single accuracy figure, it separates hard-label accuracy-         ically designed to violate verification rules. The selected
+whether a model assigns the correct semantic relationship-          mutation requirement, along with the original MLIR pro-
+from result-behavior accuracy, which checks the concrete
+                                                                    gram and the metadata obtained during analysis, is provided
+output behavior a model predicts, and from explanation qual-
+ity. This separation surfaces cases where a model selects the
+MLIRBench
+
+
+as input to a large language model to generate a candidate            Both dialects run on deterministic inputs, constructed dif-
+program for the mutation.                                          ferently for each. Linalg programs embed their inputs as
+   However, since LLM-generated IR code is frequently in-          arith.constant operations and expose a zero-argument
+valid, each candidate mutation undergoes automated vali-           entry point; the embedded values come from the constants
+dation using dialect-specific verification tools. Invalid muta-    already present in the program, with fixed fallback patterns
+tions are discarded and regenerated. Up to three regeneration      where a tensor is otherwise unconstrained. Torch programs
+attempts are permitted for each mutation. Only mutations           cannot embed their inputs, since doing so triggers a compiler
+that successfully pass all required validation steps are ac-       crash described in Appendix C.2, so they receive inputs at
+cepted and forwarded to the Execution Sandbox Agent.               runtime. For each torch program we generate inputs that
+   In addition to the original and the mutated program, the        match its parsed input signature, the shapes and element
+agent logs the selected mutation requirement, the analysis         types it declares, through a fixed generation procedure that
+metadata, the validation history, and generation statistics.       is reproducible across runs. Because both mechanisms are de-
+These artifacts provide complete and traceable documenta-          terministic, two programs that declare the same input tensor
+tion of the benchmark creation process and enable down-            types receive the same inputs, and re-running a pair repro-
+stream analyses of mutation quality and generation behavior.       duces the same outputs and the same label. Program 𝐴 and its
+   Through this analysis-driven and validation-based work-         mutation 𝐵 therefore receive identical inputs whenever the
+flow, MLIRBench can generate large collections of targeted         mutation preserves the input tensor types. The exceptions
+MLIR program pairs while ensuring syntactic correctness,           are 25 torch T2 mutations that change those types; these
+dialect-specific consistency, and reproducibility. Additional      cases are discussed in Appendix C.4 and Appendix C.5. Each
+implementation details for the Mutation Agent, including           pair is evaluated on one fixed input set, so a mutation that
+mutation inputs, prompt construction, validation, stored           changes behavior only on other inputs is labeled equivalent;
+records, and common mutation failures, are provided in Ap-         sampling additional input sets is straightforward and left to
+pendix B.                                                          future work.
+                                                                      Once the divergence label is fixed, we generate a natural-
+3.3   Execution Sandbox Agent                                      language explanation of the pair with gemini-2.5-flash
+The Execution Sandbox Agent assigns the ground-truth di-           through OpenRouter [OpenRouter 2025] at temperature 0.2.
+vergence label for every program pair in MLIRBench. For a          The prompt is grounded in a structural diff of the two pro-
+pair (𝐴, 𝐵) it compiles and runs both programs under iden-         grams, which lists the concrete edits such as renamed values,
+tical deterministic conditions, compares their outputs, and        changed constants, substituted operations, and altered in-
+records whether they diverge. The label is computed from           dexing, so the model interprets known differences instead
+execution alone and never from a language model, so the            of inventing SSA identifiers. These explanations ship with
+semantic ground truth is independent of the systems the            the dataset and are passed to the Judge Agent as context,
+benchmark evaluates. Comparing the outputs of two com-             but they never determine the label: scoring always uses the
+piled programs follows the differential-testing methodology        execution-derived divergence flag.
+long used for compiler validation [Le et al. 2014; Yang et al.        We use iree-benchmark-module to benchmark each pro-
+2011], applied here at the level of MLIR program pairs.            gram using a ten-second warmup and thirty measured repe-
+   We compile and run both programs with IREE [IREE Con-           titions, and record mean latency, standard deviation, and the
+tributors 2023]. A pair is labeled success only when both          p50, p90, and p99 percentiles. Linalg programs are bench-
+programs compile and produce output; the remaining status          marked on their embedded constants and torch programs
+classes are defined in Appendix C.4.                               on type-only inputs that IREE zero-fills, under the same
+   We compare the outputs of 𝐴 and 𝐵 with numpy.array_             floating-point-deterministic flags used for labeling. The com-
+equal, which requires bit-exact equality and applies no tol-       plete pipeline is given in Algorithm 1 (Appendix C).
+erance. Strict equality is defensible here because we remove
+the compiler’s sources of floating-point reassociation rather      3.4   LLM Reasoning Agent
+than absorbing them into a tolerance. We disable the LLVM          The LLM Reasoning Agent is the execution-hidden seman-
+optimization passes that reorder floating-point operations         tic evaluation harness of MLIRBench. It measures whether
+and compile 𝐴 and 𝐵 with the same flags, so any surviving          a model can determine the semantic relationship between
+output difference is attributable to the mutation and not to       two MLIR programs from the intermediate representation
+the backend. Floating-point addition and multiplication are        alone, with no access to compilation or runtime results. The
+not associative [Goldberg 1991], so an operation reordering        evaluation protocol is controlled and fully logged, allowing
+that is exact in R can still change the machine result. We treat   stored inputs and outputs to be audited.
+such cases as divergent, because the benchmark measures               For each program pair, the evaluated model observes only
+the behavior a model would observe from real execution             the original program 𝐴, the mutated program 𝐵, the dialect
+rather than from idealized arithmetic.                             tag (linalg or torch), and the concrete deterministic inputs
+                                                                                                                      Maganti et al.
+
+
+when they are available. All execution-derived information           Each judge invocation receives the original MLIR program,
+is withheld: the executed outputs of either program, the          the mutated MLIR program, dialect-specific guidance, mu-
+ground-truth semantic label, lowered IR, backend IR, exe-         tation metadata, sandbox execution evidence, and the eval-
+cution traces, the compiler and runtime records produced          uated model’s structured response. The sandbox record is
+during sandbox execution, and the Judge Agent scores. Under       treated as the sole source of semantic ground truth. If either
+this isolation, a prediction must follow from reasoning over      program fails compilation, verification, or execution, the nor-
+the source IR-SSA dataflow, tensor shapes and element types,      malized label is ERROR. Otherwise, strict output comparison
+affine indexing maps, iterator semantics, and dialect-specific    determines whether the pair is labeled EQUIV or DIVERGE.
+operation behavior-rather than from any observation of how        The evaluated model’s predicted label is normalized into the
+the programs behave when run.                                     same three-class space before scoring.
+   The harness uses a predict-then-compare protocol. The             The Judge Agent returns three complementary scores.
+model is instructed to predict the output behavior of pro-        First, hard-label accuracy is computed deterministically as
+grams 𝐴 and 𝐵 before classifying the pair with a single label     ⊮[𝑦ˆ = 𝑦], where 𝑦ˆ is the model prediction and 𝑦 is the
+𝑦ˆ ∈ {Eqiv, Diverge, Error}. Separating per-program pre-          execution-derived label. This component does not depend on
+diction from the pairwise decision keeps output-prediction        the judge model. Second, result-behavior accuracy 𝑟 ∈ [0, 10]
+errors distinguishable from classification errors. When con-      measures whether the model’s predicted outputs or failure
+crete inputs are supplied, the model reasons over the same        behavior are compatible with execution. For successful exe-
+values used during sandbox execution, while the executed          cutions, the LLM applies 𝑟 = 𝑟 structure + 𝑟 exactness + 3𝑐/𝑁 : 𝑁
+outputs remain hidden. The label space is restricted to these     counts reference scalar outputs across both programs, includ-
+three classes, and the prompt does not permit abstention.         ing omitted values, and 𝑐 counts correctly predicted values.
+A model that is unsure is instructed to commit to the best-       Mutation metadata selects 𝑝 ∈ {1, 2, 3, 4}; structure earns 0,
+supported label and lower its reported confidence accord-         𝑝/2, or 𝑝, while exactness earns 7 − 𝑝 only when literals or
+ingly.                                                            unambiguous symbolic claims determine every output. For
+   Each response must be a single JSON object containing          reference ERROR cases, a deterministic post-check assigns
+the predicted output for program 𝐴, the predicted output          𝑟 = 10 for recognized failure predictions and 𝑟 = 0 otherwise.
+for program 𝐵, the label, a confidence score, the key seman-      Third, explanation quality 𝑞 ∈ [0, 4] evaluates whether the
+tic differences identified between the programs, an optional      explanation is causal, evidence-specific, dialect-aware, and
+witness input or condition demonstrating divergence, and a        consistent with the MLIR and sandbox evidence.
+natural-language explanation of the verdict. Responses are           The aggregate score is computed as:
+validated against this fixed schema before storage. Because                           100               𝑟     𝑞
+models can emit malformed structured output, the parser                          𝑆=         ⊮[𝑦ˆ = 𝑦] +     +      .
+                                                                                       3                10 4
+performs lightweight recovery for formatting issues: it strips    Equal weighting is a reporting convention, not a calibrated
+code fences, extracts the outer JSON object, sanitizes stray      measure of semantic understanding. Missing or invalid can-
+control characters, and validates the required fields and label   didate responses receive zero label credit and no diagnostic
+value. For baseline runs, parsing or schema failures trigger      scores; invalid judge outputs remain unscored for retry.
+one retry with a forced-verdict instruction that restates the        We use a single fixed judge model, gpt-5.4-mini, for all
+required fields and demands a committed label. Unresolved         evaluated systems. Its prompt includes execution evidence
+failures retain their status for auditing. Gemini 3.1 Pro was     and, when available, a stored generated reference narrative.
+evaluated without application-level retries. Under the scor-      On the same 100-pair sample, three fresh runs each remain
+ing policy, unsuccessful predictions receive zero hard-label      within 1.15 aggregate points of the original saved model-
+credit and are excluded from diagnostic score averages. Valid     level scores. The alternative judge assigns higher scores but
+predictions are passed to the Judge Agent together with the       preserves the top-three ordering across conditions; Appendix
+concealed execution record for scoring.                           E.14 reports the comparison and limitations.
+   Additional details on the prompt layout, visible and hidden
+artifacts, response schema, retry semantics, model roster,        4     Dataset Construction
+stored records, and reproducibility procedure are provided
+                                                                  4.1   Source Program Collection
+in Appendix D.
+                                                                  MLIRBench begins with 40 manually curated PyTorch
+3.5   Judge Agent                                                 programs covering reductions, tensor transformations, ag-
+The Judge Agent is the final evaluation component of MLIR-        gregation, boolean operations, and shape-related compu-
+Bench. Its role is to score the structured prediction produced    tations. These programs are intentionally compact so that
+by the LLM Reasoning Agent against the execution-grounded         the semantic effect of each mutation can be isolated and
+record produced by the Execution Sandbox Agent.                   analyzed. The final benchmark expands these seeds into
+                                                                  1,768 execution-validated MLIR program pairs, with
+MLIRBench
+
+
+
+
+Figure 2. Dataset construction pipeline. MLIRBench starts from curated PyTorch programs, lowers them into torch and
+linalg MLIR, applies dialect-specific mutation rules, and validates the resulting program pairs through compilation and
+execution.
+       Table 1. Summary of the MLIRBench dataset.                         Table 2. Reasoning Agent evaluation scale.
+
+            Quantity                       Count                             Quantity                           Value
+            Source PyTorch programs            40                            linalg program pairs                 888
+            Total MLIR program pairs        1,768                            torch program pairs                  880
+            linalg program pairs              888                            Total program pairs                1,768
+            torch program pairs               880                            Models evaluated                       9
+            linalg mutation rules              24                            Structured reasoning records      15,912
+            torch mutation rules               22
+            Total mutation rules               46                 and 880 torch pairs, for a total of 1,768 program pairs. Each
+                                                                  pair is evaluated independently by nine models, producing
+888 pairs in linalg and 880 pairs in torch. Additional            15,912 structured reasoning records. Each record stores the
+source-program and seed-category details are provided in          model identifier, dialect tag, pair metadata, predicted outputs
+Appendix A.1.                                                     for programs 𝐴 and 𝐵, predicted semantic label, confidence
+                                                                  score, explanation, retry count, latency, and parsing status.
+4.2   Lowering PyTorch to MLIR                                    Appendix D expands the prompt structure, response schema,
+Each PyTorch program is lowered using the Torch-MLIR com-         retry logic, model roster, and stored record format.
+pilation pipeline into two MLIR dialects: torch and linalg.          The protocol is controlled and fully logged. Every model
+The torch dialect preserves a representation closer to the        receives the same prompt template, dialect information, and
+original PyTorch program, while linalg exposes structured         deterministic input values for each program pair. All models
+tensor computation, indexing behavior, and explicit dataflow.     are queried at temperature 0, and provider model identifiers
+   After lowering, MLIRBench applies dialect-specific mu-         are recorded. The retained structured records support audit-
+tation rules across five mutation levels. In total, the dataset   ing without rerunning the benchmark. Table 2 reports the
+uses 46 mutation rules: 24 for linalg and 22 for torch.           evaluation scale.
+The rules include SSA renaming, constant changes, operand            Each response is parsed against a fixed JSON schema be-
+substitution, operator replacement, structural rewrites, and      fore storage. Responses that fail parsing or schema validation
+failure-inducing mutations. Each generated pair is validated      are retried once with a forced-verdict instruction that restates
+through verification, compilation, execution, and output com-     the required fields and requires a committed label. After val-
+parison, then labeled as EQUIV, DIVERGE, or ERROR based           idation, the retained structured responses are passed to the
+on observed behavior.                                             scoring stage together with the hidden execution record,
+   Further details on the Torch-MLIR lowering process are         which supplies the ground-truth label and serves as the sole
+provided in Appendix A.2, while mutation-rule coverage is         reference for evaluating each prediction.
+summarized in Appendix B.3.                                          The results expose a gap between two distinct abilities.
+                                                                  Hard-label accuracy, which measures whether a model as-
+5     Results                                                     signs the correct Eqiv, Diverge, or Error label, is substan-
+5.1   Model Reasoning Results                                     tially higher than result-behavior accuracy, which measures
+                                                                  whether the model correctly predicts what the two programs
+The LLM Reasoning Agent was evaluated over the MLIR
+program-pair dataset produced by the Execution Sandbox            compute. A model can therefore often classify a pair cor-
+Agent, with all execution artifacts withheld from the evalu-      rectly without accurately tracing the concrete behavior that
+ated models. The final evaluation covers 888 linalg pairs
+                                                                                                                   Maganti et al.
+
+
+
+
+Figure 3. Benchmark performance across nine evaluated models on 888 linalg and 880 torch pairs. Label accuracy includes
+all attempts; result and explanation scores are normalized by their maxima and averaged over valid responses.
+Table 3. Reasoning Agent scoring summary. Hard-label ac-          including 84 divergent pairs incorrectly classified as equiv-
+curacy is computed deterministically against the execution-       alent. These results suggest that detailed output prediction
+derived label; result-behavior accuracy measures the pre-         remains challenging despite strong semantic classification
+dicted concrete output behavior, and explanation quality          performance.
+measures whether the explanation is causal, dialect-aware,           Table 4 combines the linalg and torch mutation families
+and grounded in the MLIR evidence.                                into five mutation levels. Performance varies across mutation
+                                                                  levels and models. Most models show substantial difficulty
+        Quantity                               Value              on Level 5 failure-inducing mutations, while Gemini 3.1 Pro
+                                                                  performs strongly on these cases. Its main remaining weak-
+        Structured reasoning records          15,912              ness is behavioral divergence, correctly classifying 68.73%
+        Mean aggregate score                   57.21              of DIVERGE pairs.
+        Mean hard-label accuracy              74.59%
+        Mean result-behavior accuracy       3.63 / 10             Table 4. Average benchmark score by mutation level, com-
+        Mean explanation-quality score       2.43 / 4             bining linalg and torch.
+
+justifies the classification. This distinction matters for com-    Model                    L1      L2      L3      L4      L5
+piler IR reasoning because a correct label alone does not
+establish that a model has followed the underlying dataflow,       Gemini 3.1 Pro    68.16       68.58   72.82   67.57   94.94
+shapes, tensor values, or failure mode. Because the label          Claude Sonnet 4.5 63.82       60.72   65.38   65.13   59.11
+prediction and the behavioral prediction are scored sepa-          GPT-OSS 120B      60.90       61.08   65.02   62.47   52.59
+rately against the same execution record, MLIRBench makes          Kimi K2.6         57.48       56.52   63.62   62.11   51.67
+this gap measurable rather than collapsing it into a single        Claude Haiku 4.5  59.14       56.70   56.29   60.54   53.57
+accuracy number.                                                   GLM 5.1           59.34       58.40   61.50   61.69   32.78
+                                                                   GPT-4.1 Mini      61.23       55.90   53.46   59.82   26.88
+5.2   Benchmark                                                    Qwen3 Coder Next 56.62        52.21   58.23   57.95   21.18
+Figure 3 summarizes model performance. The main trend              Llama 4           52.42       49.36   52.54   53.63   18.15
+is a clear gap between hard-label accuracy and execution-            Overall, MLIRBench distinguishes strong semantic clas-
+level reasoning. Models often predict the correct EQUIV,          sification from detailed output prediction. Gemini demon-
+DIVERGE, or ERROR label, but struggle to predict the con-         strates strong compiler-error recognition, but still misses
+crete behavior that supports that label.                          behavior-changing mutations and receives limited result-
+   Gemini 3.1 Pro [Google DeepMind 2026] achieves the             behavior credit. These remaining gaps are important for
+highest aggregate score at 74.18, followed by Claude Sonnet       compiler transformation validation and debugging.
+4.5 [Anthropic 2025b] and GPT-OSS 120B [OpenAI 2025b].
+Gemini obtains a judge-assigned result-behavior score of          5.3   Dataset
+5.04/10 and an explanation-quality score of 3.17/4. Its hard-     MLIRBench releases the original and mutated MLIR pro-
+label accuracy is 92.65% across all 1,768 benchmark pairs         grams together with dialect and mutation metadata, com-
+when the five unsuccessful predictions are counted as incor-      piler and execution status, execution-derived semantic labels,
+rect. Among scored predictions, Gemini correctly classifies       runtime measurements, model predictions and explanations,
+97.02% of ERROR cases but only 68.73% of DIVERGE cases,
+MLIRBench
+
+
+        Table 5. Artifacts provided by MLIRBench.               Table 6. Behavioral divergence by mutation level over 1,765
+                                                                labeled pairs. Diverge counts output mismatches under
+ Category             Included                                  bit-exact equality; ExpInv denotes expected-invalid L5/T5
+                                                                records.
+ Programs         Original and mutated MLIR pairs
+ Dialects         torch, linalg
+                                                                 Dialect   Level     Total      Diverge           Equiv.        ExpInv
+ Annotations      Mutation level and metadata
+ Execution Data   Compile, runtime, and labels                   Linalg    L1          185       17 (9%)       168 (91%)             0
+ Performance Data Latency and percentile statistics              Linalg    L2          147      76 (52%)        71 (48%)             0
+ Model Outputs    Predictions and explanations                   Linalg    L3          184      41 (22%)       143 (78%)             0
+                                                                 Linalg    L4          184      32 (17%)       152 (83%)             0
+ Evaluation Data  Judge scores and benchmark metrics
+                                                                 Linalg    L5          185        0 (0%)          7 (4%)           178
+and Judge Agent outputs. These artifacts support both bench-     Torch     T1          200         3 (2%)      197 (98%)             0
+mark auditing and downstream compiler-reasoning experi-          Torch     T2          160     88 (55%)†        72 (45%)             0
+ments. Dataset construction details are provided in Appendix     Torch     T3          160       10 (6%)       150 (94%)             0
+A, mutation records in Appendix B, execution records in Ap-      Torch     T4          200         8 (4%)      192 (96%)             0
+pendix C, and additional analysis in Appendix F.                 Torch     T5          160         0 (0%)         0 (0%)           160
+                                                                 Total              1,765     275 (16%)     1,152 (65%)       338 (19%)
+Dataset Availability: The MLIRBench dataset, including          † 25 T2 divergences involve altered function input signatures; among the
+original and mutated MLIR programs, execution-derived la-                   remaining 135 matched-input pairs, 47% diverge.
+bels, mutation metadata, and evaluation artifacts, is pub-
+licly available at https://huggingface.co/datasets/mlirbench/   that validation-guided construction is essential for reliable
+MLIRBench.                                                      compiler-reasoning datasets.
+
+6     Discussion                                                6.2   Execution Sandbox Agent
+6.1   Mutation Agent                                            The released benchmark contains 1,768 program pairs: 888
+                                                                linalg and 880 torch. One L2 linalg parameter-mutation
+A major challenge in constructing MLIRBench was generat-        rule was excluded after producing invalid MLIR across all
+ing mutations that were both compiler-valid and faithful to     37 programs. Of the retained pairs, 1,427 executed success-
+the intended mutation rule. Unlike ordinary code generation,    fully; 1,402 also have complete benchmark timing, while 25
+each mutation must preserve the intended scope of change,       torch T2 pairs were retained as runtime errors due to altered
+satisfy dialect-specific constraints, and avoid unrelated se-   input signatures. The remaining records include 338 L5/T5
+mantic edits that would make the resulting program pair am-     expected_invalid pairs and 3 linalg compilation failures.
+biguous. During development, we tested several open-source      Table 6 summarizes the 1,765 labeled pairs.
+models for mutation generation, including gpt-oss:20b,             Level-2 mutations show the highest divergence rates at
+gpt-oss:120b, qwen2.5 variants, qwen3-coder:480b, and           52% for linalg and 55% for torch, while structural muta-
+qwen3-coder-next. These models often produced syntac-           tions range from 4% to 22%. Failure-inducing levels behave
+tically plausible MLIR, but they were inconsistent under        as intended, with 96% of L5 and 100% of T5 pairs failing com-
+strict mutation constraints. Common failures included hallu-    pilation or validation. Across 1,402 timed pairs, the mean
+cinated operations, invalid SSA references, malformed affine    runtime delta is −0.001 ms with standard deviation 0.020 ms.
+maps, tensor shape mismatches, and edits that extended be-         As an execution-contract baseline, MLIRBench uses bit-
+yond the requested mutation level.                              exact output equality. We compare this baseline against two
+   These issues became more pronounced for structural and       tolerance-based variants by recomputing the execution la-
+failure-inducing mutations, where small errors could create     bels from the stored outputs using numpy.allclose. We test
+invalid benchmark instances or compiler failures unrelated      NumPy’s default tolerances, (𝑟 tol, 𝑎 tol ) = (10−5, 10−8 ), and
+to the target transformation. Regenerating multiple candi-      a looser sensitivity setting of (10−4, 10−6 ). Neither setting
+dates improved quality in some cases, but was not reliable      changes any of the 275 Diverge labels among the 1,427 suc-
+enough for large-scale benchmark construction. We there-        cessfully executed benchmark pairs.
+fore used GPT-5.5 for mutation generation, which followed
+mutation requirements more consistently and better pre-         6.3   LLM Reasoning Agent
+served constraints in both the torch and linalg dialects.       The results show that hard-label accuracy alone does not
+Even with this stronger generator, validation remained neces-   establish detailed semantic understanding. A model may cor-
+sary: every mutation is checked before entering MLIRBench.      rectly predict Eqiv, Diverge, or Error without predicting
+This shows that controlled compiler transformation gener-       the concrete behavior that justifies the label. MLIRBench
+ation is harder than producing syntactically valid IR, and
+                                                                                                                      Maganti et al.
+
+
+keeps these abilities separate by scoring hard-label accuracy             4. Controlled Rather Than Real-World Transforma-
+independently from result-behavior accuracy and explana-                     tions: MLIRBench is constructed from systematically
+tion quality.                                                                generated mutations designed to isolate specific se-
+   This distinction matters because exact MLIR reasoning                     mantic changes. Real-world compiler optimizations
+requires tracking SSA dependencies, tensor shapes, element                   and developer-authored transformations may exhibit
+types, affine indexing maps, iterator semantics, constants, re-              additional complexity beyond the current benchmark.
+turn values, and verifier constraints at the same time. A local           5. Structured-Output Reliability: Two gpt-oss-120b
+edit can propagate through the dataflow graph in ways that                   responses failed the required JSON response contract
+are not obvious from surface syntax. Failure-inducing muta-                  during evaluation: one produced a PARSE_ERROR and
+tions require compiler-legality reasoning over type compati-                 another a SCHEMA_ERROR. These were model-interface
+bility, shape relations, operand constraints, and dependency                 formatting failures rather than issues with the MLIR
+well-formedness, but their difficulty varies across models.                  pairs or execution-derived labels, and suggest using
+Thus, models that recognize semantic relationships or com-                   stricter schema-constrained generation in future ver-
+piler errors may still struggle with detailed output prediction,             sions of the harness.
+which is important for transformation validation, failure di-
+agnosis, and optimization assistance.                               7      Downstream Tasks
+                                                                    7.1     Task 1: Compiler-Grounded
+6.4     Judge Agent                                                         Optimization-Benefit Prediction
+The Judge Agent is useful because label correctness alone           The first downstream task evaluates whether MLIRBench can
+does not capture whether a model understands the compiler-          support compiler-aware optimization reasoning. Given an
+level cause of a result. A model may correctly predict Error        MLIR program, the model predicts the benefit of a real com-
+while missing the invalid operand type, broken SSA depen-           piler transformation using only the original program and its
+dency, illegal shape relation, or dialect-specific verifier rule.
+                                                                    static structure. We define one task for each dialect: elemen-
+Conversely, it may produce a fluent explanation that cites          twise producer–consumer fusion for linalg using linalg-
+operations or constraints not present in the program. By            fuse-elementwise-ops, and the torch-simplification-
+grounding scoring in both the MLIR pair and the execution           pipeline for torch. Compiler outputs are used to assign
+record, MLIRBench penalizes unsupported reasoning rather            Low, Medium, or High benefit labels, while the transformed
+than only incorrect labels.
+                                                                    IR and measured result are hidden from the model.
+   The main limitation is scorer variance in LLM-based expla-
+                                                                       After compiler validation, the task contains 693 Linalg
+nation grading. We reduce this risk by computing hard-label         and 687 Torch programs. We use family-disjoint five-fold
+accuracy deterministically, using a fixed judge model for all       evaluation and compare zero-shot, three-shot, and LoRA-
+systems, requiring structured JSON outputs, and applying            based SFT. Since the classes are imbalanced, macro-F1 is
+deterministic post-checks for error recognition. Explanation-       used as the main metric.
+quality scores should therefore be interpreted as diagnostic
+                                                                       Figure 4 shows the results. For Linalg fusion, macro-F1
+signals rather than absolute measures of semantic under-
+                                                                    increases from 26.8% zero-shot and 24.1% three-shot to 60.9%
+standing.                                                           after SFT. For Torch simplification, it increases from 9.3%
+6.5     Limitations                                                 and 22.1% to 48.0%. The compiler transformations modify
+                                                                    91.8% of compiler-valid Linalg programs and 45.0% of Torch
+      1. Limited Dialect Coverage: MLIRBench currently fo-          programs, with the labels derived directly from observed
+         cuses on the torch and linalg dialects. While these
+                                                                    compiler transformations.
+         dialects capture both framework-level and structured
+                                                                       We also evaluate how Linalg fusion relates to RISC-V code
+         tensor representations, the benchmark does not yet         generation by compiling the original and fusion-transformed
+         cover other widely used MLIR dialects such as affine,      programs and comparing their static instruction streams.
+         scf, vector, gpu, llvm, or memref.                         Backend improvement is observed in 1.7% of Low, 31.6%
+      2. Limited Source-Program Diversity: The benchmark            of Medium, and 24.9% of High cases. As shown in Fig-
+         originates from 40 manually curated PyTorch programs.
+                                                                    ure 5, medium- and high-benefit programs are substantially
+         Although mutation generation substantially expands
+                                                                    more likely to show backend improvement than low-benefit
+         the dataset, the underlying workload diversity remains     programs. Overall, Task 1 shows that MLIRBench supports
+         bounded by the selected seed programs.                     compiler-grounded optimization-benefit prediction across
+      3. Execution Environment Dependence: By using                 both dialects, with additional RISC-V-aware analysis.
+         IREE ground-truth labels are generated under a fixed
+         compilation and execution configuration. Results may
+         vary across alternative MLIR backends, or hardware
+         targets.
+MLIRBench
+
+
+
+
+                                                                Figure 6. Semantic classification on family-disjoint MLIR-
+                                                                Bench program pairs. MLIRBench supervision improves both
+                                                                accuracy and macro-F1 on held-out program families.
+Figure 4. Optimization-benefit prediction for Linalg fusion
+and Torch simplification. Fine-tuning on MLIRBench-derived      six-shot and 24.1% after SFT. The final model achieves per-
+supervision improves macro-F1 over zero-shot and few-shot       class F1 scores of 88.1% for EQUIV, 59.7% for DIVERGE, and
+prompting for both dialects.                                    94.8% for ERROR.
+                                                                   Overall, these results show that MLIRBench captures the
+                                                                execution-grounded semantic information that transfers to
+                                                                unseen program families across both linalg and torch. Full
+                                                                prompt, training, and evaluation details are provided in Ap-
+                                                                pendix G.
+
+                                                                8   Conclusion
+                                                                We introduced MLIRBench, an execution-grounded bench-
+                                                                mark and dataset for evaluating semantic reasoning over
+                                                                MLIR programs. MLIRBench combines dialect-aware muta-
+                                                                tion generation, deterministic compilation and execution,
+Figure 5. RISC-V backend improvement rate after Linalg          execution-hidden model prediction, and structured scoring
+fusion, grouped by IR-level fusion-benefit class.               across torch and linalg. The resulting dataset contains
+                                                                1,768 execution-validated program pairs spanning five muta-
+7.2   Task 2: Transfer of Execution-Grounded
+                                                                tion levels and three semantic outcomes: EQUIV, DIVERGE,
+      Semantic Supervision
+                                                                and ERROR.
+The second downstream task studies whether MLIRBench’s             Our evaluation shows that current LLMs can often iden-
+semantic labels can provide supervision for unseen program      tify the high-level semantic relationship between MLIR pro-
+families. Each example contains an original MLIR program        grams, but exact execution reasoning remains considerably
+and a mutated version, with one of three execution-grounded     harder. Gemini 3.1 Pro achieves the strongest overall perfor-
+labels: EQUIV, DIVERGE, or ERROR, representing pre-             mance with an aggregate score of 74.18 and 92.65% hard-label
+served behavior, changed behavior, or verification/compila-     accuracy, while its result-behavior score reaches 5.04/10. Per-
+tion/execution failure, respectively.                           formance also varies across mutation types and models, with
+   We use Qwen2.5-Coder-14B-Instruct model with family-         behavioral divergence, structural changes, and compiler-
+disjoint train, validation, and test splits. We compare zero-   legality constraints exposing important reasoning failures.
+shot and balanced six-shot prompting with LoRA-based SFT        These results show why execution-grounded evaluation is
+to study whether MLIRBench supervision generalizes be-          useful: label accuracy alone does not capture whether a
+yond the examples seen during training or prompting.            model correctly understands the behavior that produces that
+   Figure 6 summarizes the results. Zero-shot prompting         label.
+achieves 57.8% accuracy and 48.5% macro-F1, while six-shot         The downstream experiments further show that MLIR-
+prompting achieves 56.1% and 53.2%. SFT reaches 84.3% ac-       Bench can provide useful supervision beyond benchmark
+curacy and 80.9% macro-F1 on held-out program families.         evaluation. Execution-grounded semantic supervision reaches
+The improvement is consistent across both dialects, reaching    84.3% accuracy and 80.9% macro-F1 on held-out program
+80.8% macro-F1 on linalg and 80.4% on torch.                    families, with similar performance across linalg and torch.
+   We additionally examine false-equivalence predictions,       For compiler optimization reasoning, MLIRBench-derived
+where a DIVERGE or ERROR pair is incorrectly classified as      supervision improves optimization-benefit prediction for
+EQUIV. This rate decreases from 59.1% zero-shot to 27.4%
+                                                                                                                                          Maganti et al.
+
+
+both Linalg fusion and Torch simplification, while the RISC-                  David Goldberg. 1991. What every computer scientist should know about
+V backend analysis connects the predicted IR-level bene-                         floating-point arithmetic. ACM Computing Surveys (CSUR) 23, 1 (1991),
+fit to downstream code generation. Together, these results                       5–48. doi:10.1145/103162.103163
+                                                                              Google DeepMind. 2026. Gemini 3.1 Pro: Model Card. https://deepmind.
+show that MLIRBench supports both semantic reasoning                             google/models/model-cards/gemini-3-1-pro/. Accessed 2026-08-22.
+and compiler-grounded optimization analysis across multi-                     Alex Gu, Baptiste Roziere, Hugh James Leather, Armando Solar-Lezama,
+ple MLIR representations.                                                        Gabriel Synnaeve, and Sida Wang. 2024. CRUXEval: A Benchmark
+   The benchmark remains limited to two dialects and 40                          for Code Reasoning, Understanding and Execution. In Proceedings of
+source programs, and its execution labels are produced under                     the 41st International Conference on Machine Learning (Proceedings of
+                                                                                 Machine Learning Research, Vol. 235), Ruslan Salakhutdinov, Zico Kolter,
+a fixed compiler configuration. Future work will expand                          Katherine Heller, Adrian Weller, Nuria Oliver, Jonathan Scarlett, and
+dialect and workload coverage, evaluate additional compiler                      Felix Berkenkamp (Eds.). PMLR, 16568–16621. https://proceedings.mlr.
+backends and hardware targets, and use the benchmark’s                           press/v235/gu24c.html
+structured execution and failure signals to develop more                      Charles R. Harris, K. Jarrod Millman, Stéfan J. van der Walt, et al. 2020.
+capable compiler-reasoning models.                                               Array programming with NumPy. Nature 585 (2020), 357–362. doi:10.
+                                                                                 1038/s41586-020-2649-2
+                                                                              IREE Contributors. 2023. IREE: Intermediate Representation Execution Envi-
+Acknowledgments                                                                  ronment. https://github.com/iree-org/iree
+This work was supported by the Gemini Academic Program                        Naman Jain, King Han, Alex Gu, Wen-Ding Li, Fanjia Yan, Tianjun Zhang,
+Award, which provided access to Gemini models and compu-                         Sida Wang, Armando Solar-Lezama, Koushik Sen, and Ion Stoica. 2025.
+                                                                                 LiveCodeBench: Holistic and Contamination Free Evaluation of Large
+tational resources that supported the experiments conducted                      Language Models for Code. In The Thirteenth International Conference on
+in this research. The research was also partially supported                      Learning Representations. https://openreview.net/forum?id=chfJJYC3iL
+by the HPC@ISU equipment at Iowa State University, some                       Hongchao Jiang, Yiming Chen, Yushi Cao, Hung-yi Lee, and Robby T. Tan.
+of which has been purchased through funding provided by                          2025a. CodeJudgeBench: Benchmarking LLM-as-a-Judge for Coding
+NSF under MRI grant numbers 1726447 and 2018594. We                              Tasks. arXiv preprint arXiv:2507.10535 (2025). arXiv:2507.10535 [cs.CL]
+                                                                                 https://arxiv.org/abs/2507.10535
+also thank Dr. Simanta Mitra for his guidance and support                     Hailong Jiang, Jianfeng Zhu, Yao Wan, Bo Fang, Hongyu Zhang, Ruoming
+during our Senior Design course at Iowa State University                         Jin, and Qiang Guan. 2025b. Can Large Language Models Understand
+and for facilitating our involvement in this project.                            Intermediate Representations in Compilers?. In Proceedings of the 42nd
+                                                                                 International Conference on Machine Learning (Proceedings of Machine
+References                                                                       Learning Research, Vol. 267). PMLR, 27851–27872. https://proceedings.
+                                                                                 mlr.press/v267/jiang25p.html
+Anthropic. 2025a. Claude Haiku 4.5. https://www.anthropic.com/claude/         Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei,
+  haiku. Accessed 2026-05-07.                                                    Ofir Press, and Karthik R. Narasimhan. 2024. SWE-bench: Can Lan-
+Anthropic. 2025b. Claude Sonnet 4.5 System Card. https://www.anthropic.          guage Models Resolve Real-World GitHub Issues?. In International Con-
+  com/claude-sonnet-4-5-system-card. Accessed 2026-05-07.                        ference on Learning Representations. https://openreview.net/forum?id=
+Ruisheng Cao, Mouxiang Chen, Jiawei Chen, Zeyu Cui, Yunlong Feng,                VTF8yNQM66
+  Binyuan Hui, Yuheng Jing, Kaixin Li, Mingze Li, Junyang Lin, Zeyao          LangChain Contributors. 2025a. LangChain. https://github.com/langchain-
+  Ma, Kashun Shum, Xuwu Wang, Jinxi Wei, Jiaxi Yang, Jiajun Zhang, Lei           ai/langchain
+  Zhang, Zongmeng Zhang, Wenting Zhao, and Zhou Fan. 2026. Qwen3-             LangChain Contributors. 2025b. LangGraph. https://github.com/langchain-
+  Coder-Next Technical Report. arXiv:2603.00729 [cs.CL] https://arxiv.           ai/langgraph
+  org/abs/2603.00729
+                                                                              Chris Lattner, Mehdi Amini, Uday Bondhugula, Albert Cohen, Andy Davis,
+Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde de              Jacques Pienaar, River Riddle, Tatiana Shpeisman, Nicolas Vasilache,
+  Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph,      and Oleksandr Zinenko. 2021. MLIR: Scaling Compiler Infrastruc-
+  Greg Brockman, Alex Ray, Raul Puri, Gretchen Krueger, Michael Petrov,          ture for Domain Specific Computation. In 2021 IEEE/ACM Interna-
+  Heidy Khlaaf, Girish Sastry, Pamela Mishkin, Brooke Chan, Scott Gray,          tional Symposium on Code Generation and Optimization (CGO). 2–14.
+  Nick Ryder, Mikhail Pavlov, Alethea Power, Lukasz Kaiser, Mohammad             doi:10.1109/CGO51591.2021.9370308
+  Bavarian, Clemens Winter, Philippe Tillet, Felipe Petroski Such, Dave       Hung Le, Yue Wang, Akhilesh Deepak Gotmare, Silvio Savarese, and
+  Cummings, Matthias Plappert, Fotios Chantzis, Elizabeth Barnes, Ariel          Steven C. H. Hoi. 2022. CodeRL: Mastering Code Generation through
+  Herbert-Voss, William Hebgen Guss, Alex Nichol, Alex Paino, Nikolas            Pretrained Models and Deep Reinforcement Learning. In Advances in
+  Tezak, Jie Tang, Igor Babuschkin, Suchir Balaji, Shantanu Jain, William        Neural Information Processing Systems, Vol. 35. 21314–21328. https:
+  Saunders, Christopher Hesse, Andrew N. Carr, Jan Leike, Josh Achiam,           //arxiv.org/abs/2207.01780
+  Vedant Misra, Evan Morikawa, Alec Radford, Matthew Knight, Miles            Vu Le, Mehrdad Afshari, and Zhendong Su. 2014. Compiler Validation via
+  Brundage, Mira Murati, Katie Mayer, Peter Welinder, Bob McGrew, Dario          Equivalence Modulo Inputs. In Proceedings of the 35th ACM SIGPLAN
+  Amodei, Sam McCandlish, Ilya Sutskever, and Wojciech Zaremba. 2021.            Conference on Programming Language Design and Implementation (PLDI).
+  Evaluating Large Language Models Trained on Code. arXiv preprint               Association for Computing Machinery, 216–226. doi:10.1145/2594291.
+  arXiv:2107.03374 (2021). arXiv:2107.03374 [cs.LG] https://arxiv.org/abs/       2594334
+  2107.03374                                                                  Ziyu Li and Donghwan Shin. 2024. Mutation-based Consistency Test-
+Chris Cummins, Volker Seeker, Dejan Grubisic, Baptiste Rozière, Jonas            ing for Evaluating the Code Understanding Capability of LLMs.
+  Gehring, Gabriel Synnaeve, and Hugh Leather. 2025. LLM Compiler:               arXiv:2401.05940 [cs.SE] https://arxiv.org/abs/2401.05940
+  Foundation Language Models for Compiler Optimization. In Proceedings        Changshu Liu, Shizhuo Dylan Zhang, Ali Reza Ibrahimzada, and Reyhaneh
+  of the 34th ACM SIGPLAN International Conference on Compiler Construc-         Jabbarvand. 2024. CodeMind: A Framework to Challenge Large Language
+  tion (CC). Association for Computing Machinery. doi:10.1145/3708493.           Models for Code Reasoning. arXiv preprint arXiv:2402.09664 (2024).
+  3712691
+MLIRBench
+
+
+   https://arxiv.org/abs/2402.09664                                            Cheng’an Wei, Yue Zhao, Yujia Gong, Kai Chen, Lu Xiang, and Shenchen
+Jiawei Liu, Jinkun Lin, Fabian Ruffy, Cheng Tan, Jinyang Li, Aurojit Panda,       Zhu. 2024. Hidden in Plain Sight: Exploring Chat History Tampering in
+   and Lingming Zhang. 2023b. NNSmith: Generating Diverse and Valid               Interactive Language Models. arXiv:2405.20234 [cs.AI] https://arxiv.org/
+   Test Cases for Deep Learning Compilers. In Proceedings of the 28th ACM         abs/2405.20234
+   International Conference on Architectural Support for Programming Lan-      Xuejun Yang, Yang Chen, Eric Eide, and John Regehr. 2011. Finding
+   guages and Operating Systems (ASPLOS). Association for Computing               and Understanding Bugs in C Compilers. In Proceedings of the 32nd
+   Machinery, 530–543. doi:10.1145/3575693.3575707                                ACM SIGPLAN Conference on Programming Language Design and Im-
+Yang Liu, Dan Iter, Yichong Xu, Shuohang Wang, Ruochen Xu, and Chen-              plementation (PLDI). Association for Computing Machinery, 283–294.
+   guang Zhu. 2023a. G-Eval: NLG Evaluation using GPT-4 with Better               doi:10.1145/1993498.1993532
+   Human Alignment. In Proceedings of the 2023 Conference on Empirical         Z.ai. 2026. GLM-5.1: Towards Long-Horizon Tasks. https://z.ai/blog/glm-5.1.
+   Methods in Natural Language Processing. Association for Computational          Accessed 2026-05-07.
+   Linguistics, Singapore, 2511–2522. doi:10.18653/v1/2023.emnlp-main.153      Eric Zelikman, Yuhuai Wu, Jesse Mu, and Noah D. Goodman. 2022. STaR:
+LLVM Project Contributors. 2025. Torch-MLIR. https://github.com/llvm/             Bootstrapping Reasoning With Reasoning. arXiv:2203.14465 [cs.LG]
+   torch-mlir.                                                                    https://arxiv.org/abs/2203.14465
+Aman Madaan, Niket Tandon, Prakhar Gupta, Skyler Hallinan, Luyu Gao,           Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao
+   Sarah Wiegreffe, Uri Alon, Nouha Dziri, Shrimai Prabhumoye, Yiming             Wu, Yonghao Zhuang, Zi Lin, Zhuohan Li, Dacheng Li, Eric P. Xing,
+   Yang, et al. 2023. Self-Refine: Iterative Refinement with Self-Feedback.       Hao Zhang, Joseph E. Gonzalez, and Ion Stoica. 2023. Judging
+   arXiv:2303.17651 [cs.CL] https://arxiv.org/abs/2303.17651                      LLM-as-a-Judge with MT-Bench and Chatbot Arena. In Advances in
+Meta AI. 2025. Llama 4 Model Cards and Prompt Formats. https://www.               Neural Information Processing Systems, Vol. 36. https://papers.nips.
+   llama.com/docs/model-cards-and-prompt-formats/llama4/. Accessed                cc/paper_files/paper/2023/hash/91f18a1287b398d378ef22505bf41832-
+   2026-05-07.                                                                    Abstract-Datasets_and_Benchmarks.html
+Moonshot AI. 2026. Kimi K2.6. https://www.kimi.com/ai-models/kimi-k2-6.        Terry Yue Zhuo. 2024. ICE-Score: Instructing Large Language Models to
+   Accessed 2026-05-07.                                                           Evaluate Code. In Findings of the Association for Computational Linguis-
+OpenAI. 2025a. GPT-4.1 Mini Model Documentation. https://developers.              tics: EACL 2024. Association for Computational Linguistics, St. Julian’s,
+   openai.com/api/docs/models/gpt-4.1-mini. Accessed 2026-05-07.                  Malta, 2232–2242. doi:10.18653/v1/2024.findings-eacl.148
+OpenAI. 2025b. gpt-oss-120b and gpt-oss-20b Model Card. https://openai.
+   com/index/gpt-oss-model-card/. Accessed 2026-05-07.
+OpenRouter. 2025. OpenRouter. https://openrouter.ai. Accessed 2026-05-07.
+Anne Ouyang, Simon Guo, Simran Arora, Alex L. Zhang, William Hu,
+   Christopher Ré, and Azalia Mirhoseini. 2025. KernelBench: Can LLMs
+   Write Efficient GPU Kernels? arXiv:2502.10517 [cs.LG] https://arxiv.org/
+   abs/2502.10517
+Monoshi Kumar Roy, Simin Chen, Benjamin Steenhoek, Jinjun Peng, Gail
+   Kaiser, Baishakhi Ray, and Wei Le. 2026. CodeSense: a Real-World Bench-
+   mark and Dataset for Code Semantic Reasoning. arXiv:2506.00750 [cs.SE]
+   doi:10.48550/arXiv.2506.00750
+Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik
+   Narasimhan, and Shunyu Yao. 2023. Reflexion: Language Agents with
+   Verbal Reinforcement Learning. arXiv:2303.11366 [cs.AI] https://arxiv.
+   org/abs/2303.11366
+Chenyao Suo, Junjie Chen, Shin Hwei Liu, Jiajun Jiang, Yingquan Zhao,
+   and Jianrong Wang. 2024. Fuzzing MLIR Compiler Infrastructure via
+   Operation Dependency Analysis. In Proceedings of the 33rd ACM SIG-
+   SOFT International Symposium on Software Testing and Analysis (ISSTA).
+   Association for Computing Machinery. doi:10.1145/3650212.3680360
+Haoyu Wang, Junjie Chen, Chuyue Xie, Shin Hwei Liu, Zan Wang, Qingchao
+   Shen, and Yingquan Zhao. 2023. MLIRSmith: Random Program Genera-
+   tion for Fuzzing MLIR Compiler Infrastructure. In Proceedings of the 38th
+   IEEE/ACM International Conference on Automated Software Engineering
+   (ASE). IEEE. doi:10.1109/ASE56229.2023.00120
+Peiyi Wang, Lei Li, Liang Chen, Zefan Cai, Dawei Zhu, Binghuai Lin, Yunbo
+   Cao, Lingpeng Kong, Qi Liu, Tianyu Liu, and Zhifang Sui. 2024. Large
+   Language Models are not Fair Evaluators. In Proceedings of the 62nd
+   Annual Meeting of the Association for Computational Linguistics (Volume
+   1: Long Papers). Association for Computational Linguistics, Bangkok,
+   Thailand, 9440–9450. doi:10.18653/v1/2024.acl-long.511
+Anjiang Wei, Jiannan Cao, Ran Li, Hongyu Chen, Yuhui Zhang, Ziheng
+   Wang, Yuan Liu, Thiago S. F. X. Teixeira, Diyi Yang, Ke Wang, and
+   Alex Aiken. 2025. EquiBench: Benchmarking Large Language Mod-
+   els’ Reasoning about Program Semantics via Equivalence Checking. In
+   Proceedings of the 2025 Conference on Empirical Methods in Natural Lan-
+   guage Processing (EMNLP). Association for Computational Linguistics.
+   https://aclanthology.org/2025.emnlp-main.1718/
+                                                                                                                  Maganti et al.
+
+
+Appendix                                                        Table 7. Source program seed categories used in MLIRBench.
+A Dataset Construction
+                                                                       Seed     Category                       Programs
+This appendix provides additional details regarding the con-
+struction of the MLIRBench dataset, including source pro-              Seed 1   Reduction operations                 10
+gram selection and the process used to generate MLIR repre-            Seed 2   Small tensor operations              10
+                                                                       Seed 3   Boolean reasoning operations         10
+sentations.
+                                                                       Seed 4   Aggregation operations               10
+A.1   Source Programs                                                  Total    –                                    40
+The foundation of MLIRBench is a collection of manually cu-
+rated PyTorch programs designed to capture common tensor        A.2   Lowering to MLIR
+computation patterns while remaining sufficiently compact       One challenge during dataset construction was the lack of
+for systematic mutation and execution analysis. Rather than     publicly available MLIR datasets suitable for large-scale se-
+relying on large application workloads, we intentionally se-    mantic reasoning studies. Existing MLIR repositories primar-
+lected small, self-contained programs inspired by educational   ily consist of compiler tests, transformation examples, and
+programming exercises and numerical computing tasks. This       dialect-specific demonstrations rather than diverse collec-
+design allows semantic changes introduced by mutations to       tions of execution-ready programs.
+be isolated and analyzed without interference from unrelated       To address this limitation, we generated our own MLIR
+program complexity.                                             corpus by lowering curated PyTorch programs using the
+   We collected a total of 40 PyTorch programs and orga-        Torch-MLIR compilation pipeline. Starting from PyTorch
+nized them into four seeds, with 10 programs per seed. Each     programs provided semantically meaningful workloads with
+seed was designed to represent a distinct category of tensor    known behavior while enabling systematic dataset construc-
+computation commonly encountered in machine learning,           tion from a widely used machine-learning framework.
+scientific computing, and tensor-processing workloads.             Each benchmark program was implemented as a PyTorch
+                                                                module and imported into MLIR using the Torch-MLIR FX
+  Seed 1: Reduction Operations. Programs in this category
+                                                                importer with representative inputs. This process produced
+reduce multi-dimensional tensors to scalar outputs through
+                                                                programs in the torch dialect, preserving framework-level
+aggregation operations. Representative examples include
+                                                                semantics while exposing computations in MLIR form.
+sum_2d_tensor, sum_3d_tensor, max_value, min_value,
+                                                                   The resulting programs were subsequently lowered to the
+mean_reduction, variance_reduction, count_nonzero, and
+                                                                linalg dialect. While the torch dialect retains higher-level
+count_above_threshold.
+                                                                operator semantics, the linalg dialect exposes structured
+   Seed 2: Small Tensor Operations. This category focuses       tensor computations, affine indexing behavior, iterator se-
+on structured tensor transformations and arithmetic opera-      mantics, and explicit dataflow relationships.
+tions producing tensor-valued outputs. Representative pro-         The final corpus contains paired torch and linalg repre-
+grams include matmul_2x2, matmul_3x3,                           sentations for each source program. These dialect-specific
+elementwise_add_small, elementwise_mul_small,                   programs serve as the seeds for mutation generation, bench-
+transpose_small, and reshape_small.                             mark construction, execution-grounded evaluation, and down-
+                                                                stream learning tasks.
+   Seed 3: Boolean Reasoning Operations. Programs in this
+seed generate boolean outputs and require reasoning about     B Mutation Agent: Implementation Details
+logical properties of tensors. Representative tasks include
+all_positive, any_negative, tensors_equal, tensors_close, This appendix provides implementation details for the Muta-
+contains_nan, and is_sorted.                                  tion Agent used in MLIRBench. The main paper describes the
+                                                              role of the agent in the benchmark pipeline; here we docu-
+   Seed 4: Aggregation Operations. This category captures     ment the mutation inputs, dialect-specific analysis, mutation
+workloads that reduce tensors along selected dimensions       levels, validation procedure, stored metadata, and common
+while preserving partial tensor structure. Examples include   generation failures.
+sum_along_axis, max_per_row, and softmax_small.
+   Together, these four seeds provide coverage of arithmetic, B.1 Mutation Inputs
+structural, logical, and aggregation-oriented computation     The Mutation Agent receives an MLIR seed program, a di-
+patterns while maintaining manageable program sizes suit-     alect tag, a mutation level, and a mutation requirement. The
+able for large-scale mutation generation and execution-based  dialect tag is either torch or linalg. The mutation level
+validation.                                                   specifies the intended difficulty of the transformation, while
+                                                              the mutation requirement describes the specific edit to apply.
+MLIRBench
+
+
+  Table 8. Mutation levels used by the Mutation Agent.              Table 10. Core fields stored for each Mutation Agent record.
+
+  Level      Description                                             Field group             Stored fields
+  L1         Syntax-preserving edits such as SSA renaming and        Identity                Program ID, seed, dialect, level, require-
+             formatting changes                                                              ment ID
+  L2         Parameter or attribute edits such as constants, di-     Programs                Original MLIR and mutated MLIR
+             mensions, and dtypes                                    Validation              Status, attempts, errors, failure cate-
+  L3         Operator substitutions between related operations                               gory
+  L4         Structural edits affecting dataflow, shape behavior,    Requirement             Description and mutation constraints
+             or computation structure                                Provenance              Pipeline metadata and validation his-
+  L5         Failure-inducing edits that violate compiler or run-                            tory
+             time constraints
+                                                                    B.4   Mutation Prompt Construction
+          Table 9. Mutation rule coverage by dialect.
+                                                                    For each mutation request, the agent constructs a structured
+                                                                    prompt containing four parts:
+                   Dialect    Number of rules
+                                                                        1. the original MLIR program,
+                   linalg                   24                          2. the dialect tag,
+                   torch                    22                          3. the selected mutation requirement,
+                   Total                    46                          4. the dialect-specific inspection metadata.
+                                                                       The prompt instructs the generation model to return only
+The output is a candidate pair consisting of the original MLIR      the mutated MLIR program. It also asks the model to preserve
+program and a mutated version.                                      unrelated operations, maintain SSA consistency, respect di-
+   Each mutation request is designed to produce one con-            alect syntax, and apply only the requested mutation. This
+trolled program-pair instance. The goal is not to generate          structure is important because small changes in MLIR can
+arbitrary MLIR, but to apply a targeted transformation while        easily produce invalid SSA references, mismatched tensor
+preserving the rest of the program as much as possible. This        types, or verifier failures.
+allows the benchmark to isolate the semantic effect of each
+mutation during execution-based validation.                         B.5   Validation and Regeneration
+                                                                    Because generated MLIR can be invalid, every candidate
+B.2 Dialect-Specific Program Analysis
+                                                                    mutation is checked before it enters the benchmark dataset.
+Before generating a mutation, the agent performs dialect-           The validation step verifies that the mutated program is
+specific inspection of the input program. For torch, the            syntactically well formed and compatible with the expected
+analysis focuses on ATen operators, tensor shapes, scalar           dialect-level constraints for the selected mutation type. If
+constants, dimension arguments, dtype annotations, broad-           validation fails, the agent regenerates the mutation with the
+casting behavior, and SSA dependencies. For linalg, the             validation error included as feedback.
+analysis focuses on structured operations, indexing maps,             MLIRBench allows up to three generation attempts for
+iterator types, region bodies, yielded values, operand and          each mutation. If all attempts fail, the candidate is discarded
+result types, and destination-style semantics.                      and the failure is recorded. Accepted mutations are for-
+   The extracted metadata is used to guide the mutation             warded to the Execution Sandbox Agent, where their final
+prompt. This reduces invalid edits by giving the generation         semantic labels are determined from compiler and execution
+model information about the structure of the program before         behavior rather than from the intended mutation rule alone.
+it attempts to modify it. The metadata also helps constrain
+the mutation so that the generated program changes the              B.6   Stored Mutation Records
+intended part of the IR rather than introducing unrelated           For each generated mutation, the pipeline stores both the
+edits.                                                              accepted program pair and the metadata needed for later
+                                                                    auditing. The stored fields include the program identifier,
+B.3    Mutation Levels and Rule Coverage
+                                                                    dialect, seed, mutation level, requirement identifier, require-
+The mutation rules are dialect-specific because torch and           ment description, original MLIR, mutated MLIR, validation
+linalg expose different operations and verifier constraints.        status, validation attempts, validation errors, failure category,
+In total, MLIRBench uses 46 mutation rules: 24 for linalg           and pipeline metadata.
+and 22 for torch. Table 9 summarizes the rule coverage.                This record format makes it possible to trace a bench-
+                                                                    mark instance back to the mutation rule, generated MLIR,
+                                                                    validation result, and any failed regeneration attempts.
+                                                                                                                        Maganti et al.
+
+
+B.7   Common Mutation Failures                                      Algorithm 1 Execution Sandbox Agent. Compilation and
+During benchmark construction, the most common muta-                execution use the floating-point-deterministic flags of Ap-
+tion failures involved invalid SSA references, incorrect tensor     pendix C.1 and run in isolated subprocesses. Failures are
+shapes, malformed affine maps, unsupported operation vari-          tagged compile_error, runtime_error, or, for Level 5 in-
+ants, broken operand types, and edits that changed more of          puts, expected_invalid.
+the program than the selected rule intended. These errors           Require: pair (𝐴, 𝐵), dialect 𝑑 ∈ {linalg, torch}
+appeared more often in higher mutation levels, especially           Ensure: record (𝑜 𝐴 , 𝑜 𝐵 , 𝛿, 𝜏, 𝑒)
+structural and failure-inducing mutations.                           1: 𝐴′, 𝐼 ← EmbedInputs(𝐴, 𝑑)                       ⊲ seed = 42
+   This behavior shows that generating plausible MLIR is             2: 𝐵 ′ ← EmbedInputs(𝐵, 𝑑, 𝐼 )                        ⊲ same 𝐼
+easier than generating controlled compiler transformations.          3: 𝐴ˆ ← Compile(𝐴′ ); 𝐵ˆ ← Compile(𝐵 ′ )
+For this reason, validation and regeneration are necessary           4: if compile failure then
+parts of the Mutation Agent rather than optional cleanup             5:      return compile_error
+steps. The final benchmark includes only mutations that pass         6: end if
+the required validation stage or are intentionally retained as       7: 𝑜 𝐴 ← Run(𝐴,  ˆ 𝐼 ); 𝑜 𝐵 ← Run(𝐵,  ˆ 𝐼)
+failure-inducing cases for execution-grounded evaluation.            8: if run failure then
+                                                                     9:      return runtime_error
+C     Execution Agent: Implementation                               10: end if
+      Details                                                       11: 𝛿 ← ¬ ArrayEqal(𝑜 𝐴 , 𝑜 𝐵 )                ⊲ true = diverge
+                                                                    12: 𝜏 ← Benchmark(𝐴,         ˆ 𝐵,
+                                                                                                    ˆ 𝐼)
+This appendix documents the compile flags, the upstream
+IREE crash that motivates the dual-dialect input strategy, the      13: 𝜙 ← StaticDiff(𝐴, 𝐵)
+full pipeline algorithm, and the status breakdown behind the        14: 𝑒 ← Explain(𝐴, 𝐵, 𝑜 𝐴 , 𝑜 𝐵 , 𝛿, 𝜙) ⊲ 𝜙 blocks hallucinated
+divergence labels reported in Section 6.2.                              SSA
+                                                                    15: return (𝑜 𝐴 , 𝑜 𝐵 , 𝛿, 𝜏, 𝑒)
+C.1   Compile Flags
+                                                                    Table 11. Execution status across the 1,768 released pairs.
+Both programs in a pair compile under identical IREE flags:
+                                                                    The 25 runtime_error records are torch T2 mutations that
+   --iree-llvmcpu-target-cpu=generic                                altered the function input signature, which kept the bench-
+   --iree-llvmcpu-loop-vectorization=false                          marking subprocess from binding the seed’s input flags. Both
+   --iree-llvmcpu-slp-vectorization=false                           programs executed in the ground-truth pipeline, so these
+   --iree-llvmcpu-loop-interleaving=false                           records are retained with a runtime_error_category field
+   --iree-llvmcpu-loop-unrolling=false                              (input_shape_mismatch or input_dtype_mismatch). The
+   The four =false flags disable the LLVM transformations           3 compile_error pairs are excluded from the divergence
+that reassociate floating-point reductions: loop and SLP vec-       table.
+torization, loop interleaving, and unrolling. The target-cpu=
+generic flag avoids architecture-specific code paths such                         Status                Count      %
+as AVX-512 that would make outputs depend on the host
+machine. Under these flags both programs in a pair pro-                           success                1,402   79.3
+                                                                                  expected_invalid         338   19.1
+duce bit-stable output across repeated runs, which is what
+                                                                                  runtime_error             25    1.4
+licenses the strict equality comparison in Section 3.3. We                        compile_error              3    0.2
+verify bit stability per pair rather than across the full corpus;
+corpus-wide stability checking is left to future work.                            Total                  1,768   100
+
+C.2   Compiler Crash on Embedded Torch Inputs                       across our torch seeds, we supply all torch inputs at runtime
+                                                                    rather than embedding them.
+Embedding a torch program’s inputs as constants makes the
+compiler crash. A program compiles cleanly when its input           C.3   Pipeline Algorithm
+is a function argument, but once the input is a
+                                                                    Algorithm 1 shows the success path.
+torch.vtensor.literal constant, the canonicalizer folds
+the torch.aten.lt.Scalar comparison between that con-               C.4   Execution Status Breakdown
+stant tensor and an integer scalar, and torch-mlir’s
+                                                                    Table 11 summarizes the execution status distribution across
+AtenLtScalarOp::fold segfaults inside its
+                                                                    all released program pairs.
+comparisonScaleFolder helper. The crash reproduces un-
+der all three input-conversion modes the pipeline attempts
+(auto, torch, tm_tensor). Because this comparison appears
+MLIRBench
+
+
+C.5   L1/T1 and L5 Anomalies                                        For each program, the model is instructed to inspect SSA
+Twenty L1/T1 pairs (1.1% of the labeled set) diverge despite     value  definitions and uses, tensor shapes and element types,
+carrying a syntactic level label. Manual inspection of the gen-  affine  indexing maps, iterator types, constants, operands,
+erated explanations attributes these to two causes. Around       returned   values, and dialect-specific operation semantics.
+twelve pairs contain constant-value changes or attribute re-     The  prompt    is organized into four blocks:
+orderings, which are semantic edits the upstream engine              1. Task   definition:   the model is told that it must deter-
+recorded as syntactic. The remaining eight reorder inde-                mine   the  behavioral   semantic relationship between
+pendent reduction operations, which changes the order of                Program    𝐴  and  Program  𝐵.
+floating-point summation and produces a genuine difference           2. Isolation    rule: the model is reminded that it does not
+that strict comparison correctly reports. The second cause              have  access  to executed  outputs, lowered IR, execution
+is the intended behavior of the comparison design; the first            traces,  or the ground-truth   label.
+reflects a limit of automated level labeling at the source.          3. Program context: the prompt provides the dialect
+   Seven linalg L5 pairs compiled and executed despite their            tag, deterministic inputs when available, Program 𝐴,
+intended-invalid label, because IREE accepted the type-mismatched       and Program 𝐵.
+constructs through implicit coercion. We keep these records          4. Output contract: the model must return a single struc-
+with their observed status rather than relabeling them.                 tured JSON object satisfying the required schema.
+                                                                    When concrete inputs are available, they are included
+D LLM Reasoning Agent: Implementation                            in the prompt as the inputs over which the model should
+      Details                                                    reason. The executed outputs remain hidden. This allows
+This appendix provides implementation details for the LLM        input-grounded symbolic reasoning while preserving isola-
+Reasoning Agent described in Section 3.4. The main paper         tion between the Reasoning Agent and the Execution Sand-
+presents the evaluation protocol and results; this appendix      box Agent.
+documents the prompt structure, visible and hidden artifacts,
+                                                                 D.3 Visible and Hidden Artifacts
+output schema, parsing and retry behavior, evaluated model
+roster, stored record format, and reproducibility controls       Table 13 summarizes which artifacts are visible to the Reason-
+used to make the evaluation auditable.                           ing Agent and which artifacts are reserved for downstream
+                                                                 evaluation. The key design choice is that the model sees
+D.1 Evaluation Scope                                             the source-level MLIR pair and deterministic inputs, but all
+The Reasoning Agent evaluates models under execution-            execution-derived evidence is withheld until scoring.
+hidden conditions. For each program pair, the model receives
+                                                                 D.4 Output Schema
+the two MLIR programs, the dialect tag, and deterministic
+input values when available, but it does not receive exe-        Each model response must contain one JSON object. The
+cuted outputs, execution traces, lowered IR, ground-truth        required fields are listed in Table 14. The label space is inten-
+labels, or Judge Agent scores. The final evaluation uses 888     tionally restricted to Eqiv, Diverge, and Error; an absten-
+linalg pairs and 880 torch pairs. Each pair is evaluated         tion label is not allowed. If a model is uncertain, it must still
+independently by nine models, producing 15,912 structured        choose the best-supported label and lower its confidence.
+reasoning records.                                                  The prediction task can be written as:
+       Table 12. Reasoning Agent evaluation scale.                                𝑦ˆ ∈ {Eqiv, Diverge, Error}.
+                                                                   The model must produce predicted behavior for each pro-
+            Dialect   Number of pairs   Total records              gram before assigning ˆ𝑦. This ordering is intended to discour-
+                                                                   age surface-level comparison and make failures diagnosable:
+            linalg               888           7,992
+            torch                880           7,920               an incorrect final label can be separated from an incorrect
+                                                                   output prediction.
+            Total               1,768         15,912
+                                                                   D.5    Parsing, Validation, and Retry Semantics
+D.2   Prompt Structure                                             Model outputs are validated against the required JSON schema
+The Reasoning Agent uses a predict-then-compare prompt.            before storage. Since language models sometimes produce
+Rather than asking the model only to classify whether two          malformed structured output, the parser performs lightweight
+programs are equivalent, the prompt first asks the model to        recovery before declaring failure. The recovery procedure
+reason about each program independently and then compare           removes Markdown code fences, extracts the first balanced
+the predicted behaviors. This design separates per-program         top-level JSON object, sanitizes unescaped control characters
+execution reasoning from pairwise semantic classification.         inside string fields, parses the JSON object, validates required
+                                                                                                                                Maganti et al.
+
+
+        Table 13. Information visible to the Reasoning Agent versus information reserved for downstream evaluation.
+
+                            Artifact                           Visible to Reasoning Agent    Used for Evaluation
+                            Program 𝐴 MLIR source                          Yes                      Yes
+                            Program 𝐵 MLIR source                          Yes                      Yes
+                            Dialect tag                                    Yes                      Yes
+                            Concrete input values                   Yes, when available             Yes
+                            Executed output of Program 𝐴                    No                      Yes
+                            Executed output of Program 𝐵                    No                      Yes
+                            Ground-truth semantic label                     No                      Yes
+                            Lowered IR or execution trace                   No                    Optional
+                            Judge score                                     No                      Yes
+
+                          Table 14. Required JSON output schema for each Reasoning Agent response.
+
+                Field                     Type                  Description
+                predicted_output_A        string/object         Predicted output or symbolic behavior for Program 𝐴
+                predicted_output_B        string/object         Predicted output or symbolic behavior for Program 𝐵
+                label                     enum                  One of Eqiv, Diverge, or Error
+                confidence                float                 Self-reported confidence in [0, 0.99]
+                key_differences           list                  Program-level semantic differences identified by the model
+                witness                   string/object/null    Optional input or condition supporting divergence
+                explanation               string                Natural-language explanation of the predicted verdict
+
+      Table 15. Reasoning Agent response status codes.                       All models are queried at temperature 0. Model identifiers
+                                                                           are pinned through provider-specific model IDs or Open-
+ Status                 Meaning                                            Router slugs at evaluation time. This reduces run-to-run
+                                                                           variation and makes differences across systems more attrib-
+ SUCCESS                Valid JSON satisfying the required schema
+                                                                           utable to model behavior than to sampling randomness.
+ PARSE_ERROR            No recoverable JSON object was found
+ SCHEMA_ERROR           JSON parsed, but required fields were              D.7    Stored Reasoning Records
+                        missing or malformed
+ API_ERROR              Provider request failed                            For each model and program pair, the Reasoning Agent
+ MODEL_FAILURE          Model returned an explicit error payload           stores a flat record containing the fields shown in Table 17.
+                                                                           These records intentionally separate model predictions from
+fields and label values, and clamps confidence values greater              execution-derived ground truth. The Judge Agent later joins
+than or equal to 1.0 to 0.99 while preserving the original                 the reasoning record with the hidden execution record to
+value for audit.                                                           compute hard-label accuracy, result-behavior accuracy, ex-
+   Each response is assigned one of the status codes in Ta-                planation quality, and aggregate score.
+ble 15. If the first attempt does not produce a SUCCESS re-                   The flat record format is useful for auditing. A failed or sus-
+sponse, the agent retries once with a forced-verdict instruc-              picious score can be traced back to the exact model response,
+tion. The retry instruction restates the required schema, dis-             prompt-visible inputs, parsing status, retry count, and source
+allows abstention, and requires the model to return a best-                pair identifier without rerunning the full benchmark.
+effort committed label. If the retry also fails, the record is
+finalized with a fallback Error label while preserving the                 D.8    Reasoning Agent Procedure
+underlying failure status for audit.                                       The Reasoning Agent follows the same procedure for each
+                                                                           model and program pair:
+D.6    Model Roster                                                           1. Build the prompt from Program 𝐴, Program 𝐵, the
+The evaluation uses a fixed roster of nine models: five open-                    dialect tag, and deterministic inputs when available.
+source or open-weight systems accessed through OpenRouter-                    2. Invoke the evaluated model at temperature 0 using the
+compatible endpoints, and four proprietary baselines ac-                         pinned model identifier.
+cessed through native provider APIs when available. We                        3. Parse and validate the response against the required
+select one representative per model family or provider to                        JSON schema.
+cover different training lineages rather than evaluating many                 4. If parsing or schema validation fails, retry once with
+closely related variants from the same lab.                                      the forced-verdict instruction.
+MLIRBench
+
+
+                                 Table 16. Model roster used in the Reasoning Agent evaluation.
+
+                  Model                             Provider/family   Open/closed   Role in comparison
+                  Qwen3-Next-80B-A3B-Instruct       Alibaba           Open          Code-oriented open baseline
+                  Llama-4-Maverick                  Meta              Open          General-purpose open baseline
+                  GLM-5.1                           Zhipu AI          Open          Non-U.S. open model family
+                  Kimi-K2.6                         Moonshot AI       Open          Long-context open model family
+                  gpt-oss-120b                      OpenAI OSS        Open          Large open-weight baseline
+                  GPT-4.1-Mini                      OpenAI            Closed        Cost-efficient proprietary baseline
+                  Claude Sonnet 4.5                 Anthropic         Closed        Strong proprietary baseline
+                  Claude Haiku 4.5                  Anthropic         Closed        Low-latency proprietary baseline
+                  Gemini 3.1 Pro Preview            Google            Closed        Frontier reasoning model
+
+                                   Table 17. Fields stored for each structured reasoning record.
+
+                 Field group                 Stored fields
+                 Pair metadata               pair_id, program_id, mutation_id, dialect, mutation kind
+                 Model metadata              model key, model identifier, model name, provider, model family
+                 Prediction                  predicted label, confidence, predicted outputs for Program 𝐴 and Program 𝐵
+                 Explanation                 key differences, witness, natural-language explanation
+                 Execution-hidden inputs     deterministic input values supplied to the prompt when available
+                 Reliability metadata        status code, retry count, latency, raw-response head when parsing fails
+                 Provenance                  run timestamp and source result file
+
+    5. If the retry also fails, finalize the record with a fallback    E.1     Evaluation Object
+       Error label while retaining the underlying failure sta-         The Judge Agent scores one evaluated-model prediction for
+       tus for audit.                                                  one MLIR program pair. Each request contains the origi-
+    6. Clamp confidence values greater than or equal to 1.0            nal program 𝐴, the mutated program 𝐵, dialect information,
+       to 0.99 while preserving the original value.                    mutation metadata, the execution record produced by the
+    7. Store the structured reasoning record, including pre-           Execution Sandbox Agent, and the structured prediction pro-
+       diction fields, parsing status, retry count, latency, and       duced by the LLM Reasoning Agent.
+       provenance.                                                       The sandbox execution record is the only source of se-
+   This procedure avoids using the algorithm environment               mantic ground truth. If either program fails compilation,
+so that the appendix does not require additional LaTeX pack-           verification, or execution, the normalized ground-truth la-
+ages beyond the standard table and formatting packages                 bel is Error. Otherwise, the output comparison determines
+already used in the paper.                                             whether the pair is Eqiv or Diverge. The evaluated model’s
+                                                                       predicted label is normalized into the same three-class label
+D.9   Reproducibility                                                  space before scoring.
+The Reasoning Agent is designed as a reproducible evalu-
+                                                                       Table 18. Inputs provided to each Judge Agent invocation.
+ation component. For a fixed program pair, dialect, input
+set, prompt version, and pinned model version, the agent
+produces one structured record per model. The benchmark                  Input group            Contents
+stores the prompt-visible inputs, model identifiers, parsed              Program pair           Original MLIR and mutated MLIR
+outputs, validation statuses, retry counts, latencies, and prove-        Dialect context        torch or linalg guidance
+nance metadata. This makes later auditing possible without               Mutation metadata      Mutation ID, level, rule description,
+rerunning all model calls and ensures that scoring remains                                      and constraints
+separated from prediction generation.                                    Execution record       Statuses, inputs, outputs, diagnostics,
+                                                                                                and divergence flag
+E     Judge Agent: Implementation Details                                Model prediction       Predicted label, outputs, confidence,
+                                                                                                and explanation
+This appendix documents the Judge Agent used to score
+MLIRBench model predictions. The main paper describes
+                                                                       E.2     Judge Configuration
+the high-level role of the Judge Agent; here we provide the
+evaluation object, prompt structure, scoring rubric, output            All benchmark predictions are scored with a single fixed
+schema, validation procedure, and stored-record format.                judge model so that score differences reflect the evaluated
+                                                                                                                   Maganti et al.
+
+
+            Table 19. Judge Agent configuration.                execution - derived ground truth . Do not reward fluent
+                                                                     explanations unless
+                                                                they are supported by the programs , dialect semantics ,
+  Setting               Value                                        execution outputs ,
+                                                                or compiler diagnostics . Return JSON only .
+  Invocation unit       One prediction for one program pair
+  Default judge model   gpt-5.4-mini                            User :
+  Temperature           Not explicitly set                      dialect : { linalg | torch | unknown }
+  Response format       JSON object                             pair_id : { pair_id }
+                                                                mutation_id : { mutation_id }
+  Label space           Eqiv, Diverge, Error
+  Returned fields       Scores, evidence, reasoning, verdict    --- Program A ---
+                                                                { original MLIR }
+  Table 20. Prompt blocks provided to the Judge Agent.
+                                                                --- Program B ---
+                                                                { mutated MLIR }
+ Block            Examples               Purpose
+                                                                --- Dialect Guidance ---
+ Program pair    Program 𝐴, Program 𝐵 Source-level audit        { dialect - specific MLIR guidance }
+ Dialect knowl- Torch/Linalg guidance Dialect-aware rea-
+ edge                                     soning                --- Mutation Metadata ---
+                                                                mutation_level : { level }
+ Mutation meta- Level, rule, constraints Scoring emphasis
+                                                                mutation_rule : { rule_description }
+ data                                                           mutation_constraints : { constraints }
+ Execution truth Statuses, outputs, diag- Ground truth          structure_focus : { mutation - aware scoring profile }
+                 nostics
+                                                                --- Execution Ground Truth ---
+ Prediction      Label, outputs, explana- Object being scored   inputs : { deterministic inputs }
+                 tion                                           status_A : { success | compile_error | runtime_error |
+                                                                     expected_invalid }
+model outputs rather than changes in the scorer. The judge      status_B : { success | compile_error | runtime_error |
+                                                                     expected_invalid }
+is invoked in JSON-output mode and returns both compact         output_A : { output or null }
+scores and detailed evidence fields.                            output_B : { output or null }
+   If the judge request fails or the returned JSON cannot       outputs_diverge : { true | false | null }
+                                                                diagnostics : { compiler / runtime diagnostics }
+be parsed, the pipeline constructs a conservative fallback      ground_truth_label : { EQUIV | DIVERGE | ERROR }
+record with zero result-behavior and explanation-quality        sandbox_explanation : { execution - grounded explanation }
+scores. Hard-label accuracy remains deterministic because it
+                                                                --- Evaluated Model Prediction ---
+is computed outside the judge model from the normalized         predicted_label : { label }
+prediction and execution-derived label.                         predicted_output_A : { prediction }
+                                                                predicted_output_B : { prediction }
+E.3   Prompt Blocks                                             confidence : { confidence }
+                                                                key_differences : { differences }
+The judge prompt is intentionally evidence-rich. It provides    witness : { witness }
+all source, execution, mutation, and prediction context in      explanation : { model explanation }
+a single request so that the evaluated model’s explanation      Task :
+does not become the primary source of facts.                    1. Build an independent semantic audit from the MLIR
+   For linalg, the prompt emphasizes destination-style se-            programs ,
+                                                                   dialect guidance , and execution evidence .
+mantics, indexing maps, iterator types, region bodies,          2. Compare the evaluated model prediction against the
+linalg.yield, result shapes, and element types. For torch,            execution - derived
+the prompt emphasizes ATen operator variants, operand or-          ground truth .
+                                                                3. Score result behavior and explanation quality .
+der, dimension arguments, broadcasting, dtype annotations,      4. Return one JSON object following the required schema .
+reshape/view constraints, and SSA dataflow.
+                                                                  The prompt orders the evidence before the evaluated
+E.4   Judge Prompt Template                                     model’s explanation. This is intended to reduce anchoring
+The following is the condensed prompt template used by          on plausible but unsupported natural-language claims.
+the Judge Agent. The actual prompt instantiates the tem-
+                                                                E.5   Ground-Truth and Prediction Normalization
+plate with full MLIR programs, execution records, mutation
+metadata, and model predictions.                                The Judge Agent normalizes execution and prediction labels
+System :
+                                                                before scoring. Execution labels are derived as follows:
+You are the MLIRBench Judge Agent , an expert MLIR                  • If either program has a non-success compilation, veri-
+     compiler engineer .
+                                                                      fication, or execution status, the ground-truth label is
+Score the evaluated model strictly against the MLIR code
+     and the                                                          Error.
+MLIRBench
+
+
+            Table 21. Explanation-quality anchors.                   Table 22. Mutation-aware structure profiles used by the
+                                                                     Judge Agent.
+ Score   Interpretation
+   4     Correct, causal, evidence-specific, and dialect-aware       Profile      𝑝    Typical mutations              Emphasis
+   3     Mostly correct but missing one important detail             Low          1    SSA renaming, format- Exact values
+   2     Partially relevant but weak on causality or evidence                          ting
+   1     Minimal relevant content with major omissions or errors     Default      2    General edits              Balanced scoring
+   0     Empty, generic, fabricated, or contradicted by evidence     Medium       3    Parameters, dtypes, oper- Mixed structure/value
+                                                                                       ators
+    • Otherwise, if the sandbox reports output divergence,           High         4    Shapes, ranks, indexing Structure-sensitive
+      the label is Diverge.                                                            maps                       reasoning
+    • Otherwise, the label is Eqiv.                                  Error        –    Invalid MLIR or failed ex- Failure recognition
+  Predicted labels are mapped into the same label space.                               ecution
+Case differences, common spelling variants, and JSON string
+variants are normalized before comparison. Labels outside            E.7     Mutation-Aware Result Rubric
+the supported set are treated as invalid and scored as non-          For successful executions, the Judge Agent adjusts the struc-
+matching.                                                            ture component of the result-behavior score using mutation
+                                                                     metadata. Shape- and structure-sensitive mutations receive
+E.6    Scoring Dimensions                                            more structure credit, while low-level syntactic edits empha-
+The final score combines three quantities: hard-label accu-          size exact values.
+racy, result-behavior accuracy, and explanation quality.                Let 𝑝 be the maximum number of structure points. The
+                                                                     result-behavior score is:
+  Hard-label accuracy. Hard-label accuracy is computed
+deterministically:                                                                       𝑟 = 𝑟 struct + 𝑟 exact + 𝑟 value,
+                        ℎ = ⊮[𝑦ˆ = 𝑦],                               where 𝑟 struct ∈ [0, 𝑝], 𝑟 exact ∈ {0, 7 − 𝑝}, and 𝑟 value ∈ [0, 3].
+where 𝑦ˆ is the normalized predicted label and 𝑦 is the execution-      The profile is inferred from the mutation rule text and mu-
+derived label. This score does not depend on the judge model.        tation identifier. Rules mentioning shape, rank, broadcasting,
+                                                                     indexing maps, or iteration space use the high-structure pro-
+   Result-behavior accuracy. Result-behavior accuracy 𝑟 ∈
+                                                                     file. Rules intended to introduce type, dependency, operator-
+[0, 10] measures whether the model’s predicted behavior
+                                                                     constraint, or structural failures use the error profile.
+matches execution. For successful executions, the judge scores
+output structure, exactness, and value precision. Output             E.8     Deterministic Error-Case Post-Check
+structure includes return arity, scalar/tensor category, rank,
+                                                                     The Judge Agent applies a deterministic post-check for Er-
+shape, and element type. Exactness rewards predictions that
+                                                                     ror-labeled records. It searches the evaluated model’s nor-
+uniquely determine the observed outputs. Value precision
+                                                                     malized label, predicted outputs, and explanation for clear
+gives partial credit for correctly predicted comparable scalar
+                                                                     failure claims such as compilation failure, verification failure,
+leaves.
+                                                                     runtime failure, invalid MLIR, unsupported operation, excep-
+   For Error cases, result behavior is binary: 𝑟 = 10 if the
+                                                                     tion, or execution error. Negated phrases such as “no error”
+prediction clearly recognizes compilation, verification, or
+                                                                     are handled so they do not trigger false failure recognition.
+runtime failure, and 𝑟 = 0 otherwise. The specific diagnostic
+                                                                        This post-check overwrites only the result-behavior score
+quality is evaluated under explanation quality rather than
+                                                                     for error cases. It does not overwrite explanation quality.
+result behavior.
+                                                                     Thus, recognizing that a program fails is deterministic, while
+  Explanation quality. Explanation quality 𝑞 ∈ [0, 4] fol-           the quality of the diagnostic explanation remains judged
+lows a MASCoD-ICE-style rubric. The judge evaluates whether          from the full MLIR and execution evidence.
+the explanation is useful, factually consistent, causal, evidence-
+specific, and grounded in the relevant MLIR dialect. Unsup-          E.9     Required Judge Output Schema
+ported or hallucinated explanations receive low credit even          The judge returns a single JSON object. The parser strips
+when the final label is correct.                                     optional Markdown code fences, extracts the outer JSON
+  The aggregate score is:                                            object if necessary, parses the response, clamps score ranges,
+                        100        𝑟    𝑞                          and stores both compact and detailed records.
+                   𝑆=         ℎ+       +    .
+                         3         10 4                              {
+                                                                         " scores ": {
+This equal weighting separates coarse classification, concrete              " result_accuracy ": < number from 0 to 10 > ,
+behavior prediction, and explanation quality.                               " explanation_rating ": < integer from 0 to 4 >
+                                                                         },
+                                                                                                                      Maganti et al.
+
+
+    " evidence ": {                                                     5. Error examples pass the deterministic failure-recognition
+       " correct_claims ": ["..."] ,                                       post-check.
+       " incorrect_claims ": ["..."] ,
+       " unverifiable_claims ": ["..."] ,                               6. The final aggregate score is recomputed from stored
+       " semantic_audit ": ["..."] ,                                       subscores rather than trusted from the raw judge re-
+       " result_accuracy_components ": {                                   sponse.
+          " mode ": " success " | " error " ,
+          " shape_structure_points ": < number or null > ,             These checks make the judge outputs auditable and pre-
+          " shape_structure_max ": < number or null > ,              vent malformed responses from silently affecting aggregate
+          " exactness_points ": < number or null > ,
+          " exactness_max ": < number or null > ,
+                                                                     metrics.
+          " value_precision_points ": < number or null > ,
+          " error_prediction_points ": < number or null > ,          E.13 Judge Agent Algorithm
+          " calculation ": "..."
+       },
+                                                                     Algorithm 2 summarizes the Judge Agent scoring procedure.
+       " explanation_subcriteria ": {
+          " usefulness ": "..." ,
+                                                                     Algorithm 2 Judge Agent Scoring
+          " factual_consistency ": "..." ,                           Require: MLIR programs 𝐴, 𝐵; execution record 𝐺; predic-
+          " semantic_causality ": "..." ,
+          " evidence_specificity ": "..." ,                              tion 𝑃
+          " dialect_grounding ": "..."                               Ensure: Score record with subscores, aggregate score, ver-
+       }                                                                 dict, and evidence
+    },
+    " reasoning ": "..." ,                                            1: Extract program pair, dialect, mutation metadata, 𝐺, and
+    " verdict ": " CORRECT " | " PARTIALLY_CORRECT " | " INCORRECT       𝑃
+           "                                                          2: Derive execution-grounded label 𝑦 from 𝐺
+}
+                                                                      3: Normalize predicted label 𝑦ˆ from 𝑃
+                                                                      4: Compute hard-label score ℎ ← ⊮[𝑦ˆ = 𝑦]
+E.10     Verdict Assignment                                           5: Select dialect guidance and mutation-aware rubric pro-
+After parsing the judge output, MLIRBench computes the                   file
+aggregate score and assigns a categorical verdict. A record           6: Build judge prompt from 𝐴, 𝐵, metadata, 𝐺, and 𝑃
+is marked Correct when the predicted label matches the                7: Invoke fixed judge model with JSON response format
+execution-derived label, result-behavior accuracy is at least         8: if response is missing or malformed then
+8, and explanation quality is at least 3. A record is marked          9:      Construct conservative fallback judge result
+Partially Correct when the aggregate score is at least 50            10: end if
+or when at least one major component shows meaningful                11: Parse result-behavior score 𝑟 , explanation score 𝑞, evi-
+evidence of correctness. All remaining records are marked                dence, and verdict
+Incorrect.                                                           12: Clamp 𝑟 to [0, 10] and 𝑞 to [0, 4]
+   These verdicts are used only for qualitative analysis and         13: if 𝑦 is Error then
+error inspection. The primary quantitative metric is the ag-         14:      Apply deterministic failure-recognition post-check
+gregate score and its three subscores.                                   to 𝑟
+                                                                     15: end if
+E.11     Stored Judge Records                                        16: Recompute aggregate score 𝑆
+The Judge Agent stores both compact and detailed outputs.            17: Assign final categorical verdict
+Compact records are used for aggregate reporting, while              18: Store compact score row and detailed evidence record
+detailed records preserve the evidence needed for auditing
+individual scores.
+                                                                     E.14   Judge Reliability and Score Sensitivity
+E.12     Validation Checks                                           We evaluated the sensitivity of model-level scores to re-
+Before aggregate results are produced, the Judge Agent out-          peated judging, judge selection, and scoring configuration.
+puts are validated with the following checks:                        The study uses 900 frozen responses from nine candidate
+                                                                     models on the same 100 program pairs. We completed three
+   1. Every prediction joins to exactly one execution record
+                                                                     primary-judge runs, one alternative-judge run, a run without
+      and one MLIR program pair.
+                                                                     the generated reference narrative, and a run with fixed struc-
+   2. Every judge response parses as JSON or is replaced by
+                                                                     ture/exactness/value maxima of 2/5/3. The primary judge
+      a conservative fallback record.
+                                                                     is GPT-5.4 Mini; the alternative is GPT-4.1. Both are from
+   3. Required score, evidence, reasoning, and verdict fields
+                                                                     OpenAI.
+      are present.
+                                                                        The table reports mean aggregate scores on the 0–100
+   4. Result-accuracy scores lie in [0, 10] and explanation
+                                                                     scale. "Original" denotes the historical grades restricted to
+      ratings lie in [0, 4].
+                                                                     these identical responses, rather than the full-benchmark
+MLIRBench
+
+
+                                         Table 23. Fields stored in Judge Agent outputs.
+
+                       Field group            Stored fields
+                       Identity               Evaluated model, pair ID, program ID, mutation ID, dialect
+                       Labels                 Ground-truth label, predicted label, label match
+                       Subscores              Hard-label accuracy, result accuracy, explanation rating
+                       Weighted scores        Weighted label, weighted result behavior, weighted explanation
+                       Aggregate              Total score, categorical verdict
+                       Evidence               Semantic audit, correct claims, incorrect claims, unverifiable claims
+                       Execution details      Inputs, statuses, outputs, divergence details, sandbox explanation
+                       Prediction details     Predicted outputs, confidence, key differences, witness, explanation
+                       Reliability metadata   Judge parse status, fallback status, retry or error information
+
+scores. This matched comparison separates judge variation               F.2   Aggregate Scoring Trends
+from differences in sample composition.                                 Across all models and program pairs, the mean aggregate
+   Across all nine candidate models, each fresh primary-                score is 57.21. The mean hard-label accuracy is 74.59%, while
+judge run remains within 1.15 aggregate points of the origi-            the mean result-behavior score is only 3.63 out of 10 and
+nal matched-sample score. Relative to the first repeat, remov-          the mean explanation-quality score is 2.43 out of 4. This
+ing the reference narrative changes model means by at most              shows that models are often able to select the correct coarse
+1.02 points, while fixing the rubric lowers them by 0.01–2.41           semantic label, but they are less reliable at predicting the
+points. These results support repeatability of model-level              concrete behavior that justifies the label.
+aggregates under the primary judge and limited aggregate
+sensitivity to reference removal on this sample.                        F.3   Mutation-Level Behavior
+   The alternative judge assigns higher model-level scores,             Model performance varies across mutation levels and model
+with increases of 1.21–6.67 points relative to the first repeat,        families. Syntactic, parameter, operator, and structural mu-
+indicating greater scoring leniency on average. Nevertheless,           tations test different aspects of program reasoning, while
+the three highest-ranked models retain their order across all           failure-inducing mutations test compiler legality, type and
+six conditions, with only adjacent rank changes elsewhere.              shape constraints, and verifier behavior. Failure-inducing
+Thus, broad comparative conclusions are more stable than                mutations challenge several models, but others achieve their
+absolute score values.                                                  highest scores on this category. Mutation levels therefore do
+   This evidence concerns aggregate stability, not correct-             not define a uniform difficulty ordering.
+ness of every individual judgment. The aggregate includes                  Strong label accuracy does not necessarily imply accurate
+an unchanged hard-label component, and averaging can con-               output prediction or failure diagnosis. A model may cor-
+ceal individual disagreements. The alternative judge also               rectly classify a pair as EQUIV, DIVERGE, or ERROR while
+produced internally inconsistent result components in 111 of            misidentifying output values, tensor shapes, or the cause
+738 successful-execution judgments; these outputs remain in-            of failure. MLIRBench distinguishes these abilities through
+cluded in the comparison. Human-expert alignment remains                separate measures of hard-label accuracy, result behavior,
+a separate validation step.                                             and explanation quality.
+
+F     Additional Results and Analysis                                   G     Downstream Task Details
+This appendix provides additional analysis for the bench-               This appendix provides the prompt construction, data-splitting,
+mark results reported in the main paper. The main results               and evaluation details for the two downstream tasks in Sec-
+focus on aggregate model performance, while this section                tion 7 that could not be included in the main paper.
+gives more detail about how performance varies across mu-
+tation levels, dialects, and scoring dimensions.                        G.1    Fine-Tuning Configuration
+                                                                        Both downstream tasks use Qwen2.5-Coder-14B-Instruct
+F.1   Evaluation Scale
+                                                                        as the base model and LoRA for supervised fine-tuning. Ta-
+The final reasoning evaluation contains 1,768 MLIR program              ble 25 summarizes the final training configuration.
+pairs: 888 from the linalg dialect and 880 from the torch
+dialect. Each pair is evaluated with nine language models,              G.2    Task 1: Optimization-Benefit Prediction
+producing 15,912 structured reasoning records. Each record              G.2.1 Target Construction. For linalg, we apply linalg-
+stores the model prediction, predicted outputs for both pro-            fuse-elementwise-ops and measure the reduction in the
+grams, confidence, explanation, parsing status, retry count,            number of Linalg operations. We use the following benefit
+and the final Judge Agent scores.                                       classes:
+                                                                                                                                   Maganti et al.
+
+
+Table 24. Model-level aggregate scores (0–100) on identical responses to the same 100 program pairs. Original denotes
+historical grades on this sample; R1–R3 denote fresh primary-judge repeats. Alt. changes the judge, No ref. removes the
+generated reference narrative, and Fixed uses structure/exactness/value maxima of 2/5/3.
+
+                              Candidate model            Original     R1       R2        R3    Alt. No ref. Fixed
+                              Gemini 3.1 Pro Preview        62.51   61.77   62.14   61.89     67.55   62.67   61.75
+                              GPT-OSS 120B                  53.15   54.30   52.70   53.50     60.31   54.09   52.71
+                              Claude Sonnet 4.5             52.51   52.88   52.57   51.59     58.55   53.03   51.45
+                              GLM 5.1                       50.53   49.77   50.74   49.59     55.87   50.16   49.07
+                              Kimi K2.6                     49.20   49.34   49.09   48.93     56.02   48.78   46.94
+                              Claude Haiku 4.5              46.98   47.80   47.27   47.09     53.45   47.70   45.91
+                              GPT-4.1 Mini                  47.24   46.90   47.40   47.04     51.63   47.80   45.49
+                              Qwen3 Next 80B                43.19   43.18   43.45   43.93     47.84   44.20   42.20
+                              Llama 4                       38.18   39.27   38.55   38.22     40.48   39.66   37.07
+
+Table 25. Final supervised fine-tuning configuration for the                metrics are computed from the combined held-out predic-
+downstream tasks.                                                           tions across all five folds.
+                                                                               For the Torch SFT experiment, the original training distri-
+Setting                   Task 1                Task 2                      bution is imbalanced. We therefore balance only the training
+Base model                Qwen2.5-Coder-14B     Qwen2.5-Coder-14B           partition by resampling the minority classes. Validation and
+LoRA rank                 16                    64                          held-out folds are never resampled and retain their original
+LoRA alpha                32                    128                         class distributions.
+LoRA dropout              0.0                   0.0
+LoRA targets              q/v projections       attention + MLP             G.2.3 Prompt Format. For all evaluation settings, the
+                                                projections                 model receives only information available before the com-
+Learning rate             1 × 10 −4             1 × 10 −4                   piler transformation is applied. The prompt contains the
+Epochs                    3                     6
+                                                                            compiler transformation being predicted, the corresponding
+Per-device batch size     1                     1
+Gradient accumulation     4                     1                           class boundaries, static structural features extracted from the
+Maximum sequence length   32,768                32,768                      original program, and the complete original MLIR program.
+Precision                 BF16                  BF16                           A representative Task 1 prompt is shown below.
+Warmup steps              20                    20                          Predict the structural optimization benefit of applying
+Gradient checkpointing    Yes                   Yes                         the specified compiler transformation to the MLIR program
+                                                                            below.
+    • Low: 0–6 operations removed,
+                                                                            Benefit is defined using the compiler-observed reduction
+    • Medium: 7–11 operations removed,
+                                                                            in operations.
+    • High: 12 or more operations removed.
+  For torch, we apply torch-simplification-pipeline                         A = LOW
+                                                                            B = MEDIUM
+and measure the change in total operation count:                            C = HIGH
+    • Low: no operation reduction or an increase in opera-
+                                                                            Use only the static structure of the original program.
+      tion count,                                                           Do not assume that the transformation is always beneficial.
+    • Medium: 1–2 operations removed,                                       Do not simulate or invent post-pass measurements.
+    • High: 3 or more operations removed.
+                                                                            Static structural features:
+  The transformed IR, post-pass operation count, and compiler-              {static_features}
+derived benefit class are used only to construct the target.
+                                                                            MLIR program:
+They are not provided to the model.                                         {mlir_program}
+G.2.2 Family-Disjoint Cross-Validation. Programs are                        Return exactly one token: A, B, or C.
+grouped by their underlying source-program family. Variants
+from different mutation levels or rules that originate from the                The transformation name and benefit thresholds are changed
+same source program are kept in the same fold. For example,                 according to the dialect. For example, the Torch prompt spec-
+related variants are reduced to a family identifier such as                 ifies torch-simplification-pipeline together with the
+seed2_prog14.                                                               corresponding operation-count thresholds.
+   We use five family-disjoint folds, with each family appear-                 The static structural features are supplemental to the com-
+ing in a held-out fold exactly once. Training and held-out                  plete MLIR program and contain counts of relevant dialect
+family sets therefore have zero overlap. Final cross-validation             operations and structural tokens.
+MLIRBench
+
+
+  The transformed program, compiler-observed operation
+reduction, and target class are never included in the input
+prompt.
+G.2.4 Zero-Shot and Three-Shot Evaluation. The zero-
+shot condition contains only the task description and target
+program.
+   For three-shot evaluation, one demonstration is selected
+from each of Low, Medium, and High. All demonstrations
+are selected only from the training families of the current
+fold.
+   The demonstration format is identical to the target format
+and ends with the corresponding single-token answer:
+A
+                                                                   Figure 7. Per-class F1 for the final Task 1 SFT models. The
+B
+                                                                   figure shows performance separately for Low, Medium, and
+C
+                                                                   High compiler-observed optimization benefit.
+   No demonstration is selected from the held-out family.
+                                                                      This analysis uses generated static instruction counts only.
+G.2.5 Supervised Fine-Tuning. For SFT, the model re-
+                                                                   It is not used as a measurement of runtime or cycle-level
+ceives the same information available in the prompting ex-
+                                                                   performance.
+periments. The target is the corresponding one-token benefit
+class.                                                             G.3    Task 2: Semantic Supervision Transfer
+   No transformed IR, post-pass operation count, compiler
+                                                                   G.3.1 Family Construction and Data Isolation. Task 2
+output, or measured benefit is included in the training input.
+                                                                   uses MLIRBench program pairs as the source dataset. Pro-
+This keeps the prediction task consistent across zero-shot,
+                                                                   gram variants are grouped by their underlying source-program
+few-shot, and fine-tuned settings.
+                                                                   family rather than by individual mutation.
+G.2.6 Evaluation Details. Macro-F1 is used as the main                For example,
+metric because the benefit-class distributions are not bal-        seed2_linalg_prog14_L1_R4
+anced. We additionally compute:                                       and other mutations derived from the same source pro-
+    • accuracy,                                                    gram are assigned to the same family. Corresponding vari-
+    • balanced accuracy,                                           ants across the two dialects are also kept within the same
+    • per-class F1,                                                source family.
+    • confusion matrices.                                             Train, validation, and test partitions are therefore disjoint
+   A prediction is valid only if it resolves to one of the three   at the family level:
+allowed labels. Outputs outside the allowed label set are          train families intersect validation families = empty
+counted as incorrect rather than removed from the evalua-          train families intersect test families                 = empty
+tion.                                                              validation families intersect test families = empty
+   Figure 7 provides an additional per-class view of the final        This prevents the model from training on one mutation
+SFT models that is not included in the main paper.                 of a source program and then being evaluated on another
+G.2.7 RISC-V Backend Comparison. The additional RISC-              related mutation from the same source family.
+V analysis is performed only for the Linalg fusion experi-            The split is also constructed to retain examples from both
+ment.                                                              linalg and torch and from all three semantic labels.
+   For each compiler-valid program, the original and fusion-       G.3.2 Zero-Shot Prompt. Zero-shot evaluation provides:
+transformed versions are lowered through the same RISC-V
+                                                                      1. the task instruction,
+backend configuration. Their generated static instruction
+                                                                      2. the MLIR dialect,
+streams are then compared.
+                                                                      3. the original MLIR program,
+   The backend outcome is defined as:
+                                                                      4. the mutated MLIR program.
+    • improved: the transformed program produces fewer
+                                                                     No execution result, benchmark ground-truth label, refer-
+      static instructions,
+                                                                   ence explanation, Mutation Agent reasoning, or Judge Agent
+    • tied: both versions produce the same number of static
+                                                                   score is included.
+      instructions,
+                                                                     The prompt follows this format:
+    • worsened: the transformed program produces more
+                                                                   You are an MLIR compiler reasoning expert.
+      static instructions.
+                                                                                                                     Maganti et al.
+
+
+
+Given an original MLIR program and a mutated MLIR
+program, predict their semantic relationship.
+
+Allowed labels:
+EQUIV
+DIVERGE
+ERROR
+
+MLIR dialect:
+{dialect}
+
+Original MLIR:                                                     Figure 8. Additional Task 2 analysis. Left: per-class F1 for
+{original_mlir}
+                                                                   EQUIV, DIVERGE, and ERROR. Right: false-equivalence rate,
+Mutated MLIR:                                                      measuring unsafe DIVERGE or ERROR pairs predicted as
+{mutated_mlir}                                                     EQUIV.
+Return exactly one label:
+EQUIV, DIVERGE, or ERROR.
+                                                                      This keeps Task 2 focused on whether the semantic re-
+                                                                   lationship encoded by the MLIRBench label can be learned
+G.3.3 Balanced Six-Shot Prompt. The six-shot condition             from the program pair itself.
+uses the same target prompt, but six labeled demonstrations        G.3.5 Evaluation Details. All evaluation settings use the
+are added before the target program pair.                          same held-out source families.
+  The demonstrations are balanced across both dialect and            We report:
+semantic class:
+                                                                      • accuracy,
+linalg / EQUIV                                                        • macro-F1,
+linalg / DIVERGE                                                      • per-class F1,
+linalg / ERROR                                                        • per-dialect macro-F1.
+                                                                     We additionally compute the false-equivalence rate. This
+torch / EQUIV
+                                                                   captures cases where an unsafe pair, i.e., a pair labeled Di-
+torch / DIVERGE
+                                                                   verge or Error, is incorrectly predicted as Eqiv.
+torch / ERROR
+                                                                     For ground-truth label 𝑦 and prediction ˆ 𝑦, we define:
+  All demonstrations are selected only from the training
+partition. No validation or test family is used as an in-context                 # {𝑦 ∈ {Diverge, Error} ∧ 𝑦ˆ = Eqiv}
+demonstration.                                                           FER =                                             .
+                                                                                        # {𝑦 ∈ {Diverge, Error}}
+  The demonstrations use the same original-program, mutated-
+program, and single-label format as the target example.              The false-equivalence rate is computed only from held-out
+  The six-shot experiment is evaluated using demonstration         predictions.
+seeds 42 and 123. The reported six-shot result is the aggregate      Figure 8 provides additional class-level and false-equivalence
+across these two selections rather than relying on a single        analysis that is not included in the main paper.
+demonstration set.
+G.3.4 Supervised Fine-Tuning. The SFT condition uses
+the same program-pair representation as the prompting base-
+lines. The input contains:
+    • MLIR dialect,
+    • original MLIR,
+    • mutated MLIR.
+   The supervised target is exactly one of:
+EQUIV
+DIVERGE
+ERROR
+   Execution outputs, execution traces, reference explana-
+tions, and Judge Agent scores are not exposed to the down-
+stream model during training or evaluation.
+

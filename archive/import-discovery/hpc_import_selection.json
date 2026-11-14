@@ -1,0 +1,1138 @@
+{
+  "source_root": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench",
+  "scope": "source plus final-figure inputs; weights excluded",
+  "files": [
+    {
+      "path": "DT1/RVV_FINAL/outputs/abc/fold_0/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1/RVV_FINAL/outputs/binary/fold_0/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1/RVV_FINAL/outputs/sft_fold_0/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1/RVV_FINAL/outputs/sft_fold_1/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1/RVV_FINAL/outputs/sft_fold_2/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1/RVV_FINAL/outputs/sft_fold_3/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1/RVV_FINAL/outputs/sft_fold_4/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/aggregate_results.py",
+      "bytes": 7449
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/build_cv_splits.py",
+      "bytes": 8199
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/common.py",
+      "bytes": 9817
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/diagnose_binary_learnability.py",
+      "bytes": 4989
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/eval_abc_fold.py",
+      "bytes": 9606
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/eval_binary_fold.py",
+      "bytes": 11167
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/eval_sft_fold.py",
+      "bytes": 3125
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/run_static_cv.py",
+      "bytes": 2238
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/run_three_shot_cv.py",
+      "bytes": 9002
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/run_zero_cv.py",
+      "bytes": 3401
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/score_label_likelihood.py",
+      "bytes": 13904
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/train_abc_fold.py",
+      "bytes": 13104
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/train_binary_fold.py",
+      "bytes": 10890
+    },
+    {
+      "path": "DT1/RVV_FINAL/workers/train_sft_fold.py",
+      "bytes": 10887
+    },
+    {
+      "path": "DT1/outputs/sft/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1/workers/build_corpus.py",
+      "bytes": 10480
+    },
+    {
+      "path": "DT1/workers/build_split.py",
+      "bytes": 10388
+    },
+    {
+      "path": "DT1/workers/build_split_v2.py",
+      "bytes": 10428
+    },
+    {
+      "path": "DT1/workers/dt1_common.py",
+      "bytes": 14435
+    },
+    {
+      "path": "DT1/workers/eval_sft.py",
+      "bytes": 6154
+    },
+    {
+      "path": "DT1/workers/preflight_models.py",
+      "bytes": 5990
+    },
+    {
+      "path": "DT1/workers/run_codegen.py",
+      "bytes": 15518
+    },
+    {
+      "path": "DT1/workers/run_four_shot.py",
+      "bytes": 5091
+    },
+    {
+      "path": "DT1/workers/run_static_baseline.py",
+      "bytes": 2923
+    },
+    {
+      "path": "DT1/workers/run_zero.py",
+      "bytes": 3480
+    },
+    {
+      "path": "DT1/workers/smoke_riscv.py",
+      "bytes": 7871
+    },
+    {
+      "path": "DT1/workers/train_sft.py",
+      "bytes": 8038
+    },
+    {
+      "path": "DT1_ELEMENTWISE/README.md",
+      "bytes": 1091
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/corpus_metadata.json",
+      "bytes": 199
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_0/train.json",
+      "bytes": 4161234
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_0/val.json",
+      "bytes": 891554
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_1/train.json",
+      "bytes": 3880439
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_1/val.json",
+      "bytes": 1172349
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_2/train.json",
+      "bytes": 3939173
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_2/val.json",
+      "bytes": 1113615
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_3/train.json",
+      "bytes": 4084392
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_3/val.json",
+      "bytes": 968396
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_4/train.json",
+      "bytes": 4145908
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/fold_4/val.json",
+      "bytes": 906880
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/folds/metadata.json",
+      "bytes": 1962
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/fusion_dataset/fusion_dataset.json",
+      "bytes": 5052786
+    },
+    {
+      "path": "DT1_ELEMENTWISE/data/fusion_dataset/metadata.json",
+      "bytes": 549
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/pooled_metrics.json",
+      "bytes": 2887
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/val_metrics.json",
+      "bytes": 628
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/val_predictions.csv",
+      "bytes": 827053
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/val_metrics.json",
+      "bytes": 635
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/val_predictions.csv",
+      "bytes": 1094994
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/val_metrics.json",
+      "bytes": 630
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/val_predictions.csv",
+      "bytes": 1036852
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/val_metrics.json",
+      "bytes": 626
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/val_predictions.csv",
+      "bytes": 901679
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/val_metrics.json",
+      "bytes": 663
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/val_predictions.csv",
+      "bytes": 841372
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/all_fold_metrics.json",
+      "bytes": 4198
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_0_val_metrics.json",
+      "bytes": 758
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_0_val_predictions.csv",
+      "bytes": 827031
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_1_val_metrics.json",
+      "bytes": 774
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_1_val_predictions.csv",
+      "bytes": 1094921
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_2_val_metrics.json",
+      "bytes": 740
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_2_val_predictions.csv",
+      "bytes": 1036733
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_3_val_metrics.json",
+      "bytes": 735
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_3_val_predictions.csv",
+      "bytes": 901526
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_4_val_metrics.json",
+      "bytes": 739
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_4_val_predictions.csv",
+      "bytes": 841195
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/all_fold_metrics.json",
+      "bytes": 4221
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_0_val_metrics.json",
+      "bytes": 769
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_0_val_predictions.csv",
+      "bytes": 826999
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_1_val_metrics.json",
+      "bytes": 772
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_1_val_predictions.csv",
+      "bytes": 1094894
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_2_val_metrics.json",
+      "bytes": 754
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_2_val_predictions.csv",
+      "bytes": 1036697
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_3_val_metrics.json",
+      "bytes": 736
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_3_val_predictions.csv",
+      "bytes": 901474
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_4_val_metrics.json",
+      "bytes": 738
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_4_val_predictions.csv",
+      "bytes": 841211
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/all_fold_metrics.json",
+      "bytes": 3983
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_0_val_metrics.json",
+      "bytes": 741
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_0_val_predictions.csv",
+      "bytes": 827094
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_1_val_metrics.json",
+      "bytes": 680
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_1_val_predictions.csv",
+      "bytes": 1095063
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_2_val_metrics.json",
+      "bytes": 706
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_2_val_predictions.csv",
+      "bytes": 1036871
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_3_val_metrics.json",
+      "bytes": 710
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_3_val_predictions.csv",
+      "bytes": 901610
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_4_val_metrics.json",
+      "bytes": 694
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_4_val_predictions.csv",
+      "bytes": 841355
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/fusion_scan_results.csv",
+      "bytes": 469424
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/fusion_scan_summary.json",
+      "bytes": 187
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/riscv_backend_extension/riscv_backend_results.csv",
+      "bytes": 592124
+    },
+    {
+      "path": "DT1_ELEMENTWISE/outputs/riscv_backend_extension/riscv_backend_summary.json",
+      "bytes": 1416
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/build_corpus.py",
+      "bytes": 5253
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/build_folds.py",
+      "bytes": 4134
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/build_fusion_dataset.py",
+      "bytes": 4011
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/diagnose_learnability.py",
+      "bytes": 5419
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/final_aggregate.py",
+      "bytes": 4945
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/final_common.py",
+      "bytes": 9968
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/final_incontext_cv.py",
+      "bytes": 8504
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/final_train_eval_sft.py",
+      "bytes": 12822
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/make_final_figures.py",
+      "bytes": 21282
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/preflight.py",
+      "bytes": 1210
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/run_fusion_scan.py",
+      "bytes": 9348
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/run_riscv_backend_full.py",
+      "bytes": 26953
+    },
+    {
+      "path": "DT1_ELEMENTWISE/workers/run_riscv_fusion_pilot.py",
+      "bytes": 13889
+    },
+    {
+      "path": "DT1_GENERIC_OPT/workers/build_corpus.py",
+      "bytes": 3381
+    },
+    {
+      "path": "DT1_GENERIC_OPT/workers/scan_generic_opts.py",
+      "bytes": 11374
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_0/train.json",
+      "bytes": 365181
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_0/val.json",
+      "bytes": 91096
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_1/train.json",
+      "bytes": 366663
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_1/val.json",
+      "bytes": 89614
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_2/train.json",
+      "bytes": 365837
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_2/val.json",
+      "bytes": 90440
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_3/train.json",
+      "bytes": 364762
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_3/val.json",
+      "bytes": 91515
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_4/train.json",
+      "bytes": 362659
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/fold_4/val.json",
+      "bytes": 93618
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/folds/metadata.json",
+      "bytes": 3400
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/torch_dataset/metadata.json",
+      "bytes": 575
+    },
+    {
+      "path": "DT1_TORCH_OPT/data/torch_dataset/torch_dataset.json",
+      "bytes": 459640
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/val_metrics.json",
+      "bytes": 645
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/val_predictions.csv",
+      "bytes": 46898
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/val_metrics.json",
+      "bytes": 664
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/val_predictions.csv",
+      "bytes": 46233
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/val_metrics.json",
+      "bytes": 661
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/val_predictions.csv",
+      "bytes": 46444
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/val_metrics.json",
+      "bytes": 661
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/val_predictions.csv",
+      "bytes": 47082
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/val_metrics.json",
+      "bytes": 646
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/val_predictions.csv",
+      "bytes": 48240
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/val_metrics.json",
+      "bytes": 647
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/val_predictions.csv",
+      "bytes": 46815
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/val_metrics.json",
+      "bytes": 663
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/val_predictions.csv",
+      "bytes": 45922
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/val_metrics.json",
+      "bytes": 648
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/val_predictions.csv",
+      "bytes": 46436
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/val_metrics.json",
+      "bytes": 644
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/val_predictions.csv",
+      "bytes": 46851
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/adapter/adapter_config.json",
+      "bytes": 1086
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/val_metrics.json",
+      "bytes": 662
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/val_predictions.csv",
+      "bytes": 48096
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/all_fold_metrics.json",
+      "bytes": 4272
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_0_val_metrics.json",
+      "bytes": 771
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_0_val_predictions.csv",
+      "bytes": 46806
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_1_val_metrics.json",
+      "bytes": 772
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_1_val_predictions.csv",
+      "bytes": 46120
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_2_val_metrics.json",
+      "bytes": 766
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_2_val_predictions.csv",
+      "bytes": 46468
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_3_val_metrics.json",
+      "bytes": 754
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_3_val_predictions.csv",
+      "bytes": 46947
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_4_val_metrics.json",
+      "bytes": 757
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_4_val_predictions.csv",
+      "bytes": 48074
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/all_fold_metrics.json",
+      "bytes": 4272
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_0_val_metrics.json",
+      "bytes": 771
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_0_val_predictions.csv",
+      "bytes": 46808
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_1_val_metrics.json",
+      "bytes": 773
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_1_val_predictions.csv",
+      "bytes": 46126
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_2_val_metrics.json",
+      "bytes": 753
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_2_val_predictions.csv",
+      "bytes": 46430
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_3_val_metrics.json",
+      "bytes": 754
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_3_val_predictions.csv",
+      "bytes": 46970
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_4_val_metrics.json",
+      "bytes": 769
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_4_val_predictions.csv",
+      "bytes": 48037
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/all_fold_metrics.json",
+      "bytes": 4242
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_0_val_metrics.json",
+      "bytes": 756
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_0_val_predictions.csv",
+      "bytes": 46840
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_1_val_metrics.json",
+      "bytes": 768
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_1_val_predictions.csv",
+      "bytes": 46125
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_2_val_metrics.json",
+      "bytes": 771
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_2_val_predictions.csv",
+      "bytes": 46489
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_3_val_metrics.json",
+      "bytes": 739
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_3_val_predictions.csv",
+      "bytes": 46991
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_4_val_metrics.json",
+      "bytes": 756
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_4_val_predictions.csv",
+      "bytes": 48095
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/all_fold_metrics.json",
+      "bytes": 4060
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_0_val_metrics.json",
+      "bytes": 724
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_0_val_predictions.csv",
+      "bytes": 46754
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_1_val_metrics.json",
+      "bytes": 740
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_1_val_predictions.csv",
+      "bytes": 45964
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_2_val_metrics.json",
+      "bytes": 723
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_2_val_predictions.csv",
+      "bytes": 46430
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_3_val_metrics.json",
+      "bytes": 712
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_3_val_predictions.csv",
+      "bytes": 46832
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_4_val_metrics.json",
+      "bytes": 709
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/final_cv/zero/fold_4_val_predictions.csv",
+      "bytes": 47960
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/torch_opt_scan.csv",
+      "bytes": 326876
+    },
+    {
+      "path": "DT1_TORCH_OPT/outputs/torch_opt_summary.json",
+      "bytes": 1037
+    },
+    {
+      "path": "DT1_TORCH_OPT/scripts/generate_dt1_figures.py",
+      "bytes": 46591
+    },
+    {
+      "path": "DT1_TORCH_OPT/workers/build_folds.py",
+      "bytes": 5304
+    },
+    {
+      "path": "DT1_TORCH_OPT/workers/build_torch_dataset.py",
+      "bytes": 5861
+    },
+    {
+      "path": "DT1_TORCH_OPT/workers/final_common.py",
+      "bytes": 11412
+    },
+    {
+      "path": "DT1_TORCH_OPT/workers/final_common_linalg_backup.py",
+      "bytes": 9968
+    },
+    {
+      "path": "DT1_TORCH_OPT/workers/final_incontext_cv.py",
+      "bytes": 8542
+    },
+    {
+      "path": "DT1_TORCH_OPT/workers/final_train_eval_sft.py",
+      "bytes": 12869
+    },
+    {
+      "path": "DT1_TORCH_OPT/workers/final_train_eval_sft_balanced.py",
+      "bytes": 5493
+    },
+    {
+      "path": "DT1_TORCH_OPT/workers/scan_torch_opts.py",
+      "bytes": 12260
+    },
+    {
+      "path": "FINAL_FIGURES/DT1/dt1_metrics_summary.csv",
+      "bytes": 943
+    },
+    {
+      "path": "FINAL_FIGURES/DT1/dt1_per_class_f1.csv",
+      "bytes": 156
+    },
+    {
+      "path": "FINAL_FIGURES/DT2/dt2_class_metrics.csv",
+      "bytes": 327
+    },
+    {
+      "path": "FINAL_FIGURES/DT2/dt2_dialect_metrics.csv",
+      "bytes": 230
+    },
+    {
+      "path": "FINAL_FIGURES/DT2/dt2_metrics_summary.csv",
+      "bytes": 455
+    },
+    {
+      "path": "FINAL_FIGURES/scripts/generate_final_figures.py",
+      "bytes": 13216
+    },
+    {
+      "path": "FINAL_FIGURES/scripts/run_final_figures.sh",
+      "bytes": 277
+    },
+    {
+      "path": "dt1_rvv/outputs/dt1_sft_adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "dt1_rvv/outputs/dt1_sft_checkpoints/checkpoint-160/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "dt1_rvv/outputs/dt1_sft_checkpoints/checkpoint-192/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "dt1_rvv/workers/build_program_set.py",
+      "bytes": 6029
+    },
+    {
+      "path": "dt1_rvv/workers/build_train_program_set.py",
+      "bytes": 3481
+    },
+    {
+      "path": "dt1_rvv/workers/check_toolchain.py",
+      "bytes": 886
+    },
+    {
+      "path": "dt1_rvv/workers/dt1_common.py",
+      "bytes": 5870
+    },
+    {
+      "path": "dt1_rvv/workers/prepare_test_benefit.py",
+      "bytes": 5003
+    },
+    {
+      "path": "dt1_rvv/workers/prepare_train_benefit.py",
+      "bytes": 6174
+    },
+    {
+      "path": "dt1_rvv/workers/run_all_rvv.py",
+      "bytes": 11827
+    },
+    {
+      "path": "dt1_rvv/workers/run_dt1_sft.py",
+      "bytes": 12604
+    },
+    {
+      "path": "dt1_rvv/workers/run_dt1_three_shot.py",
+      "bytes": 6300
+    },
+    {
+      "path": "dt1_rvv/workers/run_dt1_zero_shot.py",
+      "bytes": 4684
+    },
+    {
+      "path": "dt1_rvv/workers/run_train_rvv.py",
+      "bytes": 11841
+    },
+    {
+      "path": "fdt2.py",
+      "bytes": 14567
+    },
+    {
+      "path": "figures-dt2.py",
+      "bytes": 8646
+    },
+    {
+      "path": "outputs/dt2_all-dataset/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "outputs/dt2_all-dataset/adapter/adapter_config.json",
+      "bytes": 1164
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_examples.json",
+      "bytes": 810
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_metrics.json",
+      "bytes": 2786
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_predictions.csv",
+      "bytes": 3852354
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_examples.json",
+      "bytes": 810
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_metrics.json",
+      "bytes": 2772
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_predictions.csv",
+      "bytes": 3852270
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_sft_test_metrics.json",
+      "bytes": 2673
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_sft_test_predictions.csv",
+      "bytes": 3852037
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_sft_validation_metrics.json",
+      "bytes": 2643
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_sft_validation_predictions.csv",
+      "bytes": 3941456
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_zero_shot_metrics.json",
+      "bytes": 2742
+    },
+    {
+      "path": "outputs/dt2_all-dataset/predictions/all-dataset_zero_shot_predictions.csv",
+      "bytes": 3852160
+    },
+    {
+      "path": "outputs/dt2_final/adapter/README.md",
+      "bytes": 5216
+    },
+    {
+      "path": "scripts/Downstream-Task-2-R1-Revised.ipynb",
+      "bytes": 119
+    },
+    {
+      "path": "scripts/Downstream-Task-2.ipynb",
+      "bytes": 24474
+    },
+    {
+      "path": "scripts/multigpu_smoke_test.py",
+      "bytes": 2934
+    },
+    {
+      "path": "scripts/r2_workers/common.py",
+      "bytes": 2925
+    },
+    {
+      "path": "scripts/r2_workers/evaluate_sft.py",
+      "bytes": 2802
+    },
+    {
+      "path": "scripts/r2_workers/run_three_shot.py",
+      "bytes": 4039
+    },
+    {
+      "path": "scripts/r2_workers/run_zero.py",
+      "bytes": 2511
+    },
+    {
+      "path": "scripts/r2_workers/train_sft.py",
+      "bytes": 3449
+    },
+    {
+      "path": "scripts/r2_workers_all_dataset/build_all_dataset_split.py",
+      "bytes": 10291
+    },
+    {
+      "path": "scripts/r2_workers_all_dataset/common.py",
+      "bytes": 4307
+    },
+    {
+      "path": "scripts/r2_workers_all_dataset/evaluate_sft.py",
+      "bytes": 3434
+    },
+    {
+      "path": "scripts/r2_workers_all_dataset/run_six_shot.py",
+      "bytes": 5192
+    },
+    {
+      "path": "scripts/r2_workers_all_dataset/run_zero.py",
+      "bytes": 3389
+    },
+    {
+      "path": "scripts/r2_workers_all_dataset/summarize_results.py",
+      "bytes": 1984
+    },
+    {
+      "path": "scripts/r2_workers_all_dataset/train_sft.py",
+      "bytes": 7977
+    }
+  ]
+}

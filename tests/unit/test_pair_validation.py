@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch
 import numpy as np
-from agents.execution_sandbox_agent.tools.execution import parse_input_spec, typed_output, compare_outputs
-from agents.execution_sandbox_agent.tools.pair_validation import (validate_pair, serialize_inputs, deserialize_inputs, compare_typed, digest, published_label)
-from agents.execution_sandbox_agent.tools.input_policy import (InputPolicyError, check_inputs, generate_inputs)
+from mlirbench.execution.execution import parse_input_spec, typed_output, compare_outputs
+from mlirbench.execution.pair_validation import (validate_pair, serialize_inputs, deserialize_inputs, compare_typed, digest, published_label)
+from mlirbench.execution.input_policy import (InputPolicyError, check_inputs, generate_inputs)
 
 IDENTITY = 'module { func.func @main(%x: tensor<2xf32>) -> tensor<2xf32> { return %x : tensor<2xf32> } }'
 GATHER = '''module {
@@ -23,7 +23,7 @@ class Contracts(unittest.TestCase):
         with self.assertRaises(ValueError): parse_input_spec(GATHER.replace('[2,3]', '[?,3]'))
 
     def test_incompatible_dtype_never_compiles(self):
-        with patch('agents.execution_sandbox_agent.tools.pair_validation.compile_mlir') as compile:
+        with patch('mlirbench.execution.pair_validation.compile_mlir') as compile:
             r = validate_pair(IDENTITY, IDENTITY.replace('f32', 'f64'), 'linalg')
         self.assertEqual(r['verdict'], 'INCOMPARABLE_INPUT_SIGNATURES'); compile.assert_not_called()
 
@@ -79,7 +79,7 @@ class Contracts(unittest.TestCase):
                               ([output(1),output(2)]*2, 'NONDETERMINISTIC'),
                               ([output(np.nan)]*4, 'NONFINITE_OUTPUT'),
                               ([{'status': 'timeout'}]*4, 'RUNTIME_TIMEOUT')]:
-            with self.subTest(verdict=verdict), patch('agents.execution_sandbox_agent.tools.pair_validation.compile_mlir', return_value=compile_result), patch('agents.execution_sandbox_agent.tools.pair_validation.run_compiled', side_effect=runs):
+            with self.subTest(verdict=verdict), patch('mlirbench.execution.pair_validation.compile_mlir', return_value=compile_result), patch('mlirbench.execution.pair_validation.run_compiled', side_effect=runs):
                 self.assertEqual(validate_pair(IDENTITY, IDENTITY, 'linalg', seeds=[42])['verdict'], verdict)
 
     def test_malformed_recorded_inputs(self):
@@ -96,15 +96,6 @@ class Contracts(unittest.TestCase):
             with self.assertRaises(InputPolicyError) as exc: check_inputs(source, ['%x'], [np.array(values, dtype=np.float32)], 'torch')
             self.assertEqual(exc.exception.status, 'INVALID_INPUT')
 
-    def test_judge_skips_unverified_ground_truth_without_credentials(self):
-        from agents.judge_agent.node import judge_agent
-        state = {'judge_input': {'programA': IDENTITY, 'programB': IDENTITY, 'dialect': 'linalg',
-                 'compilation_status_A': 'success', 'compilation_status_B': 'success',
-                 'outputs_diverge': None, 'validation_verdict': 'NO_DIFFERENCE_OBSERVED'}}
-        with patch('agents.judge_agent.node._get_judge_llm') as llm:
-            result = judge_agent(state)
-        self.assertEqual(result['judge_payload']['status'], 'skipped_unverified_ground_truth')
-        llm.assert_not_called()
 
     def test_linalg_denominator_uses_declared_precision(self):
         source = """module {

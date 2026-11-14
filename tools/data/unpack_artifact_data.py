@@ -27,7 +27,7 @@ def unpack(bundle, destination):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--bundle', type=Path, default=Path('data/artifact_bundle'))
+    ap.add_argument('--bundle', type=Path, default=Path('data/bundle'))
     ap.add_argument('--destination', type=Path, default=Path('data/processed'))
     args = ap.parse_args()
     print(f'Verified and unpacked {unpack(args.bundle, args.destination)} published files')

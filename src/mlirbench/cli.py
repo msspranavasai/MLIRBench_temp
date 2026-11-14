@@ -6,9 +6,9 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[2]
 DATASET = ROOT / 'data/processed/MLIRBench/master/master.jsonl'
-HISTORICAL = ROOT / 'data/replay/historical_execution.jsonl'
+HISTORICAL = ROOT / 'data/historical/historical_execution.jsonl'
 KNOWN = ('seed1_linalg_prog7_L1_R2', 'seed1_linalg_prog10_L3_R4',
          'seed1_linalg_prog10_L4_R4', 'seed2_linalg_prog16_L4_R4',
          'seed2_linalg_prog13_L4_R4', 'torch_seed4_prog40_T1_R1',
@@ -29,7 +29,7 @@ def select_sample(rows):
 
 
 def published_comparison(record, report):
-    from agents.execution_sandbox_agent.tools.pair_validation import published_label
+    from mlirbench.execution.pair_validation import published_label
     label, verdict = published_label(record), report['verdict']
     if label == 'DIVERGE':
         return 'REPRODUCED' if verdict == 'DIVERGE' else 'NOT_REPRODUCED' if verdict == 'NO_DIFFERENCE_OBSERVED' else 'UNVERIFIED'
@@ -63,6 +63,14 @@ def write_reports(path, reports):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     sub = ap.add_subparsers(dest='command', required=True)
+    for name, help_text in [('quickstart', 'Run the offline reviewer workflow and write one readiness report'),
+                            ('reproduce', 'Regenerate paper-facing metrics from archived observations'),
+                            ('reproduce-downstream', 'Regenerate downstream metrics from saved predictions')]:
+        parser = sub.add_parser(name, help=help_text)
+        parser.add_argument('--output', type=Path, required=True)
+    parser = sub.add_parser('readiness', help='Report unfinished AE requirements explicitly')
+    parser.add_argument('--results', type=Path, required=True)
+    sub.add_parser('prepare-data', help='Unpack and verify immutable data bundles')
     sub.add_parser('check', help='Check local toolchain and execute tiny programs')
     info = sub.add_parser('dataset-info'); info.add_argument('--dataset', type=Path, default=DATASET)
     v = sub.add_parser('validate', help='Canonical deterministic suite or explicit recorded input replay')
@@ -79,6 +87,22 @@ def main(argv=None):
     sub.add_parser('test', help='Run offline unit and compiler integration tests')
     sub.add_parser('score-recorded', help='Summarize recorded labels/scores and expose missing predictions')
     args = ap.parse_args(argv)
+    if args.command == 'prepare-data':
+        from .ae import prepare_data
+        print(json.dumps(prepare_data(ROOT), indent=2)); return 0
+    if args.command == 'quickstart':
+        from .ae import quickstart
+        return quickstart(ROOT, args.output)
+    if args.command == 'reproduce':
+        from .evaluation.reproduce import reproduce
+        print(json.dumps(reproduce(ROOT, args.output), indent=2)); return 0
+    if args.command == 'reproduce-downstream':
+        from .evaluation.downstream import reproduce_downstream
+        print(json.dumps(reproduce_downstream(ROOT, args.output), indent=2)); return 0
+    if args.command == 'readiness':
+        from .ae import readiness
+        report = readiness(ROOT, args.results)
+        print(json.dumps(report, indent=2)); return 0 if report['status'] == 'READY_FOR_SUBMISSION_REVIEW' else 2
     if args.command == 'dataset-info':
         rows = load(args.dataset)
         print(json.dumps({'records': len(rows), 'sha256': hashlib.sha256(args.dataset.read_bytes()).hexdigest(),
@@ -86,29 +110,23 @@ def main(argv=None):
                           'dialects': dict(collections.Counter(r['dialect'] for r in rows)),
                           'statuses': dict(collections.Counter(str(r['pairs__status']) for r in rows))}, indent=2)); return 0
     if args.command == 'score-recorded':
-        from recorded_scores import summarize
+        from .evaluation.recorded import summarize
         path = ROOT / 'data/processed/MLIRBench/evaluation/evaluation.jsonl'
         report = summarize(load(DATASET), load(path))
         report['master_sha256'] = hashlib.sha256(DATASET.read_bytes()).hexdigest()
         report['evaluation_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
         print(json.dumps(report, indent=2, allow_nan=False)); return 0
     if args.command == 'test':
-        import unittest
-        sys.path.insert(0, str(ROOT / 'src'))
-        suite = unittest.defaultTestLoader.discover(str(ROOT / 'tests'), pattern='test_*.py')
-        return 0 if unittest.TextTestRunner(verbosity=2).run(suite).wasSuccessful() else 1
-    from agents.execution_sandbox_agent.tools.pair_validation import validate_pair, environment, published_label
+        from .ae import run_tests
+        report = run_tests(ROOT)
+        print(json.dumps(report, indent=2)); return 0 if report['passed'] else 1
+    from mlirbench.execution.pair_validation import validate_pair, environment, published_label
     if args.command == 'check':
-        import shutil
-        env = environment(); env['executables'] = {n: shutil.which(n) for n in ('mlir-opt', 'torch-mlir-opt', 'iree-compile', 'iree-benchmark-module')}
-        sources = {'linalg': 'module { func.func @main(%arg0: tensor<2xf32>) -> tensor<2xf32> { return %arg0 : tensor<2xf32> } }',
-                   'torch': 'module { func.func @main(%arg0: !torch.vtensor<[2],f32>) -> !torch.vtensor<[2],f32> { return %arg0 : !torch.vtensor<[2],f32> } }'}
-        smoke = {d: validate_pair(s, s, d, seeds=[42]) for d, s in sources.items()}
-        env['smoke'] = {d: r['verdict'] for d, r in smoke.items()}
-        env['smoke_failures'] = {d: r for d, r in smoke.items() if r['verdict'] != 'NO_DIFFERENCE_OBSERVED'}
-        print(json.dumps(env, indent=2)); return 0 if all(env['executables'].values()) and set(env['smoke'].values()) == {'NO_DIFFERENCE_OBSERVED'} else 1
+        from .ae import check_environment
+        report = check_environment()
+        print(json.dumps(report, indent=2)); return 0 if report['passed'] else 1
     if args.command == 'historical-candidate':
-        from agents.execution_sandbox_agent.tools.historical_replay import replay_candidate
+        from mlirbench.execution.historical_replay import replay_candidate
         row = next((r for r in load(DATASET) if r['program_id'] == args.id), None)
         if row is None: ap.error('Unknown program ID')
         evidence = next(r for r in load(HISTORICAL) if r['program_id'] == args.id)
@@ -134,8 +152,8 @@ def main(argv=None):
         print(f"[{i}/{len(selected)}] {r['program_id']}", file=sys.stderr, flush=True)
         recorded = json.loads(args.inputs.read_text()) if args.inputs else None
         if args.stored_metadata:
-            from agents.execution_sandbox_agent.tools.pair_validation import argument_names
-            from agents.execution_sandbox_agent.tools.execution import parse_input_spec
+            from mlirbench.execution.pair_validation import argument_names
+            from mlirbench.execution.execution import parse_input_spec
             values = json.loads(evidence[r['program_id']]['historical_fields']['judge__embedded_inputs_json'])
             specs = parse_input_spec(r['input_mlir'])
             recorded = [{'position': i, **s, 'data': values[n]} for i, (n, s) in enumerate(zip(argument_names(r['input_mlir']), specs))]

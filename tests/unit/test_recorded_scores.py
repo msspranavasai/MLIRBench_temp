@@ -1,5 +1,5 @@
 import unittest
-from recorded_scores import summarize
+from mlirbench.evaluation.recorded import summarize
 
 
 class RecordedScores(unittest.TestCase):

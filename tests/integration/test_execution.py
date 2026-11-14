@@ -1,7 +1,7 @@
 import importlib.util
 import unittest
 from unittest.mock import patch
-from agents.execution_sandbox_agent.tools.pair_validation import validate_pair, deserialize_inputs
+from mlirbench.execution.pair_validation import validate_pair, deserialize_inputs
 from tests.unit.test_pair_validation import IDENTITY, GATHER
 
 
@@ -27,13 +27,6 @@ class IreeExecution(unittest.TestCase):
         self.assertEqual(r['verdict'], 'INVALID_INPUT')
         self.assertNotIn('runs', r['trials'][0])
 
-    def test_node_no_external_explanation_or_benchmark(self):
-        from agents.execution_sandbox_agent.node import execution_sandbox_agent
-        with patch('agents.execution_sandbox_agent.node.generate_semantic_explanation') as llm:
-            r = execution_sandbox_agent({'toExecutionAgent': {'input_mlir': IDENTITY, 'mutated_mlir': IDENTITY, 'dialect': 'linalg'}})
-        ex = r['Agents']['Execution_Agent']['execution_results']
-        self.assertEqual(ex['validation_verdict'], 'NO_DIFFERENCE_OBSERVED')
-        self.assertIsNone(ex['outputs_diverge']); llm.assert_not_called()
 
     def test_torch_identity_requires_explicit_lowering(self):
         s = 'module { func.func @main(%x: !torch.vtensor<[2],f32>) -> !torch.vtensor<[2],f32> { return %x : !torch.vtensor<[2],f32> } }'

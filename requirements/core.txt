@@ -1,0 +1,7 @@
+numpy==2.4.6
+iree-compiler==20241104.1068
+iree-runtime==20241104.1068
+torch-mlir==20261101
+sympy==1.14.0
+mpmath==1.3.0
+packaging==26.3

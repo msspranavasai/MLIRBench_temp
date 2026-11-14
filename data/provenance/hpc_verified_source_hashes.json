@@ -1,0 +1,1444 @@
+{
+  "files": {
+    "fdt2.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/fdt2.py",
+      "bytes": 14567,
+      "sha256": "293f05ca8a7370380e60b0dc3301798fcc9ca4ba71de5d55c5bc948f8a50ff97"
+    },
+    "figures-dt2.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/figures-dt2.py",
+      "bytes": 8646,
+      "sha256": "1cd5f3faec681c63e17549cb15f19d96d0110af6d54fcbbd997763f7a2547e81"
+    },
+    "DT1_ELEMENTWISE/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/README.md",
+      "bytes": 1091,
+      "sha256": "11755d821821a7dfc0055c1702248984af16b26a692f41dbb90f5946e75a9d0c"
+    },
+    "scripts/multigpu_smoke_test.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/multigpu_smoke_test.py",
+      "bytes": 2934,
+      "sha256": "ee4404a806ebd8d547b20ed4d861914397d66e68759494d2733a6c0e079a9443"
+    },
+    "scripts/Downstream-Task-2.ipynb": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/Downstream-Task-2.ipynb",
+      "bytes": 24474,
+      "sha256": "4731f854668a52301fa96b774a3a066f2aa06a153ce79497ec05d90d1acf2249"
+    },
+    "scripts/Downstream-Task-2-R1-Revised.ipynb": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/Downstream-Task-2-R1-Revised.ipynb",
+      "bytes": 119,
+      "sha256": "9309e50d839e2ef0462015687d5d4b549e0d574d60fc36b5f7df1d7ebdaf36c1"
+    },
+    "DT2_SPLITS/metadata.json": {
+      "source": "/home/pranava7/mlirbench/dt-2-all-dataset/data/outputs/metadata.json",
+      "bytes": 424,
+      "sha256": "01693658fa645a369c377cccb21457d7b3ce024b43d5b485824a7dcb96473c12"
+    },
+    "DT2_SPLITS/test.json": {
+      "source": "/home/pranava7/mlirbench/dt-2-all-dataset/data/outputs/test.json",
+      "bytes": 4000329,
+      "sha256": "4f022c42b0df9017466c239532cf3ce31a8bd26e1451ccf95e9f802a48431084"
+    },
+    "DT2_SPLITS/train.json": {
+      "source": "/home/pranava7/mlirbench/dt-2-all-dataset/data/outputs/train.json",
+      "bytes": 11102653,
+      "sha256": "79f9b5e14ef7c0e9e85e096df4eec3a7174117eeeacb3e72ae8f743760dcf176"
+    },
+    "DT2_SPLITS/val.json": {
+      "source": "/home/pranava7/mlirbench/dt-2-all-dataset/data/outputs/val.json",
+      "bytes": 4092662,
+      "sha256": "a60070a794eddda7bd29ddd6519e4bd609b552be450c4f59d2c5c3f3c31f76ca"
+    },
+    "DT2_SPLITS/all.json": {
+      "source": "/home/pranava7/mlirbench/dt-2-all-dataset/data/outputs/all.json",
+      "bytes": 19222160,
+      "sha256": "acf57e0dc5a43999185787ce78a846545c69ab3228ec5f4adf1e03164450be3f"
+    },
+    "DT1_TORCH_OPT/scripts/generate_dt1_figures.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/scripts/generate_dt1_figures.py",
+      "bytes": 46591,
+      "sha256": "a50d4d61de0f2f5d3f9da35b6c1897aa7bd348cae4639fd84c1096f05fdbd8f0"
+    },
+    "DT1_TORCH_OPT/workers/build_folds.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/workers/build_folds.py",
+      "bytes": 5304,
+      "sha256": "d14480d18d9ad6e785eca246dbcef235b08fe9d256fd08aae5c2f8ee80a1c678"
+    },
+    "DT1_TORCH_OPT/workers/final_train_eval_sft.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/workers/final_train_eval_sft.py",
+      "bytes": 12869,
+      "sha256": "1692f3cf3724b7f15f74cfab98a9e40d6e7769c61dff5f4fd39d1061186f44c4"
+    },
+    "DT1_TORCH_OPT/workers/final_common_linalg_backup.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/workers/final_common_linalg_backup.py",
+      "bytes": 9968,
+      "sha256": "c5320f78d240d3d0d7e7fde03ca6d685fdf0ab101bd279a88dffb20ad4c68557"
+    },
+    "DT1_TORCH_OPT/workers/final_incontext_cv.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/workers/final_incontext_cv.py",
+      "bytes": 8542,
+      "sha256": "12b30404ad24e9adcbb4196fa7d67680a6d47c89d6a3bde7f9d77b60857c4d6c"
+    },
+    "DT1_TORCH_OPT/workers/final_common.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/workers/final_common.py",
+      "bytes": 11412,
+      "sha256": "3f6ff1ee8721c57f7e7b84ef7035ab5fd1b47d21f11591480bb66d9284a6e9c3"
+    },
+    "DT1_TORCH_OPT/workers/scan_torch_opts.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/workers/scan_torch_opts.py",
+      "bytes": 12260,
+      "sha256": "d008e23528f99330523f27f46fbb8f534613235fe4ae1b3cdca8da7318ed8c85"
+    },
+    "DT1_TORCH_OPT/workers/build_torch_dataset.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/workers/build_torch_dataset.py",
+      "bytes": 5861,
+      "sha256": "efb1a1fc18f8d515a44dc4e215ccf3a5d6f200241e161b6ebebfba79f7469f9e"
+    },
+    "DT1_TORCH_OPT/workers/final_train_eval_sft_balanced.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/workers/final_train_eval_sft_balanced.py",
+      "bytes": 5493,
+      "sha256": "1c5fe745313517121078fee19f86d596b8161e71766920725a0e32a9865a5956"
+    },
+    "DT1_TORCH_OPT/outputs/torch_opt_scan.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/torch_opt_scan.csv",
+      "bytes": 326876,
+      "sha256": "7cae632acf6af966227cbdc364e12d09f8697be84033c59edd701abf71bd1f2f"
+    },
+    "DT1_TORCH_OPT/outputs/torch_opt_summary.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/torch_opt_summary.json",
+      "bytes": 1037,
+      "sha256": "8a4b64108edfc4432ba6af236a038799241a8de54c00bd4acce70ca29750da60"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_3_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_3_val_predictions.csv",
+      "bytes": 46947,
+      "sha256": "d1650505886a95baee21b3ab8707287570095b2a4036add5ef769514301b608b"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_2_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_2_val_predictions.csv",
+      "bytes": 46468,
+      "sha256": "508d63474e4241184ad1d5ee1a1144ca58eeef639e1b4bca8e374488b1f3fa5f"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_0_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_0_val_metrics.json",
+      "bytes": 771,
+      "sha256": "c6d71f5a9264bd70d5f0ccdbfd093e398cc48eeda8fd267259ad022ab4fae525"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_1_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_1_val_predictions.csv",
+      "bytes": 46120,
+      "sha256": "83c9df70b8b4a5d685139fe9cedb92fc8c243415affbbc7c8a683b784d4d2f4b"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_0_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_0_val_predictions.csv",
+      "bytes": 46806,
+      "sha256": "aa1311c9b2d97457302e5772801a4f5c198a5cde52cf9b9b3fbc09b89893c907"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_4_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_4_val_metrics.json",
+      "bytes": 757,
+      "sha256": "fbe271b0ec139e177da40d11bb30402b67f7bd6b1f070f853989015050ed066f"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_4_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_4_val_predictions.csv",
+      "bytes": 48074,
+      "sha256": "a6fd5dacb751d40ecf57adda76db1a4b283f2458eb6f2679a416a6630aad613e"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_1_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_1_val_metrics.json",
+      "bytes": 772,
+      "sha256": "ecbeeca212fc91b8e3bb28c8a02d24e1b3d96dd629228faaf62cecc714377434"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_2_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_2_val_metrics.json",
+      "bytes": 766,
+      "sha256": "5e979fd21cf7c113de8e350eb86144809ee034f4a74776cba543009262828f68"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/all_fold_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/all_fold_metrics.json",
+      "bytes": 4272,
+      "sha256": "69740dd4fec18e35901565e42757d190278fb762ad06c76fea093f5073e7c605"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_3_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_123/fold_3_val_metrics.json",
+      "bytes": 754,
+      "sha256": "3166ed01b0df30090a8450076544dbac959bec3aa13dcdcac583d95c2dcb28d4"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_3_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_3_val_predictions.csv",
+      "bytes": 46970,
+      "sha256": "0a7f86d8ab260bfeec0fca0891b1e6bfea3b49f785280fa0e6f1ae95cfc560ab"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_2_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_2_val_predictions.csv",
+      "bytes": 46430,
+      "sha256": "102076dd59323cd0f4be19ed1ef36f722a33878cb3ffc190e5916b760b3b5813"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_0_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_0_val_metrics.json",
+      "bytes": 771,
+      "sha256": "485811c8faed3aaf168f76a06265b250d4aa5006145fee6c6bcddecbdc337b83"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_1_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_1_val_predictions.csv",
+      "bytes": 46126,
+      "sha256": "a9918315f83a6eb4617c61490b105e0b593f6947be5abf93812732302066c01a"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_0_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_0_val_predictions.csv",
+      "bytes": 46808,
+      "sha256": "44fffd66ed45e7ac571e7af7b9b9774b6822873a68648f464eb8e3fc39807c5c"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_4_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_4_val_metrics.json",
+      "bytes": 769,
+      "sha256": "1f6ab123dbe0cf38a7d53d185f5bceb08529fef437c2d43de5a4f774f8ce87d2"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_4_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_4_val_predictions.csv",
+      "bytes": 48037,
+      "sha256": "9fa4cf3ddccc8568c2b9a3bdb33d115dce4caa3af288b10ac57a12ae0d6a0cdb"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_1_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_1_val_metrics.json",
+      "bytes": 773,
+      "sha256": "14068642454a39708973590e9d70fd57758fd3258ce92e821e824a8d1657a3a4"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_2_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_2_val_metrics.json",
+      "bytes": 753,
+      "sha256": "73a1241fe7fbb5db1a4a4bac485532bfa5f799235ab32b61d7f1abd5c43ad6c4"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/all_fold_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/all_fold_metrics.json",
+      "bytes": 4272,
+      "sha256": "ceee7a61b8bf14e8f0276fe57a50715dc51b71335a6c3f7d3b3e45e905235618"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_3_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_2026/fold_3_val_metrics.json",
+      "bytes": 754,
+      "sha256": "bc60cf05436eaf9a1463544a2018cbc75a05aa9d14e29ee8bbc4104f36d0816f"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_3_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_3_val_predictions.csv",
+      "bytes": 46832,
+      "sha256": "58a41b7ee86c2fba370a169e1289e02c6742664b95acd1ffd5636fdaa54efdfc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_2_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_2_val_predictions.csv",
+      "bytes": 46430,
+      "sha256": "f9923eb6b5734be7d619a610f637f57a266fc5978b1f67ec58defa1f42c4729e"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_0_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_0_val_metrics.json",
+      "bytes": 724,
+      "sha256": "c5720c2f766aeb7608bb21f782bb5fb38e44c2bd9afa3c9456ad6bf0a8175f57"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_1_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_1_val_predictions.csv",
+      "bytes": 45964,
+      "sha256": "d405c2ffe6404dd143f66fe345d9949e7d3539c655c2d17120c485cd22aa9d71"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_0_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_0_val_predictions.csv",
+      "bytes": 46754,
+      "sha256": "3338c0a4e8adcdf5f19fee82a1a40b7f20dc0ece62216787e6741db8b251fc49"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_4_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_4_val_metrics.json",
+      "bytes": 709,
+      "sha256": "d78f300fb404251d76269421a4eec9d5cc3cecc679d602e6a384cf4aeea893f3"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_4_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_4_val_predictions.csv",
+      "bytes": 47960,
+      "sha256": "f3f6a0877ab4e42d426d53beaacf50078b443858eb87186925256802dda0791d"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_1_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_1_val_metrics.json",
+      "bytes": 740,
+      "sha256": "0842588f6c0cb0bbae79fff6deb835a3eaf1595f6ea5cf6708ae59019b7c6899"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_2_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_2_val_metrics.json",
+      "bytes": 723,
+      "sha256": "81a359f137a520a1a0475f0a1baae581e8f9e5a0df37a5c1d68027c9f36f355d"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/all_fold_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/all_fold_metrics.json",
+      "bytes": 4060,
+      "sha256": "c35a693c3f9c67a81dadf846fccf4a7c57cf6b567cb917687c2f88e5d7ae70d8"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/zero/fold_3_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/zero/fold_3_val_metrics.json",
+      "bytes": 712,
+      "sha256": "e2b9b25f1ac4b7235f060bc361e6c7874cde07e0227be42bfa244fc588181e79"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_3_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_3_val_predictions.csv",
+      "bytes": 46991,
+      "sha256": "4d6fa414145e60efd5a12514e6c8c9df6280d2917747449e1289197e8c0606b2"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_2_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_2_val_predictions.csv",
+      "bytes": 46489,
+      "sha256": "605b32645e342cd8ae275be728b75a49bf0b1a709ca3b5111cb132d28a1f60d9"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_0_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_0_val_metrics.json",
+      "bytes": 756,
+      "sha256": "f6d06860fc2aa5542638d09bf151880185242ea3faa8f718a9febf8f528d23e4"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_1_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_1_val_predictions.csv",
+      "bytes": 46125,
+      "sha256": "83883de7155b1b992da5d4a11e6a29bfe6071310a9e4c3a8c83d78af49245d8c"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_0_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_0_val_predictions.csv",
+      "bytes": 46840,
+      "sha256": "b65693b77ea486d5e129bd8552022a1c14bec7d7472001adbcdcefa11f3e808e"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_4_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_4_val_metrics.json",
+      "bytes": 756,
+      "sha256": "1bc716019fa2b0c15e2ec5ec3fb113e063c5a0512a4319721adee0ac2609d060"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_4_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_4_val_predictions.csv",
+      "bytes": 48095,
+      "sha256": "99b5936f0f7266f062117390f34e11999737e48b2541dae88df253a927c59c15"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_1_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_1_val_metrics.json",
+      "bytes": 768,
+      "sha256": "d996e8540e91486198955df6323476a11d25b393bc2ca2dd8020fcc1d420c178"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_2_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_2_val_metrics.json",
+      "bytes": 771,
+      "sha256": "f8e93375f16eb5f363a0d2e44eea8b5c9d9373d9958fa04f624abd79d322bb2e"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/all_fold_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/all_fold_metrics.json",
+      "bytes": 4242,
+      "sha256": "52466b9a52adaedda5dc5f163d15d3f4d176b56aaede7a56e11377979f961b15"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_3_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/three_shot_seed_42/fold_3_val_metrics.json",
+      "bytes": 739,
+      "sha256": "4fa4fd911b285d09223bd3a34b2ab4bb414d4427b72319104cf7cbf521cc457b"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/val_metrics.json",
+      "bytes": 646,
+      "sha256": "e3ca6fc9efc8829e2e34cde9392aadb0dc2707272259b8fef585978d91c4a554"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/val_predictions.csv",
+      "bytes": 48240,
+      "sha256": "9623b6b3e604b11cb5e7916114933b7ce3d740e4baa590024ff3ba047b386e15"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/val_metrics.json",
+      "bytes": 661,
+      "sha256": "8e71bd40321158fac9a268fffaece3d52c8806a60aaeb0535706cc88c20973ea"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/val_predictions.csv",
+      "bytes": 47082,
+      "sha256": "fb7c44a64c085b5167e3073b85f2f22c7ec16e2cc87e58a5ef03eb23acaf5105"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/val_metrics.json",
+      "bytes": 661,
+      "sha256": "7d442d85f78f7661ebce044220d52277521742f5e880a176d4ed3aab7733aade"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/val_predictions.csv",
+      "bytes": 46444,
+      "sha256": "ef84a9d8b88181cbe9be3e82f464f71551d92ad042e309ad58af1a3f8321c83d"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/val_metrics.json",
+      "bytes": 645,
+      "sha256": "9d79fab784a8323ca98cfafa295b1615b2cd4d378a0a78b75470ba6cd3ed1aad"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/val_predictions.csv",
+      "bytes": 46898,
+      "sha256": "d88868c69b47a562747a8424954823fc68a1f6051566866b9c6346a084049b11"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/val_metrics.json",
+      "bytes": 664,
+      "sha256": "b7aeb7f2489c7c98c49f83d2f42ff04d1ebde1e831eda6ab365938119ec4f12a"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/val_predictions.csv",
+      "bytes": 46233,
+      "sha256": "c4b9b2af1a1ef99631bde5447e9c2e5c98d16d185705501c9ecdbd1b59ad549f"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_1/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "847e43c41522a4a346a8fbe7a117b73a3fc31f8ca4a2ab4f0bea2613956ba42a"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_0/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "f1fef4647faad5c68b463efb464a07a3cbd5323558b5f10a6837d6e2fb9c92e3"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_2/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "f1fef4647faad5c68b463efb464a07a3cbd5323558b5f10a6837d6e2fb9c92e3"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_3/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "f1fef4647faad5c68b463efb464a07a3cbd5323558b5f10a6837d6e2fb9c92e3"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft/fold_4/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "f1fef4647faad5c68b463efb464a07a3cbd5323558b5f10a6837d6e2fb9c92e3"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/val_metrics.json",
+      "bytes": 662,
+      "sha256": "0120ff27c351882bf7ad8222ae01ca7076f66f849178abbdfb38fa3fa13f009d"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/val_predictions.csv",
+      "bytes": 48096,
+      "sha256": "4de85aff369eabf5b78112c6d489ef1444302d117c3f1c634d08af5363d63a6c"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/val_metrics.json",
+      "bytes": 644,
+      "sha256": "3691996aadc529a13420b2f3cd692551e1dbaff7f6c3e43475f44967882a45b0"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/val_predictions.csv",
+      "bytes": 46851,
+      "sha256": "a78f1dfaf0add01bc7480a101ac8d0164f14961f08602d4cb77ef10e6180c717"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/val_metrics.json",
+      "bytes": 648,
+      "sha256": "440e99d490c4824f3ae083a59357b71f98a087987a364dc533b197fe0382cad6"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/val_predictions.csv",
+      "bytes": 46436,
+      "sha256": "a88be2fe81c53d01f0dcdf020c39452b07b9ed0b05098e486b6abb4341bfcf1b"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/val_metrics.json",
+      "bytes": 647,
+      "sha256": "94fd74067fbca8350fe0e733a1811841671f1da7a3ee6d5939b87e5b0dcf8a3b"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/val_predictions.csv",
+      "bytes": 46815,
+      "sha256": "1ec2aacee363c43693da05be893400dcc1cf827f687010cf73a8f3d22744f1fa"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/val_metrics.json",
+      "bytes": 663,
+      "sha256": "06db51c7b403bf0ab7a500e01a9ce05a06e053c787cb994cfc15e9aec20fc555"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/val_predictions.csv",
+      "bytes": 45922,
+      "sha256": "0d873f67112a8d4ca9fb2eb7a689a90f528b9c14f8d6e9b8337ce62ff6942240"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_1/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "847e43c41522a4a346a8fbe7a117b73a3fc31f8ca4a2ab4f0bea2613956ba42a"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_0/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "f1fef4647faad5c68b463efb464a07a3cbd5323558b5f10a6837d6e2fb9c92e3"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_2/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "847e43c41522a4a346a8fbe7a117b73a3fc31f8ca4a2ab4f0bea2613956ba42a"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_3/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "847e43c41522a4a346a8fbe7a117b73a3fc31f8ca4a2ab4f0bea2613956ba42a"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/outputs/final_cv/sft_unbalanced/fold_4/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "847e43c41522a4a346a8fbe7a117b73a3fc31f8ca4a2ab4f0bea2613956ba42a"
+    },
+    "DT1_TORCH_OPT/data/torch_dataset/torch_dataset.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/torch_dataset/torch_dataset.json",
+      "bytes": 459640,
+      "sha256": "6e3beb4011a66269893d98685e0bff4574424a69d2ce01065732f27801d2d315"
+    },
+    "DT1_TORCH_OPT/data/torch_dataset/metadata.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/torch_dataset/metadata.json",
+      "bytes": 575,
+      "sha256": "b5259065390d39bb47e0ac5073caa9c431e4e8288a3ffb49457e44166e1d5ab5"
+    },
+    "DT1_TORCH_OPT/data/folds/metadata.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/metadata.json",
+      "bytes": 3400,
+      "sha256": "86ef3cf931dd558ca6b3ed438f2afc2a016b1b3d922e13c1b5803b7dff917a43"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_4/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_4/train.json",
+      "bytes": 362659,
+      "sha256": "8c7a6d39a50ae347a29a1d1b8baf85de8e85769cd84bc50f174c2bf0ed38307c"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_4/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_4/val.json",
+      "bytes": 93618,
+      "sha256": "605262b047b9d834c076191a3715e7b79d8ea89ffc8eee7c9d90f816fdc0104d"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_3/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_3/train.json",
+      "bytes": 364762,
+      "sha256": "584f0cdfbb2f2379dbf388045a1672ac475db3e11743ee49f5f856187110c6ff"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_3/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_3/val.json",
+      "bytes": 91515,
+      "sha256": "d780793f73cea8a20b2bdfc8b14dc4c51745a49458ce6ba0e7161b4762ff0dc5"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_2/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_2/train.json",
+      "bytes": 365837,
+      "sha256": "a3743b003feb8900ed2a09cabbc6b268ce6f001e268b59f4128154927464eb01"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_2/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_2/val.json",
+      "bytes": 90440,
+      "sha256": "549d8cabe595f5ed39dfa956fc53f6dc3a0ea9a1f22e98428806c702725b353b"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_0/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_0/train.json",
+      "bytes": 365181,
+      "sha256": "1a7fd6a3d11b00f5016e6fe075841bf3a8378d3f65e67359c156915427ef3fb8"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_0/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_0/val.json",
+      "bytes": 91096,
+      "sha256": "149ff5d3b81eec8454d9ef909ef48770524b475bbd31cf6ee3eaef94a9fb4573"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_1/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_1/train.json",
+      "bytes": 366663,
+      "sha256": "87de768b9299250115f6a895bee21ed8748580c395c51c2cc2cd8fa9a79bc54e"
+    },
+    "DT1_TORCH_OPT/data/folds/fold_1/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_TORCH_OPT/data/folds/fold_1/val.json",
+      "bytes": 89614,
+      "sha256": "0fce24a2c88dc7d0845ac0f085c83903234b29ac292f438b766c99f22887b71b"
+    },
+    "outputs/dt2_final/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_final/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "outputs/dt2_all-dataset/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "outputs/dt2_all-dataset/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/adapter/adapter_config.json",
+      "bytes": 1164,
+      "sha256": "67198239be237d9e5292d1130c653ee95422b33e6805ecf9e84b51b103dbf177"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_sft_test_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_sft_test_metrics.json",
+      "bytes": 2673,
+      "sha256": "6bfb9912c22edc373240eccd085520453fe23bb761d41dcb3ac418f958b93452"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_predictions.csv",
+      "bytes": 3852270,
+      "sha256": "dc2ef56190d3662f366d401d7253d5f8fab1e4d6a0278bb3485e9088b3999046"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_predictions.csv",
+      "bytes": 3852354,
+      "sha256": "368113d81b70a37142e3b216da660ffae79326e5f8b1dace16cd14ec6cd27233"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_sft_test_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_sft_test_predictions.csv",
+      "bytes": 3852037,
+      "sha256": "6e0e53660a5ab367767a6a30e0f0b2b9a4e6313e11b7b93620baa073746612c6"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_sft_validation_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_sft_validation_metrics.json",
+      "bytes": 2643,
+      "sha256": "b48a13d60eeb8c41d6a1985d5137926dae9f7679df1f6f07d938f3d56d3cd35a"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_sft_validation_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_sft_validation_predictions.csv",
+      "bytes": 3941456,
+      "sha256": "6019f2089c6ca784a4ad2c378689d0d3eaf658571486ba48efec769770150a23"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_zero_shot_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_zero_shot_metrics.json",
+      "bytes": 2742,
+      "sha256": "287be87bce8a6df93bbec6e2a62a5dab34c031506cbc4a49db2f0e32c46383de"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_metrics.json",
+      "bytes": 2786,
+      "sha256": "4b5c148ad359ca1f9d8c90bfce055d07e7b9157601bfe53247351070a22d0c91"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_examples.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_examples.json",
+      "bytes": 810,
+      "sha256": "e1404c1aa6670f8adb5e39ef69988da7bf721cefa6ee61abe68b6ee0402a2519"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_zero_shot_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_zero_shot_predictions.csv",
+      "bytes": 3852160,
+      "sha256": "ab50805040f97e20d6e3c170e0378e367bbf532c56cf5f38b485a8d7d789d616"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_42_metrics.json",
+      "bytes": 2772,
+      "sha256": "8256199adf3fd03679b7b3c9a5d84c5c7a38cd7a4eb2361893aac0c435f4791c"
+    },
+    "outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_examples.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/outputs/dt2_all-dataset/predictions/all-dataset_6shot_seed_123_examples.json",
+      "bytes": 810,
+      "sha256": "e40a3665b8fd33b0117269705910d0ef0920cfa1b8b793d432a4d6c7299218be"
+    },
+    "scripts/r2_workers/run_three_shot.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers/run_three_shot.py",
+      "bytes": 4039,
+      "sha256": "8fa91e6a98bb619b32536938728f21173637ff6bd97599cc1d36fc4fef4696b5"
+    },
+    "scripts/r2_workers/evaluate_sft.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers/evaluate_sft.py",
+      "bytes": 2802,
+      "sha256": "1c584817fd44789b10aa7f130b7cd08e2a48fa074f187465cd20579b9b68335c"
+    },
+    "scripts/r2_workers/train_sft.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers/train_sft.py",
+      "bytes": 3449,
+      "sha256": "9f48d4d733a25f5f353ca7e00fe499f42cc47676f5ccfdb266a29c41b156589f"
+    },
+    "scripts/r2_workers/common.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers/common.py",
+      "bytes": 2925,
+      "sha256": "0f9ac6b84ce3a08b23859b55d20e0ab003c338891295bae2b267858b27587bdc"
+    },
+    "scripts/r2_workers/run_zero.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers/run_zero.py",
+      "bytes": 2511,
+      "sha256": "4ea5aa8e1060da77bff77eaa38d6f5644944d20c002a8116376852aec712a6e5"
+    },
+    "scripts/r2_workers_all_dataset/summarize_results.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers_all_dataset/summarize_results.py",
+      "bytes": 1984,
+      "sha256": "ee6b3641366ef1083d6ca9d3bc21d598709a47b51fd39eaa01b27d49a73be91c"
+    },
+    "scripts/r2_workers_all_dataset/evaluate_sft.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers_all_dataset/evaluate_sft.py",
+      "bytes": 3434,
+      "sha256": "89c140c69617e017be5d3172801c6ad2f773df03161836614ff531a088b69ce6"
+    },
+    "scripts/r2_workers_all_dataset/train_sft.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers_all_dataset/train_sft.py",
+      "bytes": 7977,
+      "sha256": "c738aa890e9a308c93d9df827888c5a26a15c0bb89eddfcaaea220c0a317aaa7"
+    },
+    "scripts/r2_workers_all_dataset/build_all_dataset_split.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers_all_dataset/build_all_dataset_split.py",
+      "bytes": 10291,
+      "sha256": "30340cba1ab496608d5d46dbc31f7ea9849e9a85348cc1cdd90f0d7ffe92026a"
+    },
+    "scripts/r2_workers_all_dataset/common.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers_all_dataset/common.py",
+      "bytes": 4307,
+      "sha256": "79687d13306f9734fc56b74eda2072f5e190ae752d56e601a7c9e053e3759bc9"
+    },
+    "scripts/r2_workers_all_dataset/run_six_shot.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers_all_dataset/run_six_shot.py",
+      "bytes": 5192,
+      "sha256": "ea313b654bfef114c219365ab3054caf70d85bc4015d35e3ed1241430810455e"
+    },
+    "scripts/r2_workers_all_dataset/run_zero.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/scripts/r2_workers_all_dataset/run_zero.py",
+      "bytes": 3389,
+      "sha256": "167988c5d2053e112b86cec9414e25819b00268df4eb1803ad68d165e7045e67"
+    },
+    "FINAL_FIGURES/DT1/dt1_metrics_summary.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/FINAL_FIGURES/DT1/dt1_metrics_summary.csv",
+      "bytes": 943,
+      "sha256": "8b606497c14175fce11647bccd7f07cbdc17c18fd142177597c1a8cde4c10ced"
+    },
+    "FINAL_FIGURES/DT1/dt1_per_class_f1.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/FINAL_FIGURES/DT1/dt1_per_class_f1.csv",
+      "bytes": 156,
+      "sha256": "580f53367041b9cd1f2eb841fde8322c0dcb4b3d0d6cb70cc7fc50a219aea70f"
+    },
+    "FINAL_FIGURES/DT2/dt2_metrics_summary.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/FINAL_FIGURES/DT2/dt2_metrics_summary.csv",
+      "bytes": 455,
+      "sha256": "9af34ce9c68be30a137ec872077af40d212c8893e50a553df78aa144e04f9683"
+    },
+    "FINAL_FIGURES/DT2/dt2_dialect_metrics.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/FINAL_FIGURES/DT2/dt2_dialect_metrics.csv",
+      "bytes": 230,
+      "sha256": "175e4e12d2d2c134e9f0a8f1548a452445b7682b23c15ff7c336cbe0cd59ee6b"
+    },
+    "FINAL_FIGURES/DT2/dt2_class_metrics.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/FINAL_FIGURES/DT2/dt2_class_metrics.csv",
+      "bytes": 327,
+      "sha256": "ffd302b428246949c327f7b2524a68feb9da56a23ee739387fe89a69d7ed5345"
+    },
+    "FINAL_FIGURES/scripts/run_final_figures.sh": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/FINAL_FIGURES/scripts/run_final_figures.sh",
+      "bytes": 277,
+      "sha256": "ad83963b76d112e1f7da43f709ca423e26ccaaacbaf42eb39635d608ceb8c173"
+    },
+    "FINAL_FIGURES/scripts/generate_final_figures.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/FINAL_FIGURES/scripts/generate_final_figures.py",
+      "bytes": 13216,
+      "sha256": "8a5a32ceca8689e35af1a3d93845af96ca0ce6685a8ead2e7a4125c65988b096"
+    },
+    "DT1_GENERIC_OPT/workers/build_corpus.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_GENERIC_OPT/workers/build_corpus.py",
+      "bytes": 3381,
+      "sha256": "18b8a98ede6ee07596a6a905ccc8254a73b0617a3e48f3c8754c3144e2647d8e"
+    },
+    "DT1_GENERIC_OPT/workers/scan_generic_opts.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_GENERIC_OPT/workers/scan_generic_opts.py",
+      "bytes": 11374,
+      "sha256": "898bbd27949befd0f1081b2689323469d9aa96d6989f6293defa377b7c902eec"
+    },
+    "DT1_ELEMENTWISE/workers/build_folds.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/build_folds.py",
+      "bytes": 4134,
+      "sha256": "c4d965660e2c140977e6eed53dc361252559159c82dda08a8d8af58f8f53b9e2"
+    },
+    "DT1_ELEMENTWISE/workers/final_train_eval_sft.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/final_train_eval_sft.py",
+      "bytes": 12822,
+      "sha256": "08a1d14dc1672506be3d8491435d1da0bde11288ab11305834d05b361fa57d8a"
+    },
+    "DT1_ELEMENTWISE/workers/diagnose_learnability.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/diagnose_learnability.py",
+      "bytes": 5419,
+      "sha256": "1faa34a2f0bbb8a013f8a3191f954ba1ff1c7aeb1a78c86754ac28febedf8ece"
+    },
+    "DT1_ELEMENTWISE/workers/build_corpus.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/build_corpus.py",
+      "bytes": 5253,
+      "sha256": "02cee124fda6892615054fb1c97c5ec0f4033507c2bba407b6027b0770bb2fa0"
+    },
+    "DT1_ELEMENTWISE/workers/make_final_figures.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/make_final_figures.py",
+      "bytes": 21282,
+      "sha256": "438ad8d78bb8c8defa788abd192b7363edf9194260bcf68ef1345e3e74b4e386"
+    },
+    "DT1_ELEMENTWISE/workers/final_aggregate.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/final_aggregate.py",
+      "bytes": 4945,
+      "sha256": "7252d4a607c9da42d3dbb9fe6997b5f34416cf1bf30013aae612031324352c83"
+    },
+    "DT1_ELEMENTWISE/workers/run_fusion_scan.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/run_fusion_scan.py",
+      "bytes": 9348,
+      "sha256": "6b4817f314748b2a128551fa1b12600896ed55bd28c30245f74ab6cd3c5b9ec5"
+    },
+    "DT1_ELEMENTWISE/workers/final_incontext_cv.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/final_incontext_cv.py",
+      "bytes": 8504,
+      "sha256": "58de7035fc15d90c2cfd3869142cd9fb74c5abd43c7b961a27d33438fe099f24"
+    },
+    "DT1_ELEMENTWISE/workers/run_riscv_fusion_pilot.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/run_riscv_fusion_pilot.py",
+      "bytes": 13889,
+      "sha256": "07740d309e4605ad95919248b558b705ec2a5571e1a4c269bf6d0fac1b0990b3"
+    },
+    "DT1_ELEMENTWISE/workers/final_common.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/final_common.py",
+      "bytes": 9968,
+      "sha256": "c5320f78d240d3d0d7e7fde03ca6d685fdf0ab101bd279a88dffb20ad4c68557"
+    },
+    "DT1_ELEMENTWISE/workers/build_fusion_dataset.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/build_fusion_dataset.py",
+      "bytes": 4011,
+      "sha256": "00711152b6d6b0d8ad2e4d67424252036f471a23115dfdd160b0aeabe25e1687"
+    },
+    "DT1_ELEMENTWISE/workers/preflight.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/preflight.py",
+      "bytes": 1210,
+      "sha256": "732c7b88c4cf9b74406d2882d1a5ca32b7c48c461604627e2ef2277bdfb5858d"
+    },
+    "DT1_ELEMENTWISE/workers/run_riscv_backend_full.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/workers/run_riscv_backend_full.py",
+      "bytes": 26953,
+      "sha256": "4e11d3d88e140d7edd21e692615917b104776b5058806c51bdbbbc0ba1805fcc"
+    },
+    "DT1_ELEMENTWISE/data/corpus_metadata.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/corpus_metadata.json",
+      "bytes": 199,
+      "sha256": "9239061e9a87119c3ba456d9c5abf267b65c8bc15e327e517d9ec95171910572"
+    },
+    "DT1_ELEMENTWISE/outputs/fusion_scan_summary.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/fusion_scan_summary.json",
+      "bytes": 187,
+      "sha256": "9c7c83bd1080c8f0fefdf8d6e45f4249561940a4e21fa54eda73f9e0375ca7ec"
+    },
+    "DT1_ELEMENTWISE/outputs/fusion_scan_results.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/fusion_scan_results.csv",
+      "bytes": 469424,
+      "sha256": "3f759f7e88411567fc3a9cc4eed4c11a730eb43fb28394913ff356bb6f1329c7"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/pooled_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/pooled_metrics.json",
+      "bytes": 2887,
+      "sha256": "d62bda51c88ead5e0963ada495bb6c9af9197cb47df63b54410912dbb01b40fc"
+    },
+    "DT1_ELEMENTWISE/outputs/riscv_backend_extension/riscv_backend_results.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/riscv_backend_extension/riscv_backend_results.csv",
+      "bytes": 592124,
+      "sha256": "0d41f5e30f4ff0118daf8ebb9fee7cd64fb095af0d0709c49dca36ee2ddef1da"
+    },
+    "DT1_ELEMENTWISE/outputs/riscv_backend_extension/riscv_backend_summary.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/riscv_backend_extension/riscv_backend_summary.json",
+      "bytes": 1416,
+      "sha256": "3a5d6c56364396692f50290463fae053fb6fc75df011c79f48cd022867e681a7"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_3_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_3_val_predictions.csv",
+      "bytes": 901526,
+      "sha256": "a4376805c334edff00065f51d599453cc40e6ffaf1a71fb43a9f31f88b6c72e9"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_2_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_2_val_predictions.csv",
+      "bytes": 1036733,
+      "sha256": "f54aea3be3b404880f230ef453d5bc9b0aed7ab35577a96343ab463118b8c5f6"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_0_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_0_val_metrics.json",
+      "bytes": 758,
+      "sha256": "16b146cd88c8ba158cf0dc2051f34aee2bbce7100e9ca41a8210fa2242c47450"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_1_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_1_val_predictions.csv",
+      "bytes": 1094921,
+      "sha256": "84395d75c69f609d7d1b90bbd55c7274f46f5c33b2d52c70911959eb6cdb9398"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_0_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_0_val_predictions.csv",
+      "bytes": 827031,
+      "sha256": "26bc49fcb12b63724cd85b4980cd546a3f7e12f772ba03d3c45ae76840a4dd28"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_4_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_4_val_metrics.json",
+      "bytes": 739,
+      "sha256": "c704d039e11c7f6d4a69c9f16984cdbcbbf764b9b797624765745c673dea8835"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_4_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_4_val_predictions.csv",
+      "bytes": 841195,
+      "sha256": "63b937a814b67f842b407095ada411fd14e5d70872b6ba8808c807113d31c8cb"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_1_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_1_val_metrics.json",
+      "bytes": 774,
+      "sha256": "f789a9ef205bae9367951a41d2df80e030fd8110fb8a5afee0ae5560c1ed2511"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_2_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_2_val_metrics.json",
+      "bytes": 740,
+      "sha256": "5d317f009f828b296654b244f62fb67535ba9ce50027aa08b88abb597a01c0a8"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/all_fold_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/all_fold_metrics.json",
+      "bytes": 4198,
+      "sha256": "641f51194137457a4632481ce987ce2b8adf31aaadeb4bc1f5e4af6b1d6accb8"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_3_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_123/fold_3_val_metrics.json",
+      "bytes": 735,
+      "sha256": "908d2211010b1eaa61cc94076a0c80af2eec07f3db048c0068d730ca21ca7bf3"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_3_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_3_val_predictions.csv",
+      "bytes": 901610,
+      "sha256": "9008119ea0711ed94ca1720ff705b5fa7d60178fd1ac9fd9412df3b1bedae949"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_2_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_2_val_predictions.csv",
+      "bytes": 1036871,
+      "sha256": "f8062ab6f444638cfaaa5c48ee9457043907566a34f73d3e6f5eddb51d5b60c0"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_0_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_0_val_metrics.json",
+      "bytes": 741,
+      "sha256": "8ee42b1e7a8d340c2a6af7ff36fefc04ce9d7ce959a96548b2aa578d30dc922d"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_1_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_1_val_predictions.csv",
+      "bytes": 1095063,
+      "sha256": "9326a6ffd0c537d52dd1c9ea1bfcc3d780f1cbcc145a76ebe30bd75574d2da4d"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_0_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_0_val_predictions.csv",
+      "bytes": 827094,
+      "sha256": "3ed3f98b4b7beabfcf48870106a37f89d093a2ad0431020a5f215ccb6521f873"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_4_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_4_val_metrics.json",
+      "bytes": 694,
+      "sha256": "64bad295faef2743efa8b7e70cafeeb71fad51f78629aa520ee97e37d019fdc2"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_4_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_4_val_predictions.csv",
+      "bytes": 841355,
+      "sha256": "b54e1cef7e979c469830bbe77cdb5dc2121f46fda87f171e5913ad5e65e44593"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_1_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_1_val_metrics.json",
+      "bytes": 680,
+      "sha256": "f9481fe915dcc7d709d552b3c50910466ef27f09708ee7f3af117447d794e135"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_2_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_2_val_metrics.json",
+      "bytes": 706,
+      "sha256": "744909c1062bd6d9e63ee24c4734b4a4992620f3c9bc16c80190eae477e843f9"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/all_fold_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/all_fold_metrics.json",
+      "bytes": 3983,
+      "sha256": "f002cc1bfa161a209642ce5e53b09302e74f3e1aeb698c06ad02610defd230c1"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/zero/fold_3_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/zero/fold_3_val_metrics.json",
+      "bytes": 710,
+      "sha256": "d1883e17be95354a2e756ba22cbd171b5a2a763fe3b529f2dd5185e6f01b0ce5"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_3_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_3_val_predictions.csv",
+      "bytes": 901474,
+      "sha256": "9ac1ed674dfb2698b5d33464fa99fdd003750b76f7b644388ba0c7359938beb5"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_2_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_2_val_predictions.csv",
+      "bytes": 1036697,
+      "sha256": "e4cbf2f3b5ab10e1d0f61f5e8961becf81f007b4bd58a71d277df50df52f53ee"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_0_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_0_val_metrics.json",
+      "bytes": 769,
+      "sha256": "e94c32231b0c9681394beb7636cbb351cbd4efd0c0a77283df9bad9d6768e63f"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_1_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_1_val_predictions.csv",
+      "bytes": 1094894,
+      "sha256": "87907ddf465fa3d4e3061310af2a9f083a7d414c131f4853b01461cf2d5b110e"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_0_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_0_val_predictions.csv",
+      "bytes": 826999,
+      "sha256": "9cf029bdc79f9f1309d59611151ada310d853f72ee61924e75dc8151e5995c00"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_4_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_4_val_metrics.json",
+      "bytes": 738,
+      "sha256": "e0e17698167c2973eb839237bddd5b97674f154e6376f4b974b3fa48230b1886"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_4_val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_4_val_predictions.csv",
+      "bytes": 841211,
+      "sha256": "6869c184d40035c96f5adba07636af82350a95960949735104db67025f458767"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_1_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_1_val_metrics.json",
+      "bytes": 772,
+      "sha256": "362d2ba361561a2b8b846d7f42168f027f14fcde09c18a1ba7a36da5047589f0"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_2_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_2_val_metrics.json",
+      "bytes": 754,
+      "sha256": "cdffbf4295ceef1b8d56d744d5b4096b8126b4ec930639a50edf57c2818c4247"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/all_fold_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/all_fold_metrics.json",
+      "bytes": 4221,
+      "sha256": "2a1bd23e1036f254e74842224f9d1cefbcc3b7e240807451c32ceeddcf5d3442"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_3_val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/three_shot_seed_42/fold_3_val_metrics.json",
+      "bytes": 736,
+      "sha256": "573dc95a0a5e4bd71c32908e74672c09a8d2614a579b0e4f9d517d3e538d5b0c"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/val_metrics.json",
+      "bytes": 663,
+      "sha256": "b36748a481f9108dd881c75992cca84b28de97c759c255fe1049a75d5bd9e25e"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/val_predictions.csv",
+      "bytes": 841372,
+      "sha256": "16384607ea653d38fa8983039ee3b4af0b1a565843ddaa60dcef583a288cce76"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/val_metrics.json",
+      "bytes": 626,
+      "sha256": "93b51b9247edc4c959d316498df39fd3a67fd4bb098d5e7add499ac3adfeded2"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/val_predictions.csv",
+      "bytes": 901679,
+      "sha256": "4b22c0234cf2d4243b5dc1558edf2a62f02f647dc9b2a163c8f2741eb6c8f061"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/val_metrics.json",
+      "bytes": 630,
+      "sha256": "d52d5549af9924831ea65f9830971aba18a55c6da29c9e51ab22be9a2f73b20b"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/val_predictions.csv",
+      "bytes": 1036852,
+      "sha256": "404c2e00308e3e818e186182f275e3b4289b2e277b3e4787da898fc2d3717c60"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/val_metrics.json",
+      "bytes": 628,
+      "sha256": "e5d5437d3892603c7bb2a9fa487562ab665ab374b6d9d704cebe6092c0e4b99b"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/val_predictions.csv",
+      "bytes": 827053,
+      "sha256": "495cc21e7875a866a22abe86bd9173faa9a5dcf4c2447f039b9269f91531cfd6"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/val_metrics.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/val_metrics.json",
+      "bytes": 635,
+      "sha256": "5df7c671c24e26cfe4a036ff0599f7612b477aa8dc68ff13843ab73d856c705f"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/val_predictions.csv": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/val_predictions.csv",
+      "bytes": 1094994,
+      "sha256": "d735e7c8a2be989240cb9696a56ed73582ad31eb62b3b16e465c0077ea4c0052"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_1/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "f1fef4647faad5c68b463efb464a07a3cbd5323558b5f10a6837d6e2fb9c92e3"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_0/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "f1fef4647faad5c68b463efb464a07a3cbd5323558b5f10a6837d6e2fb9c92e3"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_2/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "847e43c41522a4a346a8fbe7a117b73a3fc31f8ca4a2ab4f0bea2613956ba42a"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_3/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "f1fef4647faad5c68b463efb464a07a3cbd5323558b5f10a6837d6e2fb9c92e3"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/adapter/adapter_config.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/outputs/final_cv/sft/fold_4/adapter/adapter_config.json",
+      "bytes": 1086,
+      "sha256": "f1fef4647faad5c68b463efb464a07a3cbd5323558b5f10a6837d6e2fb9c92e3"
+    },
+    "DT1_ELEMENTWISE/data/fusion_dataset/metadata.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/fusion_dataset/metadata.json",
+      "bytes": 549,
+      "sha256": "e709fef43b03aa170a2ae5ac0923553b4df7583d58a32450a6dbd16c20acfdcb"
+    },
+    "DT1_ELEMENTWISE/data/fusion_dataset/fusion_dataset.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/fusion_dataset/fusion_dataset.json",
+      "bytes": 5052786,
+      "sha256": "23d9fa6f73a7d967a322a941a5b9036cc09fd115b97bbb16f2723e5e578a56f6"
+    },
+    "DT1_ELEMENTWISE/data/folds/metadata.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/metadata.json",
+      "bytes": 1962,
+      "sha256": "b0eda2db9155761e9c9abcf868147c3eed4187af35d107b1b1c2fde24d733943"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_4/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_4/train.json",
+      "bytes": 4145908,
+      "sha256": "39bbb7b88724022dacebf1c538cfe31186579ab8cc84e5ba40c498b6f2274d3a"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_4/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_4/val.json",
+      "bytes": 906880,
+      "sha256": "6d5ee12754b6039a2335819d71593a78ead72a340c71975feaf40df32627f696"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_3/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_3/train.json",
+      "bytes": 4084392,
+      "sha256": "7cfccebcd9ee69cd038d8123ce770f6697193c1d5941bfed85ef861e38c6d5a3"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_3/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_3/val.json",
+      "bytes": 968396,
+      "sha256": "bb11c316e606e5a3d9eede0c59f6c5d5b8c7f1a6d551f1c743a450905b6d18c5"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_2/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_2/train.json",
+      "bytes": 3939173,
+      "sha256": "2b9e136e3300c9df999500c8a228f205f70ac1b9d97fc8bd01f8212964ccb250"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_2/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_2/val.json",
+      "bytes": 1113615,
+      "sha256": "009f409ee4ed397cf6ae3366d0d64bd5126fd412e7c75467144c1a099ce5f2be"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_0/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_0/train.json",
+      "bytes": 4161234,
+      "sha256": "5c42dd08949a5a5e2de1922b3b6b09e5e3a802fc01a375c0aad11aeccd570ed5"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_0/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_0/val.json",
+      "bytes": 891554,
+      "sha256": "86ef76aa4b55873370acbed44d189a4b8e18dc4f61eff3f6087d788341d1f33d"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_1/train.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_1/train.json",
+      "bytes": 3880439,
+      "sha256": "f4e3a8cb96914e6187f81c9b1d02ccee07c733985d7bb94b8ec3f8bbaf398500"
+    },
+    "DT1_ELEMENTWISE/data/folds/fold_1/val.json": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1_ELEMENTWISE/data/folds/fold_1/val.json",
+      "bytes": 1172349,
+      "sha256": "859d9f9f59d0ebb2640d2dac1c40b00931fb92ea361a66e004bde2facda9d5e6"
+    },
+    "dt1_rvv/workers/build_program_set.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/build_program_set.py",
+      "bytes": 6029,
+      "sha256": "5cec1445bac2e6e4d0d6f5d92027c0797fafc5acb894f371b0c3b1471647c9c7"
+    },
+    "dt1_rvv/workers/dt1_common.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/dt1_common.py",
+      "bytes": 5870,
+      "sha256": "eb862534bc3e05d4e48fe25462ce88364e25633350391747eda423a9b0119063"
+    },
+    "dt1_rvv/workers/run_all_rvv.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/run_all_rvv.py",
+      "bytes": 11827,
+      "sha256": "f1cecc5f453d84295f124582b358255560ae275aa2924343a5b0e213a5e7f810"
+    },
+    "dt1_rvv/workers/run_dt1_sft.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/run_dt1_sft.py",
+      "bytes": 12604,
+      "sha256": "1de28c7a7f0770672e4c3465ba1bf7d66ef2bd1614378321bf9d3921970c9070"
+    },
+    "dt1_rvv/workers/run_dt1_three_shot.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/run_dt1_three_shot.py",
+      "bytes": 6300,
+      "sha256": "1f446dadf396772f1318b0f27e35bbf00c9290c676e31459925fd36f0683dd8a"
+    },
+    "dt1_rvv/workers/prepare_train_benefit.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/prepare_train_benefit.py",
+      "bytes": 6174,
+      "sha256": "e9e381a13e9a689de7bbdc5da8c074a1458e80788fd86d455c565d87c9f7886a"
+    },
+    "dt1_rvv/workers/build_train_program_set.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/build_train_program_set.py",
+      "bytes": 3481,
+      "sha256": "88767511424433a3af089596208645bca379238cefce3a344bb2dc7b602bc151"
+    },
+    "dt1_rvv/workers/check_toolchain.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/check_toolchain.py",
+      "bytes": 886,
+      "sha256": "191dc63b60725045767996b8e84b10a2b33f667ce622e68a238cb145b2344823"
+    },
+    "dt1_rvv/workers/run_train_rvv.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/run_train_rvv.py",
+      "bytes": 11841,
+      "sha256": "38e50a63705d5f8e4b89976eab944a4dc8f8611aa03c6ae7e8fcbbf618ed8c5c"
+    },
+    "dt1_rvv/workers/prepare_test_benefit.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/prepare_test_benefit.py",
+      "bytes": 5003,
+      "sha256": "1da1e15c0851ff54bf51614bd1ee4a2598184ada95599df6faad436856467e26"
+    },
+    "dt1_rvv/workers/run_dt1_zero_shot.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/workers/run_dt1_zero_shot.py",
+      "bytes": 4684,
+      "sha256": "179aa8a2940df23e9cb7787feb86e458d60f3765cba7c3a69e24d08c5fdf04fa"
+    },
+    "dt1_rvv/outputs/dt1_sft_adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/outputs/dt1_sft_adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "dt1_rvv/outputs/dt1_sft_checkpoints/checkpoint-160/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/outputs/dt1_sft_checkpoints/checkpoint-160/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "dt1_rvv/outputs/dt1_sft_checkpoints/checkpoint-192/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/dt1_rvv/outputs/dt1_sft_checkpoints/checkpoint-192/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1/workers/dt1_common.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/dt1_common.py",
+      "bytes": 14435,
+      "sha256": "3337909da1e2ab8322366e179482d6509a2d4408198bb2aad93eafbc0bbf9ee1"
+    },
+    "DT1/workers/run_static_baseline.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/run_static_baseline.py",
+      "bytes": 2923,
+      "sha256": "a447698eebfb64385baafb13d385e4602c2fee66512ca38d9ccd994a6e617875"
+    },
+    "DT1/workers/preflight_models.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/preflight_models.py",
+      "bytes": 5990,
+      "sha256": "c80cd5168ef1f07e1c67187097bed34ec67df7e0817b4c60bb3cb9e4bf53e03c"
+    },
+    "DT1/workers/train_sft.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/train_sft.py",
+      "bytes": 8038,
+      "sha256": "5bbcaff56d41b7643c949d21488f2a2a91bbe6ad6f228107389558d21a6782c1"
+    },
+    "DT1/workers/build_corpus.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/build_corpus.py",
+      "bytes": 10480,
+      "sha256": "ac35c431136756d29ea22599837e7d2cbdfc457b78d507fc6b6b1a0edad75fb8"
+    },
+    "DT1/workers/smoke_riscv.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/smoke_riscv.py",
+      "bytes": 7871,
+      "sha256": "53200dc74a82e1dc44cbcb399dfcc3559929bffde5765932af8a7fff13c8f359"
+    },
+    "DT1/workers/build_split_v2.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/build_split_v2.py",
+      "bytes": 10428,
+      "sha256": "f350fc3c8e30152bbfbd8abe57389b0eeb056d620470e9ffc7beed8f1a90e0a4"
+    },
+    "DT1/workers/build_split.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/build_split.py",
+      "bytes": 10388,
+      "sha256": "dbf182eaa29212512885d14a368af89b2ec0742f40e1e9a1a264b2ce1ef8b33a"
+    },
+    "DT1/workers/run_zero.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/run_zero.py",
+      "bytes": 3480,
+      "sha256": "392da6f216e5ab5fdf896c6970440481f203aff8d484a4564a6a709389b72217"
+    },
+    "DT1/workers/run_codegen.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/run_codegen.py",
+      "bytes": 15518,
+      "sha256": "43fd58933617f6a5a46d7571adf6fd54326d23069cdbc34e45bb997c172b5c64"
+    },
+    "DT1/workers/run_four_shot.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/run_four_shot.py",
+      "bytes": 5091,
+      "sha256": "b3717c22b56d3f9bb62dfc8ac92216ac63a947629f241b9e0fcf125158da7ec9"
+    },
+    "DT1/workers/eval_sft.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/workers/eval_sft.py",
+      "bytes": 6154,
+      "sha256": "e8f5a55ae2735ed503377de2ba18e0283a19d2f87e78b4943a6e7f9f223f5005"
+    },
+    "DT1/outputs/sft/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/outputs/sft/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1/RVV_FINAL/workers/eval_sft_fold.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/eval_sft_fold.py",
+      "bytes": 3125,
+      "sha256": "a203c6f22175c7090f5ad2a1b03c4cc04745e29ae665eaffebd365d6727ab722"
+    },
+    "DT1/RVV_FINAL/workers/build_cv_splits.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/build_cv_splits.py",
+      "bytes": 8199,
+      "sha256": "5c26b2e685dcc45cb47420075df13e219a0a6875a196f9d090c2878931ac077a"
+    },
+    "DT1/RVV_FINAL/workers/diagnose_binary_learnability.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/diagnose_binary_learnability.py",
+      "bytes": 4989,
+      "sha256": "4a8c1bf3662c9385e7e047427c1711b72cec69d83ffa998acf63e33893123f84"
+    },
+    "DT1/RVV_FINAL/workers/aggregate_results.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/aggregate_results.py",
+      "bytes": 7449,
+      "sha256": "9c10a50be4891b33ae5ba37e1e013f1e76d8d8162a49931d661e5c4ed48769e3"
+    },
+    "DT1/RVV_FINAL/workers/train_sft_fold.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/train_sft_fold.py",
+      "bytes": 10887,
+      "sha256": "0660a8969c6fc7ce8982a9163c02f42912cfd0b7a14b1c34159befffab086107"
+    },
+    "DT1/RVV_FINAL/workers/eval_binary_fold.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/eval_binary_fold.py",
+      "bytes": 11167,
+      "sha256": "67942df9a38dd7fa62c95c50e756762452c33baa64ead9c05e9f40cac34aee3e"
+    },
+    "DT1/RVV_FINAL/workers/train_binary_fold.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/train_binary_fold.py",
+      "bytes": 10890,
+      "sha256": "d7cc472fbe975e0acdf72b726be26ac6f92fe2c386725413ddd63420b446701b"
+    },
+    "DT1/RVV_FINAL/workers/common.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/common.py",
+      "bytes": 9817,
+      "sha256": "8e56d3f5cad2af93735ebc131834c4219b7055be81fe576ab131f9bee357af72"
+    },
+    "DT1/RVV_FINAL/workers/score_label_likelihood.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/score_label_likelihood.py",
+      "bytes": 13904,
+      "sha256": "4e0994b9878cf2d2ad2ed006c8af19480bede85e68a2fbdf06dc841902bbda9b"
+    },
+    "DT1/RVV_FINAL/workers/run_three_shot_cv.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/run_three_shot_cv.py",
+      "bytes": 9002,
+      "sha256": "1d5a57204cc900f3565767ca253891f0392b349bc52c13e5995b598a80f48a31"
+    },
+    "DT1/RVV_FINAL/workers/run_static_cv.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/run_static_cv.py",
+      "bytes": 2238,
+      "sha256": "457fb8283a2b4ae3a730e5bf4129f325ac728445d016bc9decf89246798b1404"
+    },
+    "DT1/RVV_FINAL/workers/run_zero_cv.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/run_zero_cv.py",
+      "bytes": 3401,
+      "sha256": "255c62ee332748a505f06818727064eb4c95b3326a042bdbf836e25f66923198"
+    },
+    "DT1/RVV_FINAL/workers/eval_abc_fold.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/eval_abc_fold.py",
+      "bytes": 9606,
+      "sha256": "b753a4e176c9f687b2b3c225b5a74b22cb1027076421ae904bc61ee7cb970a4e"
+    },
+    "DT1/RVV_FINAL/workers/train_abc_fold.py": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/workers/train_abc_fold.py",
+      "bytes": 13104,
+      "sha256": "10326e3995f9b27b2be663a184fce36002e58c59ab6a23c63239ff04ebe7603b"
+    },
+    "DT1/RVV_FINAL/outputs/binary/fold_0/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/outputs/binary/fold_0/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1/RVV_FINAL/outputs/sft_fold_1/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/outputs/sft_fold_1/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1/RVV_FINAL/outputs/sft_fold_0/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/outputs/sft_fold_0/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1/RVV_FINAL/outputs/sft_fold_2/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/outputs/sft_fold_2/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1/RVV_FINAL/outputs/sft_fold_4/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/outputs/sft_fold_4/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1/RVV_FINAL/outputs/sft_fold_3/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/outputs/sft_fold_3/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    },
+    "DT1/RVV_FINAL/outputs/abc/fold_0/adapter/README.md": {
+      "source": "/lustre/hdd/LAS/jannesar-lab/pranava7/cgo2027-r1/revised-r1/MLIRBench/DT1/RVV_FINAL/outputs/abc/fold_0/adapter/README.md",
+      "bytes": 5216,
+      "sha256": "3299a14b7aba6f3632b65e8fb510402d34b470ff054750cb519b801dce303bbc"
+    }
+  }
+}

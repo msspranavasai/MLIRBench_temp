@@ -1,0 +1,7 @@
+{
+  "source_repository": "Camera-Ready/MLIRBench",
+  "source_commit": "9af0239",
+  "new_workspace": "Camera-Ready/MLIRBench-AE",
+  "preservation": "original workspace unchanged; published bundle and historical records copied byte-for-byte",
+  "organization_changes": "core execution/evaluation in src; provider pipeline optional; legacy documentation and logs archived"
+}

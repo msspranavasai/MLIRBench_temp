@@ -1,0 +1,54 @@
+{
+  "schema": "mlirbench-ae-claims-v1",
+  "claims": [
+    {
+      "id": "archived_model_metrics",
+      "paper": "dataset_summary, reasoning_scale, reasoning_scoring, benchmark, level_results",
+      "command": "reproduce --output /results/paper-run",
+      "status": "open",
+      "remaining": "Reconcile and document Table 4 averaging against the confirmed accepted paper; preserve the raw pooled and alternative aggregation results."
+    },
+    {
+      "id": "archived_downstream_metrics",
+      "paper": "DT1/DT2 final figures",
+      "command": "reproduce-downstream --output /results/downstream-run",
+      "status": "verified",
+      "remaining": "Saved-prediction replay is implemented; evaluator-run evidence is separate."
+    },
+    {
+      "id": "execution_label_provenance",
+      "paper": "execution-derived semantic labels",
+      "command": "validate --sample --output /results/audit.jsonl",
+      "status": "open",
+      "remaining": "Historical shared-input discrepancies and unsupported domains require a scientific resolution."
+    },
+    {
+      "id": "gpu_checkpoint_evaluation",
+      "paper": "DT1/DT2 learned-model evaluation",
+      "command": null,
+      "status": "open",
+      "remaining": "Arrange checkpoint access, port inference and validate agreed GPU hardware."
+    },
+    {
+      "id": "native_amd64",
+      "paper": "CPU execution",
+      "command": "quickstart on native AMD64",
+      "status": "open",
+      "remaining": "Local verification uses AMD64 emulation on Apple Silicon."
+    },
+    {
+      "id": "dependency_freeze",
+      "paper": "environment",
+      "command": "clean Docker build",
+      "status": "open",
+      "remaining": "Freeze apt/toolchain provenance and validate a fresh evaluator setup."
+    },
+    {
+      "id": "judge_reliability",
+      "paper": "appendix E.14 judge repeatability/sensitivity",
+      "command": null,
+      "status": "open",
+      "remaining": "Locate and package the frozen 100-pair/900-response judging study, saved scores and aggregation script; rerunning paid judging is optional."
+    }
+  ]
+}

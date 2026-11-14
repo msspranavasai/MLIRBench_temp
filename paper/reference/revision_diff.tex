@@ -1,0 +1,1653 @@
+\documentclass[sigplan,screen,review,anonymous]{acmart}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL /Users/pranava/Downloads/MLIRBench-CGO (Version 1866)/paper/submission/submission.tex   Fri Sep 25 10:39:10 2026
+%DIF ADD /Users/pranava/Downloads/revision.tex                                                   Fri Sep 25 05:37:59 2026
+%DIF 2c2
+%DIF < 
+%DIF -------
+% \documentclass[sigplan,screen,review]{acmart} %DIF > 
+%DIF -------
+% \acmSubmissionID{xxxx}
+
+\renewcommand\footnotetextcopyrightpermission[1]{}
+
+%%
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+%% Rights management information.  This information is sent to you
+%% when you complete the rights form.  These commands have SAMPLE
+%% values in them; it is your responsibility as an author to replace
+%% the commands and values with those provided to you when you
+%% complete the rights form.
+% \setcopyright{acmlicensed}
+% \copyrightyear{2018}
+% \acmYear{2018}
+% \acmDOI{XXXXXXX.XXXXXXX}
+%% These commands are for a PROCEEDINGS abstract or paper.
+% \acmConference[Conference acronym 'XX]{Make sure to enter the correct
+%   conference title from your rights confirmation email}{June 03--05,
+%   2018}{Woodstock, NY}
+%%
+%%  Uncomment \acmBooktitle if the title of the proceedings is different
+%%  from ``Proceedings of ...''!
+%%
+%%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
+%%  June 03--05, 2018, Woodstock, NY}
+% \acmISBN{978-1-4503-XXXX-X/2018/06}
+
+
+%%
+%% Submission ID.
+%% Use this when submitting an article to a sponsored event. You'll
+%% receive a unique submission ID from the organizers
+%% of the event, and this ID should be used as the parameter to this command.
+%%\acmSubmissionID{123-A56-BU3}
+
+%%
+%% end of the preamble, start of the body of the document source.
+
+\citestyle{acmauthoryear}
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF CFONT PREAMBLE %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf} %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{{\protect\color{blue} \sf #1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\color{red} \scriptsize #1}} %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
+\providecommand{\DIFmodend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+\begin{document}
+
+%%
+%% The "title" command has an optional parameter,
+%% allowing the author to define a "short title" to be used in page headers.
+\title[Practical: MLIRBench]{Practical: MLIRBench - A Benchmark and Dataset for Compiler and Hardware-Aware Reasoning}
+
+%%
+%% The "author" command and its associated commands are used to define
+%% the authors and their affiliations.
+%% Of note is the shared affiliation of the first two authors, and the
+%% "authornote" and "authornotemark" commands
+%% used to denote shared contribution to the research.
+\DIFdelbegin %DIFDELCMD < \author{Pranava Sai Maganti}
+%DIFDELCMD < %%%
+\DIFdelend %DIF >  \author{Pranava Sai Maganti}
+%DIF >  \authornote{These authors contributed equally to this work.}
+%DIF >  \email{pranava7@iastate.edu}
+%DIF >  \orcid{0009-0004-7249-6057}
+\DIFaddbegin 
+
+%DIF >  \author{Meghasyam Peddireddy}
+%DIF >  \authornotemark[1]
+%DIF >  \email{syam@iastate.edu}
+%DIF >  \orcid{0009-0006-1968-3560}
+
+%DIF >  \author{Muzakker Hossain}
+%DIF >  \email{muzakker@iastate.edu}
+%DIF >  \orcid{0000-0003-2874-1380}
+
+%DIF >  \author{Kaining Gao}
+%DIF >  \email{kaigao@iastate.edu}
+%DIF >  \orcid{0009-0002-5580-8640}
+
+%DIF >  \author{Farhan Ahmed}
+%DIF >  \email{fahmed@iastate.edu}
+%DIF >  \orcid{0009-0008-7022-1235}
+
+%DIF >  \author{Ali Jannesari}
+%DIF >  \email{jannesar@iastate.edu}
+%DIF >  \orcid{0000-0001-8672-5317}
+
+%DIF >  \affiliation{%
+%DIF >    \institution{Iowa State University}
+%DIF >    \city{Ames}
+%DIF >    \state{Iowa}
+%DIF >    \country{USA}
+%DIF >  }
+
+%DIF >  Shared affiliation
+\settopmatter{authorsperrow=3}
+
+\author{Pranava Sai Maganti\textsuperscript{\textdagger}}
+\authornote{These authors contributed equally to this work.}
+\DIFaddend \email{pranava7@iastate.edu}
+\orcid{0009-0004-7249-6057}
+\DIFdelbegin %DIFDELCMD < \affiliation{%
+%DIFDELCMD <   \institution{Iowa State University}
+%DIFDELCMD <   \city{Ames}
+%DIFDELCMD <   \state{Iowa}
+%DIFDELCMD <   \country{USA}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \affiliation{%
+  \department{Department of Computer Science}
+  \institution{Iowa State University}
+  \city{Ames}
+  \state{Iowa}
+  \country{USA}
+}
+\DIFaddend 
+
+\DIFdelbegin %DIFDELCMD < \author{Meghasyam Peddireddy}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \author{Meghasyam Peddireddy\textsuperscript{\textdagger}}
+\authornotemark[1]
+\DIFaddend \email{syam@iastate.edu}
+\orcid{0009-0006-1968-3560}
+\DIFdelbegin %DIFDELCMD < \affiliation{%
+%DIFDELCMD <   \institution{Iowa State University}
+%DIFDELCMD <   \city{Ames}
+%DIFDELCMD <   \state{Iowa}
+%DIFDELCMD <   \country{USA}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \affiliation{%
+  \department{Department of Computer Science}
+  \institution{Iowa State University}
+  \city{Ames}
+  \state{Iowa}
+  \country{USA}
+}
+\DIFaddend 
+
+\DIFdelbegin %DIFDELCMD < \author{Kaining Gao}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \author{Muzakker Hossain\textsuperscript{\textdagger}}
+\email{muzakker@iastate.edu}
+\orcid{0000-0003-2874-1380}
+\affiliation{%
+  \department{Department of Computer Science}
+  \institution{Iowa State University}
+  \city{Ames}
+  \state{Iowa}
+  \country{USA}
+}
+
+\author{Kaining Gao\textsuperscript{\textdagger}}
+\authornotemark[1]
+\DIFaddend \email{kaigao@iastate.edu}
+\orcid{0009-0002-5580-8640}
+\DIFdelbegin %DIFDELCMD < \affiliation{%
+%DIFDELCMD <   \institution{Iowa State University}
+%DIFDELCMD <   \city{Ames}
+%DIFDELCMD <   \state{Iowa}
+%DIFDELCMD <   \country{USA}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \affiliation{%
+  \department{Department of Computer Science}
+  \institution{Iowa State University}
+  \city{Ames}
+  \state{Iowa}
+  \country{USA}
+}
+\DIFaddend 
+
+\DIFdelbegin %DIFDELCMD < \author{Farhan Ahmed}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \author{Farhan Ahmed\textsuperscript{\textdagger}}
+\DIFaddend \email{fahmed@iastate.edu}
+\orcid{0009-0008-7022-1235}
+\DIFdelbegin %DIFDELCMD < \affiliation{%
+%DIFDELCMD <   \institution{Iowa State University}
+%DIFDELCMD <   \city{Ames}
+%DIFDELCMD <   \state{Iowa}
+%DIFDELCMD <   \country{USA}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \affiliation{%
+  \department{Department of Computer Science}
+  \institution{Iowa State University}
+  \city{Ames}
+  \state{Iowa}
+  \country{USA}
+}
+\DIFaddend 
+
+\DIFdelbegin %DIFDELCMD < \author{Muzakker Hossain}
+%DIFDELCMD < \email{muzakker@iastate.edu}
+%DIFDELCMD < \orcid{0000-0003-2874-1380}
+%DIFDELCMD < \affiliation{%
+%DIFDELCMD <   \institution{Iowa State University}
+%DIFDELCMD <   \city{Ames}
+%DIFDELCMD <   \state{Iowa}
+%DIFDELCMD <   \country{USA}
+%DIFDELCMD < }
+%DIFDELCMD < 
+
+%DIFDELCMD < \author{Ali Jannesari}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \author{Ali Jannesari\textsuperscript{\textdagger}}
+\DIFaddend \email{jannesar@iastate.edu}
+\orcid{0000-0001-8672-5317}
+\DIFdelbegin %DIFDELCMD < \affiliation{%
+%DIFDELCMD <   \institution{Iowa State University}
+%DIFDELCMD <   \city{Ames}
+%DIFDELCMD <   \state{Iowa}
+%DIFDELCMD <   \country{USA}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \affiliation{%
+  \department{Department of Computer Science}
+  \institution{Iowa State University}
+  \city{Ames}
+  \state{Iowa}
+  \country{USA}
+}
+\DIFaddend 
+
+\DIFaddbegin \renewcommand{\shortauthors}{Maganti et al.}
+
+\DIFaddend %%
+%% By default, the full list of authors will be used in the page
+%% headers. Often, this list is too long, and will overlap
+%% other information printed in the page headers. This command allows
+%% the author to define a more concise list
+%% of authors' names for this purpose.
+\DIFdelbegin %DIFDELCMD < \renewcommand{\shortauthors}{McCarthy, et al.}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \renewcommand{\shortauthors}{Maganti, Peddireddy, Gao et al.}
+\DIFaddend 
+
+%%
+%% The abstract is a short summary of the work to be presented in the
+%% article.
+\begin{abstract}
+
+% Large language models (LLMs) have become increasingly capable software engineering assistants, yet whether they truly understand program semantics or primarily rely on surface-level patterns remains an open question. Existing evaluations largely focus on source-level programming languages, leaving compiler intermediate representations (IRs), where program semantics are explicitly encoded, comparatively unexplored. This gap is particularly important for modern compiler infrastructures such as the Multi-Level Intermediate Representation (MLIR), which represents programs across multiple abstraction levels and serves as the foundation for a growing ecosystem of machine learning and high-performance computing compilers.
+
+% We present \textbf{MLIRBench}, an execution-grounded framework for evaluating semantic reasoning over MLIR programs. MLIRBench employs a multi-agent pipeline that automatically generates controlled program mutations, validates them through compilation and execution, and constructs reasoning tasks spanning semantics-preserving transformations, behavioral modifications, structural rewrites, and compiler-failure scenarios. By grounding evaluation in observed program behavior rather than static annotations, the framework enables systematic measurement of a model's ability to reason about semantic equivalence, behavioral divergence, and compiler correctness directly from MLIR.
+
+% Using MLIRBench, we construct a dataset of more than \textbf{1,700} execution-validated MLIR program pairs across the \texttt{torch} and \texttt{linalg} dialects and evaluate \textbf{3} frontier and \textbf{5} open-source language models. The strongest model achieves an aggregate semantic reasoning score of \textbf{[RESULT-1]}, while hard-label classification accuracy reaches \textbf{[RESULT-2]}, highlighting a gap between correct predictions and deeper semantic understanding. Performance degrades by up to \textbf{[RESULT-3]} across structural and failure-inducing mutations, exposing reasoning failures that are not captured by traditional compiler correctness or code-generation benchmarks. Our Judge Agent achieves \textbf{[RESULT-4]} agreement with execution-derived ground truth, demonstrating the reliability of automated evaluation at scale.
+
+% Beyond evaluation, we demonstrate that MLIRBench can serve as a source of compiler-aware training data. Fine-tuned models achieve \textbf{[RESULT-5]} on MLIR repair and semantic reasoning tasks, outperforming comparable in-context learning approaches by \textbf{[RESULT-6]}. We further show that models can infer workload characteristics and hardware-relevant optimization properties, including RISC-V-oriented vectorization suitability, achieving \textbf{[RESULT-7]} on workload characterization tasks. Together, these results establish MLIRBench as a benchmark and dataset generation framework for studying compiler-aware reasoning in large language models.
+
+In recent years, large language models (LLMs) have become increasingly popular in software engineering and have performed well on different programming tasks. However, it is still difficult to know whether these models truly understand program behavior or whether they mainly rely on patterns learned from their training data. This \DIFdelbegin \DIFdel{matters for compiler }\DIFdelend \DIFaddbegin \DIFadd{distinction is particularly important for }\DIFaddend intermediate representations (IRs), where operations, dataflow, and execution \DIFdelbegin \DIFdel{rules are represented explicitly }\DIFdelend \DIFaddbegin \DIFadd{semantics are explicitly represented}\DIFaddend . In this paper, we introduce \textbf{MLIRBench}, a benchmark for evaluating how LLMs reason about MLIR programs. MLIRBench uses a multi-agent pipeline to generate \DIFaddbegin \DIFadd{program }\DIFaddend mutations, validate \DIFdelbegin \DIFdel{them by }\DIFdelend \DIFaddbegin \DIFadd{their behavior through }\DIFaddend execution, and \DIFdelbegin \DIFdel{create }\DIFdelend \DIFaddbegin \DIFadd{construct }\DIFaddend reasoning tasks from \texttt{torch} and \texttt{linalg} program pairs. The dataset contains \textbf{1,768} validated pairs, including \textbf{888} \texttt{linalg} pairs and \textbf{880} \texttt{torch} pairs, labeled as \textsc{EQUIV}, \textsc{DIVERGE}, or \textsc{ERROR}. We \DIFdelbegin \DIFdel{tested eight different }\DIFdelend \DIFaddbegin \DIFadd{evaluated nine }\DIFaddend models, including \DIFdelbegin \DIFdel{both frontier and open-source models. Among them, the best model achieved a score of \textbf{62.96}, and }\DIFdelend \DIFaddbegin \DIFadd{five open-weight and four proprietary models. Gemini 3.1 Pro achieved }\DIFaddend the highest hard-label accuracy \DIFdelbegin \DIFdel{was }\DIFdelend \DIFaddbegin \DIFadd{of }\DIFaddend \textbf{\DIFdelbegin \DIFdel{78.52}\DIFdelend \DIFaddbegin \DIFadd{92.65}\DIFaddend \%\DIFdelbegin %DIFDELCMD < \MBLOCKRIGHTBRACE%%%
+\DIFdel{. Even so,predicting detailed execution behavior was still challenging, with the best }\DIFdelend \DIFaddbegin } \DIFadd{across all 1,768 pairs,counting unsuccessful predictions as incorrect. Across its
+1,768 scored predictions, it achieved an aggregate score of \textbf{74.18} and a judge-assigned }\DIFaddend result-behavior score \DIFdelbegin \DIFdel{reaching only }\DIFdelend \DIFaddbegin \DIFadd{of }\DIFaddend \textbf{\DIFdelbegin \DIFdel{4.10}\DIFdelend \DIFaddbegin \DIFadd{5.04}\DIFaddend }/10. \DIFdelbegin \DIFdel{From these results , we observed that the models can often recognize semantic relationships between programs, but they still have difficulty understanding the exact execution outcomes. In addition, MLIRBench can be used for }\DIFdelend \DIFaddbegin \DIFadd{These results show that strong semantic classification does not necessarily imply accurate prediction
+of detailed execution behavior, highlighting a gap in current LLM reasoning over compiler IRs. By exposing this gap through execution-validated program pairs, MLIRBench provides a reproducible foundation for studying semantic reasoning over compiler IRs and related }\DIFaddend tasks such as program repair and semantic classification\DIFdelbegin \DIFdel{, making it a useful and reproducible benchmark for studying compiler-related reasoning in LLMs}\DIFdelend .
+
+\end{abstract}
+
+%%
+%% The code below is generated by the tool at http://dl.acm.org/ccs.cfm.
+%% Please copy and paste the code instead of the example below.
+%%
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10010147.10010178</concept_id>
+       <concept_desc>Computing methodologies~Artificial intelligence</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10011007.10011006.10011041</concept_id>
+       <concept_desc>Software and its engineering~Compilers</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10011007.10011006.10011041.10011048</concept_id>
+       <concept_desc>Software and its engineering~Runtime environments</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10011007.10010940.10011003.10011002</concept_id>
+       <concept_desc>Software and its engineering~Software performance</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10010147.10010257</concept_id>
+       <concept_desc>Computing methodologies~Machine learning</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10010147.10010257.10010258.10010259</concept_id>
+       <concept_desc>Computing methodologies~Supervised learning</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+ </ccs2012>
+\end{CCSXML}
+
+\ccsdesc[300]{Computing methodologies~Artificial intelligence}
+\ccsdesc[500]{Software and its engineering~Compilers}
+\ccsdesc[300]{Software and its engineering~Runtime environments}
+\ccsdesc[300]{Software and its engineering~Software performance}
+\ccsdesc[300]{Computing methodologies~Machine learning}
+\ccsdesc[300]{Computing methodologies~Supervised learning}
+
+
+%%
+%% Keywords. The author(s) should pick words that accurately describe
+%% the work being presented. Separate the keywords with commas.
+\DIFdelbegin %DIFDELCMD < \keywords{
+%DIFDELCMD < MLIR,
+%DIFDELCMD < Compiler Benchmarking,
+%DIFDELCMD < Multi-Agent Systems,
+%DIFDELCMD < Large Language Models,
+%DIFDELCMD < Program Semantics,
+%DIFDELCMD < Execution-Grounded Evaluation,
+%DIFDELCMD < Machine Learning for Compilers,
+%DIFDELCMD < Compiler Optimization
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \keywords{
+MLIR, compiler benchmarking, multi-agent systems, large language models (LLMs), program semantics, execution-grounded evaluation, machine learning for compilers, compiler optimization }
+\DIFaddend 
+
+\settopmatter{printacmref=false}
+
+
+
+%%
+%% This command processes the author and affiliation and title
+%% information and builds the first part of the formatted document.
+%DIF >  \maketitle
+%DIF >  \raggedbottom
+\DIFaddbegin 
+
+%DIF >  \setlength{\textfloatsep}{6pt plus 1pt minus 1pt}
+%DIF >  \setlength{\floatsep}{5pt plus 1pt minus 1pt}
+%DIF >  \setlength{\intextsep}{5pt plus 1pt minus 1pt}
+%DIF >  \setlength{\dbltextfloatsep}{6pt plus 1pt minus 1pt}
+%DIF >  \setlength{\dblfloatsep}{5pt plus 1pt minus 1pt}
+
+\DIFaddend \maketitle
+\DIFdelbegin %DIFDELCMD < \pagestyle{plain}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \raggedbottom
+\DIFaddend 
+
+%DIF >  Keep ACM review line numbers, but remove placeholder conference header
+\DIFaddbegin \makeatletter
+\fancyhead[LE]{\ACM@linecountL}
+\fancyhead[RO]{\ACM@linecountR}
+\makeatother
+
+\setlength{\textfloatsep}{6pt plus 1pt minus 1pt}
+\setlength{\floatsep}{5pt plus 1pt minus 1pt}
+\setlength{\intextsep}{5pt plus 1pt minus 1pt}
+\setlength{\dbltextfloatsep}{6pt plus 1pt minus 1pt}
+\setlength{\dblfloatsep}{5pt plus 1pt minus 1pt}
+
+\DIFaddend \section{Introduction}
+
+%DIF >  \begin{figure*}[t]
+%DIF >      \centering
+%DIF >      \includegraphics[width=\textwidth]{figures/f1f.png}
+%DIF >      \caption{Overview of the MLIRBench framework. Starting from an input MLIR program and a target mutation level, the Mutation Agent generates controlled program variants, the Execution Sandbox Agent establishes execution-grounded behavior through compilation and execution, the LLM Reasoning Agent predicts behavior without access to execution artifacts, and the Judge Agent compares predictions against ground truth to produce final benchmark scores.}
+%DIF >      \label{fig}
+%DIF >  \end{figure*}
+\DIFaddbegin {
+\setlength{\dbltextfloatsep}{6pt plus 1pt minus 1pt}
+
+\DIFaddend \begin{figure*}[t]
+    \centering
+    \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\textwidth]{figures/mlirbench-framework.png}
+%DIFDELCMD <     %%%
+\DIFdelendFL \DIFaddbeginFL \includegraphics[
+        width=1.0\textwidth,
+        trim=10 8 10 8,
+    ]{figures/figure_1.pdf}
+    \DIFaddendFL \caption{Overview of \DIFdelbeginFL \DIFdelFL{the }\DIFdelendFL MLIRBench\DIFdelbeginFL \DIFdelFL{framework}\DIFdelendFL . \DIFdelbeginFL \DIFdelFL{Starting from an input MLIR program }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{\textbf{Benchmark construction (upper):} PyTorch programs are lowered to \texttt{torch} }\DIFaddendFL and \DIFdelbeginFL \DIFdelFL{a target mutation level, the }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{\texttt{linalg} seeds. The }\DIFaddendFL Mutation Agent \DIFdelbeginFL \DIFdelFL{generates controlled program variants}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{transforms a seed $A$ into $B$}\DIFaddendFL , \DIFaddbeginFL \DIFaddFL{guided by dialect-specific structural analysis, and records }\DIFaddendFL the \DIFaddbeginFL \DIFaddFL{mutation metadata. The }\DIFaddendFL Execution Sandbox Agent \DIFdelbeginFL \DIFdelFL{establishes execution-grounded behavior through compilation }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{executes $A$ }\DIFaddendFL and \DIFdelbeginFL \DIFdelFL{execution}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{$B$ on fixed inputs to determine the ground-truth label $y$. \textbf{Execution-hidden evaluation (lower):} each evaluated model receives only $A$}\DIFaddendFL , \DIFaddbeginFL \DIFaddFL{$B$, }\DIFaddendFL the \DIFdelbeginFL \DIFdelFL{LLM Reasoning Agent predicts behavior without access to execution artifacts}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{dialect tag}\DIFaddendFL , and \DIFdelbeginFL \DIFdelFL{the }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{input values. The }\DIFaddendFL Judge Agent \DIFdelbeginFL \DIFdelFL{compares predictions against ground truth to produce final benchmark }\DIFdelendFL scores \DIFaddbeginFL \DIFaddFL{the model response using the execution record, mutation metadata, and reference explanation; only execution determines $y$}\DIFaddendFL . \DIFaddbeginFL \DIFaddFL{Blue boxes denote LLM calls. The code example shows a row-wise max reduction whose initial value is changed from $-\infty$ (\texttt{0xFF800000} in MLIR) to $0.0$.}\DIFaddendFL }
+    \DIFaddbeginFL \Description[Two-band MLIRBench pipeline from benchmark construction to execution-hidden evaluation]{The upper band constructs the benchmark. A PyTorch program is lowered to a \texttt{torch} or \texttt{linalg} seed. The Mutation Agent uses dialect-specific structural analysis, mutation-rule selection, LLM candidate generation, and validation to transform seed $A$ into program $B$ and produce a mutation record. The Execution Sandbox Agent executes $A$ and $B$ with IREE on fixed inputs and assigns the ground-truth label as Equiv, Diverge, or Error. The lower band evaluates models without execution access. The LLM Reasoning Agent receives $A$, $B$, the dialect tag, and input values, predicts the program outputs and label, and returns a structured response. The Judge Agent evaluates the response using the execution record, mutation metadata, and reference explanation, producing scores for label accuracy, result behavior, and explanation quality.}
+    \DIFaddendFL \label{fig}
+\end{figure*}
+\DIFaddbegin }
+\DIFaddend 
+
+% Large Language Models (LLMs) have demonstrated remarkable capabilities across a variety of software engineering tasks, including code generation, bug fixing, test generation, and program understanding. However, most existing evaluations focus on source-level programming languages, where models can leverage natural language context, abundant training data, and familiar programming abstractions. In contrast, far less is known about how well LLMs can reason about compiler intermediate representations (IRs), which expose program semantics through low-level operations, dataflow dependencies, tensor transformations, and compiler-specific abstractions.
+
+% The Multi-Level Intermediate Representation (MLIR) framework has emerged as a foundational compiler infrastructure for machine learning systems, domain-specific languages, heterogeneous computing, and high-performance computing workloads. As MLIR adoption continues to grow, understanding whether LLMs can reason about MLIR programs becomes increasingly important for applications such as compiler debugging, transformation validation, optimization assistance, and automated compiler engineering. Unlike source-level code understanding, reasoning over MLIR often requires models to analyze shape relationships, affine indexing maps, dialect-specific semantics, operation dependencies, and transformation effects while operating with limited contextual information.
+
+% Despite growing interest in applying LLMs to compiler-related tasks, existing benchmarks largely focus on code generation, compilation success, or optimization outcomes. These evaluations provide limited insight into whether a model truly understands the semantic behavior of IR programs. In many cases, syntactically different programs remain semantically equivalent, while seemingly minor transformations may introduce subtle behavioral changes. Accurately distinguishing between these cases requires a deeper form of compiler-oriented reasoning that is not adequately captured by existing evaluation methodologies.
+
+% To address this gap, we present \textbf{MLIRBench}, an execution-grounded benchmark for evaluating semantic reasoning over MLIR programs. MLIRBench employs a multi-agent pipeline that automatically generates controlled program mutations, validates them through compiler and execution-based analysis, and constructs reasoning tasks spanning multiple levels of semantic complexity. Rather than evaluating models solely on compilation outcomes, MLIRBench measures whether models can correctly infer semantic equivalence, behavioral divergence, and transformation effects directly from MLIR programs. The framework further enables the creation of high-quality downstream datasets for compiler repair, semantic reasoning, and workload characterization.
+
+% MLIRBench is designed to answer five research questions regarding compiler-oriented semantic reasoning in large language models. \textbf{RQ1:} Can large language models accurately reason about semantic equivalence and behavioral divergence directly from MLIR programs without access to execution results? \textbf{RQ2:}
+% How does reasoning performance vary across different classes of MLIR transformations, ranging from syntactic and parameter-level edits to structural and failure-inducing mutations? \textbf{RQ3:} What reasoning failures are exposed by execution-grounded evaluation, and to what extent are these failures overlooked by traditional compiler-correctness and code-generation benchmarks? \textbf{RQ4:} Can MLIRBench serve as an effective source of training data for building specialized compiler-reasoning models that outperform in-context learning approaches? \textbf{RQ5:} Can language models infer workload characteristics and hardware-relevant optimization properties, including RISC-V vectorization suitability, directly from MLIR representations?
+
+% To answer these questions, we construct a large-scale benchmark containing execution-validated MLIR program pairs generated across multiple semantic mutation levels and compiler dialects. We evaluate both frontier and open-source language models on semantic reasoning tasks, investigate compiler-oriented fine-tuning using datasets derived from MLIRBench, and explore workload reconstruction as a hardware-aware reasoning task. Together, these experiments provide one of the first systematic studies of large language models operating directly on compiler intermediate representations and demonstrate how execution-grounded evaluation can advance the assessment and development of compiler-aware AI systems.
+
+% Our contributions are threefold. We introduce MLIRBench, an execution-grounded benchmark for evaluating semantic reasoning over MLIR programs, together with a multi-agent generation and validation pipeline that automatically constructs semantically controlled MLIR mutations spanning multiple levels of reasoning difficulty. We further provide large-scale execution-validated datasets for semantic reasoning, compiler repair, and workload characterization tasks, enabling systematic evaluation and training of compiler-aware models. Finally, we present a comprehensive study of state-of-the-art language models on MLIR reasoning tasks, investigate compiler-specific fine-tuning, and demonstrate the feasibility of hardware-aware reasoning from MLIR representations through workload reconstruction and RISC-V-oriented analysis.
+
+LLMs have recently shown strong performance in many software engineering tasks such as code generation, bug fixing, test generation, and program understanding. Most existing studies and benchmarks evaluate these models on source-level programming languages like Python, C++, or Java. In these settings, models can often use natural language context and patterns learned from large amounts of training data. However, much less is known about how well LLMs can understand and reason about compiler intermediate representations (IRs), which describe programs at a lower level and expose more of the underlying program behavior.
+
+Compiler IRs present a fundamentally different reasoning challenge from source code. Rather than expressing high-level programming abstractions, they expose the representations that compilers use to analyze, transform, and optimize programs. Reasoning about IRs often requires understanding dataflow dependencies, tensor shapes, type systems, memory movement, and dialect-specific semantics. Consequently, strong performance on source-code tasks does not necessarily translate to compiler reasoning. A model may generate correct code yet still struggle to determine whether two IR programs are semantically equivalent, whether a transformation preserves behavior, or whether a program should fail during verification, compilation, or execution.
+
+The MLIR framework has become an important compiler infrastructure in areas such as machine learning, domain-specific languages, heterogeneous computing, and high-\\performance computing. MLIR is particularly interesting for evaluating LLMs because it combines higher-level program structure with lower-level compiler details. Through its different dialects, MLIR can represent tensor computations, linear algebra operations, hardware-specific transformations, and multiple stages of compiler lowering. As MLIR continues to gain adoption, it is useful to understand whether LLMs can assist with compiler-related tasks such as debugging, optimization, transformation validation, and compiler development.
+
+Current benchmarks do not fully evaluate these capabilities. Many existing code benchmarks focus on code generation quality, compilation success, or passing unit tests. While these metrics are useful, they do not directly measure whether a model understands the semantic impact of compiler transformations. In MLIR, two programs may look very different while still producing the same output. On the other hand, a small modification to an operation, attribute, or indexing map can completely change program behavior. Some changes may even create invalid programs that fail verification, compilation, or execution. Therefore, evaluating semantic reasoning in compiler IRs requires a benchmark that is grounded in actual execution behavior.
+
+To address this challenge, we introduce \textbf{MLIRBench}, an execution-grounded benchmark designed to evaluate semantic reasoning over MLIR programs. Figure~\ref{fig} shows the overall framework. MLIRBench uses a multi-agent pipeline to generate controlled mutations of MLIR programs, validate them through compilation and execution, and evaluate whether language models can correctly reason about their behavior. The Mutation Agent creates modified versions of programs at different mutation levels. The Execution Sandbox Agent verifies, compiles, executes, and tests these programs to establish ground-truth behavior. The LLM Reasoning Agent receives only the original and mutated MLIR programs and predicts their relationship without seeing execution results. Finally, the Judge Agent compares model predictions with the execution-grounded labels and computes benchmark scores.
+
+MLIRBench focuses on three semantic outcomes: \textsc{EQUIV}, \textsc{DIVERGE}, and \textsc{ERROR}. An \textsc{EQUIV} pair contains programs that behave the same even if their structure differs. A \\ \textsc{DIVERGE} pair contains programs that compile and execute successfully but produce different results. An \textsc{ERROR} pair contains programs that fail during verification, compilation, or execution. Although these labels are simple, correctly identifying them often requires deep reasoning about compiler semantics and program behavior.
+
+The benchmark includes multiple mutation levels and MLIR dialects. These mutation levels range from simple syntax-preserving changes to more challenging modifications such as parameter updates, operator substitutions, structural transformations, and error-inducing mutations. This setup allows us to analyze not only overall model accuracy but also the types of reasoning that are most difficult. For example, a model may correctly handle variable renaming but struggle when tensor shapes, affine mappings, or operation semantics are changed. Because of this, MLIRBench can serve both as an evaluation benchmark and as a source of training data for compiler-aware language models.
+
+Our work is guided by five research questions. \textbf{RQ1:} Can large language models accurately determine semantic equivalence and behavioral differences directly from MLIR programs without execution feedback? \textbf{RQ2:} How does model performance vary across different mutation levels, from simple edits to complex structural changes and failures? \textbf{RQ3:} What reasoning mistakes do models make when evaluated using execution-grounded labels, and how do these differ from results reported by traditional code benchmarks? \textbf{RQ4:} Can \DIFdelbegin \DIFdel{datasets generated by MLIRBench
+be used to train specialized models that perform better on compiler reasoning tasks}\DIFdelend \DIFaddbegin \DIFadd{execution-grounded supervision from MLIRBench
+generalize to unseen program families across MLIR dialects}\DIFaddend ?\textbf{RQ5:} Can \DIFdelbegin \DIFdel{language models generate RISC-V-aware optimization recommendations directly from MLIR programs using only static program analysis}\DIFdelend \DIFaddbegin \DIFadd{MLIRBench support compiler-grounded optimization-benefit prediction, and how does IR-level benefit relate to downstream RISC-V code generation}\DIFaddend ?
+
+Our contributions are:
+
+\begin{itemize}
+    \item We introduce \textbf{MLIRBench}, a benchmark for evaluating semantic reasoning over MLIR programs using execution-grounded labels.
+
+    \item We develop a multi-agent framework that automatically generates, validates, executes, and labels MLIR program mutations across different reasoning levels.
+
+    \item We create large-scale datasets of MLIR program pairs with execution-validated labels for equivalence, divergence, and error behavior.
+
+    \item We evaluate both frontier and open-source language models on MLIR reasoning tasks and analyze their strengths and weaknesses across mutation categories and dialects.
+
+    \item We \DIFdelbegin \DIFdel{explore the use of }\DIFdelend \DIFaddbegin \DIFadd{further explore }\DIFaddend MLIRBench as a source of \DIFdelbegin \DIFdel{training data for compiler reasoning and RISC-V-aware optimization planning, enabling language models to generate optimization plans directly from MLIR programs through static }\DIFdelend \DIFaddbegin \DIFadd{compiler-grounded supervision
+for optimization-benefit prediction and semantic classification, including
+family-disjoint evaluation across \texttt{linalg} and \texttt{torch} and
+RISC-V backend }\DIFaddend analysis.
+\end{itemize}
+
+\section{Background \& Related Work}
+
+\subsection{MLIR and Compiler Intermediate Representations}
+
+Compiler intermediate representations differ from source-level programs in what they make explicit. Most source code leaves dataflow, types, memory layout, and iteration structure largely implicit, to be recovered by the front end; an IR fixes these properties as first-class structure so that later passes can analyze and transform programs soundly. Reasoning about an IR therefore means reasoning about the representation the compiler actually operates on, rather than about surface syntax.
+
+MLIR is a multi-level compiler infrastructure organized around extensible dialects, allowing a program to be represented at several abstraction levels and lowered progressively from framework-level operators toward backend-specific code~\cite{mlir2021}. MLIRBench works with two of these dialects, \texttt{torch} and \texttt{linalg}, which together capture both framework-level operators and structured tensor computation; they are a subset of the MLIR ecosystem rather than its full extent. Within this design, a program exposes SSA dataflow, tensor shapes and element types, indexing structure, iterator semantics, and dialect-specific verifier constraints that determine whether a construct is well formed. These properties are key ones a semantic analysis must respect, and they are explicit in the IR rather than inferred. This makes MLIR a useful target for evaluating semantic reasoning: whether two MLIR programs behave identically generally requires following the structure the dialects encode, which is difficult to approximate from textual pattern matching alone.
+
+\subsection{Execution-Grounded Compiler Testing and Program Equivalence}
+
+A long line of compiler validation work treats observed program behavior as the reference for correctness. Differential testing compares outputs across programs or compilation settings and treats any observable difference as evidence of a semantic change~\cite{yang2011csmith,le2014emi}. The same methodology has been extended to MLIR through structured IR generation and fuzzing~\cite{wang2023mlirsmith,suo2024mlirod} and to deep-learning compilers through model-level test generation~\cite{liu2023nnsmith}. Grounding evaluation in execution is stronger than relying on annotations produced by a model or a heuristic, because the label reflects what the compiled program actually computes rather than what an annotator believes it should compute.
+
+Cast in these terms, comparing two programs under identical inputs yields three outcomes of interest: behavioral equivalence, behavioral divergence, and compilation or runtime failure. MLIRBench uses exactly this distinction, labeling each program pair \textsc{Equiv}, \textsc{Diverge}, or \textsc{Error} from execution rather than from any model judgment. One subtlety is that not all behaviorally significant differences are visible by inspection: floating-point arithmetic is not associative, so a reordering that is algebraically neutral can still change the computed result~\cite{goldberg1991floating}. Because the labels are derived from bit-level output comparison under a fixed configuration, such differences are captured rather than assumed away.
+
+\subsection{LLMs for Code Reasoning and Compiler IR}
+
+Most existing benchmarks for code-capable language models operate at the source level. They measure program synthesis from natural-language specifications~\cite{chen2021evaluating}, probe code understanding through input--output and execution prediction~\cite{gu2024cruxeval,liu2024codemind}, evaluate under contamination-resistant conditions~\cite{jain2025livecodebench}, extend to real-world repository tasks~\cite{roy2026codesense,jimenez2024swebench}, and test semantic equivalence across program variants~\cite{wei2025equibench}. A related line measures whether models can produce performant kernels rather than merely correct ones~\cite{ouyang2025kernelbench}. These efforts characterize source-level and performance-oriented capability, but they do not directly target multi-level compiler IRs such as MLIR.
+
+A smaller body of work targets compiler IRs directly. Models have been trained and evaluated on low-level IR and assembly for optimization and related tasks~\cite{cummins2025llmcompiler}, and studies of reasoning over single-level IR report that models parse IR syntax competently while struggling with instruction-level execution reasoning~\cite{jiang2025iir}. Reasoning over MLIR is distinct from both source-level reasoning and single-level IR reasoning: a model must track SSA dependencies, shape and element-type propagation, indexing and iterator structure, and dialect-specific legality, and it must do so across multiple levels of abstraction. We do not claim that any single prior result settles whether models possess such reasoning ability; the consistent observation is that compiler-internal reasoning is a separate and harder capability than source-level code competence.
+
+\subsection{Benchmarking Compiler-Aware LLM Reasoning}
+
+Relative to these efforts, MLIRBench occupies a specific position. Source-level reasoning and synthesis benchmarks~\cite{chen2021evaluating,gu2024cruxeval,jain2025livecodebench,liu2024codemind,roy2026codesense,jimenez2024swebench} do not operate on compiler-internal representations; equivalence and kernel benchmarks~\cite{wei2025equibench,ouyang2025kernelbench} evaluate source-level \DIFdelbegin \DIFdel{or low-level }\DIFdelend program equivalence and performance-oriented kernel generation, but do not target MLIR dialect semantics or MLIR verifier behavior; compiler testing and fuzzing~\cite{yang2011csmith,le2014emi,wang2023mlirsmith,suo2024mlirod,liu2023nnsmith} generate programs or mutations to test compiler correctness, but do not evaluate whether language models can reason about the resulting IR semantics; and compiler-IR language-model work~\cite{cummins2025llmcompiler,jiang2025iir} focuses primarily on LLVM IR or assembly rather than MLIR's multi-level, dialect-based structure. The gap these leave open is the direct evaluation of execution-hidden semantic reasoning over MLIR program pairs: a setting in which the evaluated model sees only the program pair, the dialect tag, and deterministic inputs when available, while executed outputs and execution-derived labels are withheld and used only for scoring. LLM-as-judge methods such as G-Eval evaluate natural-language outputs using an LLM-based scoring process~\cite{liu2023geval}, while ICE-Score applies LLM-based evaluation to code-generation outputs~\cite{zhuo2024ice}. However, neither directly measures execution-grounded MLIR semantics, dialect-specific legality, or compiler/runtime failure behavior, so MLIRBench derives hard labels from compilation, execution, and output comparison.
+
+
+MLIRBench targets this gap, and it does so with a measurement that holds distinct abilities apart. Rather than reporting a single accuracy figure, it separates hard-label accuracy-whether a model assigns the correct semantic relationship-from result-behavior accuracy, which checks the concrete output behavior a model predicts, and from explanation quality. This separation surfaces cases where a model selects the correct label without correctly tracing program behavior, a distinction that matters directly for compiler-internal analysis and for tools that would depend on such reasoning.
+
+
+\section{MLIRBench Framework}
+% \subsection{Framework Overview}
+% MLIRBench is a multi-agent benchmarking framework designed to evaluate whether large language models can reason about the semantics of compiler intermediate representations (IRs). Rather than relying solely on static benchmark datasets, MLIRBench generates, validates, executes, and evaluates MLIR program pairs through a structured execution pipeline.
+
+% The framework consists of five specialized agents: a Root Agent, Mutation Agent, Execution Sandbox Agent, LLM Reasoning Agent, and Judge Agent. Each agent is responsible for a single stage of the benchmark lifecycle and communicates through well-defined intermediate artifacts. This separation allows individual components to be modified or extended without affecting the rest of the pipeline.
+
+% The evaluation process begins with an input MLIR program and a target mutation level. The Root Agent initializes the benchmark state and forwards the program to the Mutation Agent. The Mutation Agent generates a modified version of the original program according to a predefined mutation requirement. The resulting program pair is then passed to the Execution Sandbox Agent, which validates, compiles, and executes both programs to establish execution-grounded behavior. These execution results are hidden from the evaluated language model and retained only as ground truth.
+
+% The LLM Reasoning Agent receives the original and mutated programs and is tasked with predicting their behavior without access to execution artifacts. Finally, the Judge Agent compares the model's prediction against the execution-derived ground truth and produces the final benchmark scores.
+
+% Figure~\ref{fig} illustrates the end-to-end workflow.
+
+% \begin{center}
+% \texttt{
+% Input Program $\rightarrow$
+% Mutation Agent $\rightarrow$
+% Execution Sandbox $\rightarrow$
+% LLM Reasoning Agent $\rightarrow$
+% Judge Agent
+% }
+% \end{center}
+
+% This design enables execution-grounded evaluation while maintaining strict separation between program generation, execution, reasoning, and scoring.
+
+\subsection{Framework Overview}
+
+MLIRBench is a multi-agent benchmarking framework designed to evaluate semantic reasoning over MLIR programs using execution-grounded evaluation. Figure~\ref{fig} presents the complete workflow.
+
+Starting from an input MLIR program and a target mutation level, the Mutation Agent generates controlled program variations. The Execution Sandbox Agent validates, compiles, and executes both programs to establish execution-derived ground truth. The LLM Reasoning Agent receives only the original and mutated programs and predicts their behavior without access to execution artifacts. Finally, the Judge Agent compares model predictions against the execution-derived ground truth and produces the final benchmark scores.
+
+This design separates benchmark generation, execution, reasoning, and evaluation, which enables reproducible and execution-grounded assessment of compiler-oriented reasoning capabilities.
+
+%DIF <  \subsection{Mutation Agent}
+%DIF <  The Mutation Agent is responsible for generating controlled variations of an input MLIR program. Its primary goal is to produce program pairs that exercise different levels of semantic reasoning difficulty while preserving a clear relationship between the original and mutated programs.
+\DIFdelbegin %DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  Given an input program, dialect identifier, and mutation level, the Mutation Agent first performs dialect-specific program inspection. Separate inspection pipelines are implemented for the \texttt{linalg} and \texttt{torch} dialects, allowing the framework to extract structural information relevant to the selected mutation level. The extracted metadata is later used to constrain mutation generation and reduce invalid transformations.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  MLIRBench organizes mutations into five progressively more challenging levels:
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  \begin{itemize}
+%DIF <  \item \textbf{L1 (Syntactic):} Semantics-preserving surface-level transformations such as SSA renaming and formatting changes.
+%DIF <  \item \textbf{L2 (Parameter):} Modifications to operation parameters, constants, or attributes.
+%DIF <  \item \textbf{L3 (Operator):} Replacement of operations with semantically related alternatives.
+%DIF <  \item \textbf{L4 (Structural):} Changes to program structure, dataflow organization, or shape manipulation patterns.
+%DIF <  \item \textbf{L5 (Failure-Inducing):} Transformations intentionally designed to violate compiler constraints and trigger verification, compilation, or runtime failures.
+%DIF <  \end{itemize}
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  For each dialect and mutation level, MLIRBench maintains a collection of mutation requirements. A requirement defines a target transformation together with a set of constraints that must be respected during generation. Examples include deterministic SSA renaming, operand substitution, operation replacement, structural rewrites, and verifier-breaking mutations. This requirement-driven design allows the benchmark to generate diverse program pairs while maintaining precise control over the intended semantic effect of each mutation.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  After inspection, the Mutation Agent selects a mutation requirement and constructs a structured prompt containing three components: the original MLIR program, the selected mutation requirement, and the inspection metadata extracted from the program. The prompt is then provided to a language model responsible for generating the candidate mutation.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  Because LLM-generated compiler IR is often syntactically or semantically invalid, generation is coupled with an automatic validation stage. Each candidate mutation is validated using dialect-specific verification tooling before it is accepted. If validation fails, the Mutation Agent retries generation and validation. MLIRBench currently allows up to three generation attempts per mutation. All generated candidates, validation results, and retry histories are retained as metadata to support auditing and reproducibility.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  Once a valid mutation is produced, the Mutation Agent outputs both the original and mutated programs and forwards them to the Execution Sandbox Agent. In addition, the agent records the selected mutation requirement, inspection metadata, validation history, and generation statistics. These artifacts enable downstream analysis of mutation quality and provide a complete trace of the program generation process.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  This requirement-driven and validation-guided workflow allows MLIRBench to generate large numbers of targeted MLIR program pairs while maintaining syntactic correctness, dialect awareness, and reproducibility.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  \subsection{Mutation Agent}
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  The Mutation Agent is responsible for generating controlled variations of an input MLIR program. Its primary goal is to produce program pairs that exercise different levels of semantic reasoning difficulty while preserving a clear relationship between the original and mutated programs.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  Given an input program, dialect identifier, and mutation level, the agent first performs dialect-specific inspection. Separate inspection pipelines are implemented for the \texttt{linalg} and \texttt{torch} dialects, allowing the extraction of structural metadata used to guide mutation generation and reduce invalid transformations.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  MLIRBench organizes mutations into five progressively more challenging levels:
+%DIF <  \textbf{L1:} semantics-preserving syntactic transformations;
+%DIF <  \textbf{L2:} parameter and attribute modifications;
+%DIF <  \textbf{L3:} operator substitutions;
+%DIF <  \textbf{L4:} structural and dataflow transformations; and
+%DIF <  \textbf{L5:} failure-inducing mutations that violate compiler constraints and trigger verification, compilation, or runtime failures.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  For each dialect and mutation level, MLIRBench maintains a collection of mutation requirements describing the target transformation and the constraints that must be respected during generation. Examples include SSA renaming, operand substitution, operation replacement, structural rewrites, and verifier-breaking mutations. The selected requirement, together with the original MLIR program and inspection metadata, is provided to a language model that generates a candidate mutation.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  Because LLM-generated compiler IR is frequently invalid, every candidate mutation undergoes automatic validation using dialect-specific verification tooling. Invalid candidates are rejected and regenerated, with up to three attempts permitted per mutation. Only mutations that satisfy the required validation checks are accepted and forwarded to the Execution Sandbox Agent.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  Alongside the original and mutated programs, the agent records the selected mutation requirement, inspection metadata, validation history, and generation statistics. These artifacts provide a complete audit trail for benchmark construction and enable downstream analysis of mutation quality and generation behavior.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  This inspection-guided and validation-driven workflow allows MLIRBench to generate large numbers of targeted MLIR program pairs while maintaining syntactic correctness, dialect awareness, and reproducibility.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend \subsection{Mutation Agent}
+
+The mutation agent is responsible for generating controlled variations of an input MLIR program. Its primary objective is to produce program pairs that require varying levels of semantic reasoning, while maintaining a well-defined relationship between the original and the mutated program.
+
+Given an input program, a dialect identifier, and a mutation level, the agent first performs a dialect-specific analysis. Separate analysis pipelines are implemented for the \texttt{linalg} and \texttt{torch} dialects to extract structural metadata, which is used to guide mutation generation and reduce invalid transformations.
+
+MLIRBench organizes mutations into five increasingly challenging levels:
+\textbf{L1:} semantic-preserving syntactic transformations;
+\textbf{L2:} modifications of parameters and attributes;
+\textbf{L3:} operator substitutions;
+\textbf{L4:} structural and data-flow transformations;
+\textbf{L5:} error-inducing mutations that violate compiler constraints and trigger verification, compilation, or runtime errors.
+
+For each dialect and mutation level, MLIRBench maintains a collection of mutation requirements. These requirements describe the target transformation as well as the constraints that must be adhered to during generation. Examples include the renaming of SSA variables, operand substitution, operation swapping, structural rewriting, and mutations specifically designed to violate verification rules. The selected mutation requirement, along with the original MLIR program and the metadata obtained during analysis, is provided as input to a large language model to generate a candidate program for the mutation.
+
+However, since LLM-generated IR code is frequently invalid, each candidate mutation undergoes automated validation using dialect-specific verification tools. Invalid mutations are discarded and regenerated. Up to three regeneration attempts are permitted for each mutation. Only mutations that successfully pass all required validation steps are accepted and forwarded to the Execution Sandbox Agent.
+
+In addition to the original and the mutated program, the agent logs the selected mutation requirement, the analysis metadata, the validation history, and generation statistics. These artifacts provide complete and traceable documentation of the benchmark creation process and enable downstream analyses of mutation quality and generation behavior.
+
+Through this analysis-driven and validation-based workflow, MLIRBench can generate large collections of targeted MLIR program pairs while ensuring syntactic correctness, dialect-specific consistency, and reproducibility. Additional implementation details for the Mutation Agent, including mutation inputs, prompt construction, validation, stored records, and common mutation failures, are provided in Appendix B.
+
+\subsection{Execution Sandbox Agent}
+\label{sec:execution_agent}
+
+The Execution Sandbox Agent assigns the ground-truth divergence label for every
+program pair in MLIRBench. For a pair $(A,B)$ it compiles and runs both programs
+under identical deterministic conditions, compares their outputs, and records
+whether they diverge. The label is computed from execution alone and never from
+a language model, so the semantic ground truth is independent of the systems the
+benchmark evaluates. Comparing the outputs of two compiled programs follows the
+differential-testing methodology long used for compiler validation%
+~\cite{yang2011csmith,le2014emi}, % [F4] confirm keys in references_neurips.bib
+applied here at the level of MLIR program pairs.
+
+We compile and run both programs with IREE~\cite{iree2023}. A pair is labeled success only when both programs compile and produce output; the remaining status classes are defined in Appendix C.4.
+
+We compare the outputs of $A$ and $B$ with \path{numpy.array_equal}, which
+requires bit-exact equality and applies no tolerance. Strict equality is
+defensible here because we remove the compiler's sources of floating-point
+reassociation rather than absorbing them into a tolerance. We disable the LLVM
+optimization passes that reorder floating-point operations and compile $A$ and $B$ with the same flags,
+so any surviving output difference is attributable to the mutation and not to the
+backend. Floating-point addition and multiplication are not
+associative~\cite{goldberg1991floating}, so an operation reordering that is exact
+in $\mathbb{R}$ can still change the machine result. We treat such cases as
+divergent, because the benchmark measures the behavior a model would observe from
+real execution rather than from idealized arithmetic.
+
+Both dialects run on deterministic inputs, constructed differently for each.
+Linalg programs embed their inputs as \texttt{arith.constant} operations and
+expose a zero-argument entry point; the embedded values come from the constants
+already present in the program, with fixed fallback patterns where a tensor is
+otherwise unconstrained. Torch programs cannot embed their inputs, since doing so triggers a compiler crash described in Appendix C.2, so they receive inputs at runtime. For each torch program we generate inputs that match its parsed input
+signature, the shapes and element types it declares, through a fixed generation
+procedure that is reproducible across runs. Because both mechanisms are
+deterministic, two programs that declare the same input tensor types receive the
+same inputs, and re-running a pair reproduces the same outputs and the same label.
+Program $A$ and its mutation $B$ therefore receive identical inputs whenever the
+mutation preserves the input tensor types. The exceptions are 25 torch T2 mutations that change those types; these cases are discussed in Appendix C.4 and Appendix C.5. Each pair is evaluated on one
+fixed input set, so a mutation that changes behavior only on other inputs is
+labeled equivalent; sampling additional input sets is straightforward and left to
+future work.
+
+Once the divergence label is fixed, we generate a natural-language explanation of
+the pair with \path{gpt-4o-mini-2024-07-18} through OpenRouter%
+~\cite{openrouter2025} at temperature $0.2$. The prompt is grounded in a
+structural diff of the two programs, which lists the concrete edits such as
+renamed values, changed constants, substituted operations, and altered indexing,
+so the model interprets known differences instead of inventing SSA identifiers.
+These explanations ship with the dataset and are passed to the Judge Agent as
+context, but they never determine the label: scoring always uses the
+execution-derived divergence flag.
+
+We use \path{iree-benchmark-module} to benchmark each program using a ten-second
+warmup and thirty measured repetitions, and record mean latency, standard
+deviation, and the p50, p90, and p99 percentiles. Linalg programs are benchmarked
+on their embedded constants and torch programs on type-only inputs that IREE
+zero-fills, under the same floating-point-deterministic flags used for labeling.
+The complete pipeline is given in Algorithm 1 
+(Appendix C).
+
+\subsection{LLM Reasoning Agent}
+\label{sec:reasoning_agent}
+
+The LLM Reasoning Agent is the execution-hidden semantic evaluation harness of MLIRBench. It measures whether a model can determine the semantic relationship between two MLIR programs from the intermediate representation alone, with no access to compilation or runtime results. The \DIFdelbegin \DIFdel{protocol is deterministic }\DIFdelend \DIFaddbegin \DIFadd{evaluation protocol is controlled }\DIFaddend and fully logged,
+\DIFdelbegin \DIFdel{so that an evaluation run can be reproduced and audited from the }\DIFdelend \DIFaddbegin \DIFadd{allowing }\DIFaddend stored inputs and outputs \DIFaddbegin \DIFadd{to be audited}\DIFaddend .
+
+For each program pair, the evaluated model observes only the original program $A$, the mutated program $B$, the dialect tag (\texttt{linalg} or \texttt{torch}), and the concrete deterministic inputs when they are available. All execution-derived information is withheld: the executed outputs of either program, the ground-truth semantic label, lowered IR, backend IR, execution traces, the compiler and runtime records produced during sandbox execution, and the Judge Agent scores. Under this isolation, a prediction must follow from reasoning over the source IR-SSA dataflow, tensor shapes and element types, affine indexing maps, iterator semantics, and dialect-specific operation behavior-rather than from any observation of how the programs behave when run.
+
+The harness uses a predict-then-compare protocol. The model \DIFdelbegin \DIFdel{first predicts }\DIFdelend \DIFaddbegin \DIFadd{is instructed to predict }\DIFaddend the output behavior of program\DIFaddbegin \DIFadd{s}\DIFaddend  $A$ \DIFdelbegin \DIFdel{, then independently predicts the output behavior of program }\DIFdelend \DIFaddbegin \DIFadd{and }\DIFaddend $B$ \DIFdelbegin \DIFdel{, and only then classifies }\DIFdelend \DIFaddbegin \DIFadd{before classifying }\DIFaddend the pair with a single label $\hat{y} \in \{\textsc{Equiv}, \textsc{Diverge}, \textsc{Error}\}$. Separating per-program prediction from the pairwise decision keeps \DIFdelbegin \DIFdel{the two failure modes distinguishable and reduces the chance that surface-level textual similarity between the programs drives the label}\DIFdelend \DIFaddbegin \DIFadd{output-prediction errors distinguishable from classification errors}\DIFaddend . When concrete inputs are supplied, the model reasons over the same values used during sandbox execution, while the executed outputs remain hidden. The label space is restricted to these three classes\DIFdelbegin \DIFdel{; an abstention option is not permitted, since it would make comparisons across models inconsistent}\DIFdelend \DIFaddbegin \DIFadd{, and the prompt does not permit abstention}\DIFaddend . A model that is unsure is instructed to commit to the best-supported label and lower its reported confidence accordingly.
+
+Each response must be a single JSON object containing the predicted output for program $A$, the predicted output for program $B$, the label, a confidence score, the key semantic differences identified between the programs, an optional witness input or condition demonstrating divergence, and a natural-language explanation of the verdict. Responses are validated against this fixed schema before storage. Because models can emit malformed structured output, the parser performs lightweight recovery for formatting issues: it strips code fences, extracts the outer JSON object, sanitizes stray control characters, and validates the required fields and label value. \DIFdelbegin \DIFdel{If a response fails }\DIFdelend \DIFaddbegin \DIFadd{For baseline runs, }\DIFaddend parsing or schema \DIFdelbegin \DIFdel{validation, the harness retries once }\DIFdelend \DIFaddbegin \DIFadd{failures trigger one retry }\DIFaddend with a forced-verdict instruction that restates the required fields and demands a committed label\DIFdelbegin \DIFdel{; if the retry also fails, the record is finalized with label \textsc{Error} while the underlying failure status is retained }\DIFdelend \DIFaddbegin \DIFadd{. Unresolved failures retain their status }\DIFaddend for auditing. \DIFdelbegin \DIFdel{Predictions that parse successfully are }\DIFdelend \DIFaddbegin \DIFadd{Gemini 3.1 Pro was evaluated without application-level retries. Under the scoring policy, unsuccessful predictions receive zero hard-label credit and are excluded from diagnostic score averages. Valid predictions are }\DIFaddend passed to the Judge Agent together with the concealed execution record for scoring.
+
+Additional details on the prompt layout, visible and hidden artifacts, response schema, retry semantics, model roster, stored records, and reproducibility procedure are provided in Appendix D.
+
+
+\subsection{Judge Agent}
+\label{sec:judge_agent}
+
+The Judge Agent is the final evaluation component of MLIRBench. Its role is to score the structured prediction produced by the LLM Reasoning Agent against the execution-grounded record produced by the Execution Sandbox Agent.
+\DIFdelbegin \DIFdel{Unlike preference-style LLM judging, the Judge Agent is not asked to decide which answer ``sounds better.'' Instead, it performs evidence-grounded assessment over a fixed MLIR program pair, the sandbox execution result, and the model prediction.
+}\DIFdelend 
+
+Each judge invocation receives \DIFdelbegin \DIFdel{five inputs: }\DIFdelend the original MLIR program, the mutated MLIR program, dialect-specific guidance, mutation metadata, \DIFaddbegin \DIFadd{sandbox execution evidence, }\DIFaddend and the evaluated model's structured response. The sandbox record is treated as the sole source of semantic ground truth. If either program fails compilation, verification, or execution, the normalized label is \textsc{ERROR}. Otherwise, strict output comparison determines whether the pair is labeled \textsc{EQUIV} or \textsc{DIVERGE}. The evaluated model's predicted label is normalized into the same three-class space before scoring.
+
+The Judge Agent returns three complementary scores. First, hard-label accuracy is computed deterministically as $\mathbb{1}[\hat{y}=y]$, where $\hat{y}$ is the model prediction and $y$ is the execution-derived label. This component does not depend on the judge model. Second, result-behavior accuracy $r \in [0,10]$ measures whether the model's predicted outputs or failure behavior are compatible with execution. For successful executions, \DIFdelbegin \DIFdel{this includes output structure, shape, type, exact valueswhen available, and value-level agreement. For error cases, the model must recognize that compilation, verification, }\DIFdelend \DIFaddbegin \DIFadd{the LLM applies $r=r_{\mathrm{structure}}+r_{\mathrm{exactness}}+3c/N$: $N$ counts reference scalar outputs across both programs, including omitted values, and $c$ counts correctly predicted values. Mutation metadata selects $p\in\{1,2,3,4\}$; structure earns $0$, $p/2$, }\DIFaddend or \DIFdelbegin \DIFdel{runtime execution fails. }\DIFdelend \DIFaddbegin \DIFadd{$p$, while exactness earns $7-p$ only when literals or unambiguous symbolic claims determine every output. For reference \textsc{ERROR} cases, a deterministic post-check assigns $r=10$ for recognized failure predictions and $r=0$ otherwise. }\DIFaddend Third, explanation quality $q \in [0,4]$ evaluates whether the explanation is causal, evidence-specific, dialect-aware, and consistent with the MLIR and sandbox evidence.
+
+The aggregate score is computed as:
+\[
+S = \frac{100}{3}
+\left(
+\mathbb{1}[\hat{y}=y] + \frac{r}{10} + \frac{q}{4}
+\right).
+\]
+\DIFdelbegin \DIFdel{This equal weighting separates three different abilities: predicting the correct semantic category, predicting the concrete behavior that justifies the category, and explaining the compiler-level cause of that behavior. }\DIFdelend \DIFaddbegin \DIFadd{Equal weighting is a reporting convention, not a calibrated measure of semantic understanding. Missing or invalid candidate responses receive zero label credit and no diagnostic scores; invalid judge outputs remain unscored for retry.
+}\DIFaddend 
+
+We use a single fixed judge model, \texttt{gpt-5.4-mini}, for all evaluated systems\DIFdelbegin \DIFdel{so that score differences reflect differences in the evaluated predictions rather than changes in the scorer. The judge prompt instructs the model to first inspect the MLIR programs, dialect guidance, and execution evidence before reading the evaluated model's explanation. This ordering is intended to reduce anchoring on fluent but unsupported explanations. The judge also applies a deterministic post-check for \textsc{ERROR} cases to ensure that failure recognition is scored consistently even when the natural-language explanation varies}\DIFdelend . \DIFaddbegin \DIFadd{Its prompt includes execution evidence and, when available, a stored generated reference narrative. On the same 100-pair sample, three fresh runs each remain within 1.15 aggregate points of the original saved model-level scores. The alternative judge assigns higher scores but preserves the top-three ordering across conditions; Appendix E.14 reports the comparison and limitations.
+}\DIFaddend 
+
+% \section{Dataset Construction}
+
+% \subsection{Source Program Collection}
+
+% MLIRBench is built from a corpus of 40 manually curated PyTorch programs designed to capture common tensor computation patterns while remaining compact enough for systematic mutation and execution analysis. Rather than relying on large application workloads, we selected small, self-contained programs inspired by educational programming exercises and numerical computing tasks, allowing semantic changes introduced by mutations to be isolated and analyzed without unrelated program complexity.
+
+% The dataset originates from 40 manually curated PyTorch programs spanning reduction, tensor transformation, boolean reasoning, and aggregation workloads. Complete seed descriptions are provided in Appendix B.
+
+% \subsection{Lowering PyTorch to MLIR}
+
+% All source programs were lowered to MLIR using the Torch-MLIR compilation pipeline. Programs were first represented in the \texttt{torch} dialect, preserving framework-level semantics, and subsequently lowered to the \texttt{linalg} dialect, exposing structured tensor computations, affine indexing behavior, iterator semantics, and explicit dataflow relationships.
+
+% This dual-dialect representation allows MLIRBench to evaluate reasoning capabilities across multiple abstraction levels within the compiler stack. The resulting corpus contains paired \texttt{torch} and \texttt{linalg} representations for each source program, which serve as the starting point for mutation generation and downstream reasoning tasks. Additional implementation details of the lowering pipeline are provided in Appendix~X.
+
+% \section{Dataset Construction}
+
+% \subsection{Source Program Collection}
+
+% Because no widely available MLIR dataset exists for execution-grounded semantic-reasoning evaluation, MLIRBench is constructed from 40 manually curated PyTorch programs spanning reduction, tensor transformation, boolean reasoning, and aggregation workloads. Additional details are provided in Appendix~D.1.
+
+% \subsection{Lowering PyTorch to MLIR}
+
+% All source programs were lowered using the Torch-MLIR compilation pipeline, producing paired \texttt{torch} and \texttt{linalg} representations at different abstraction levels of the MLIR stack. These dialect-specific programs serve as the seeds for mutation generation and downstream reasoning tasks. Further implementation details are provided in Appendix~D.2.
+
+% \section{Dataset Construction}
+% \label{sec:dataset_construction}
+
+% \begin{figure*}[t]
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/dataset-pipeline.png}
+%     \caption{Dataset construction pipeline. MLIRBench starts from 40 curated PyTorch programs, lowers them into \texttt{torch} and \texttt{linalg} MLIR, applies dialect-specific mutation rules, and validates the resulting program pairs through compilation and execution.}
+%     \label{fig:dataset_construction}
+% \end{figure*}z
+
+% MLIRBench is constructed from a manually curated set of PyTorch programs and expanded through dialect-specific MLIR mutations. The final dataset contains \textbf{1,768 execution-validated program pairs}, split nearly evenly across the two dialects: \textbf{888} pairs in \texttt{linalg} and \textbf{880} pairs in \texttt{torch}. The construction process is summarized in Figure~\ref{fig:dataset_construction}.
+
+\section{Dataset Construction}
+\label{sec:dataset_construction}
+
+\begin{figure*}[t]
+    \centering
+    \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\linewidth]{figures/dataset-pipeline.png}
+%DIFDELCMD <     %%%
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\linewidth]{figures/dataset-pipeline.pdf}
+    \DIFaddendFL \caption{Dataset construction pipeline. MLIRBench starts from curated PyTorch programs, lowers them into \texttt{torch} and \texttt{linalg} MLIR, applies dialect-specific mutation rules, and validates the resulting program pairs through compilation and execution.}
+    \label{fig:dataset_construction}
+\end{figure*}
+
+\subsection{Source Program Collection}
+
+MLIRBench begins with \textbf{40 manually curated PyTorch programs} covering reductions, tensor transformations, aggregation, boolean operations, and shape-related computations. These programs are intentionally compact so that the semantic effect of each mutation can be isolated and analyzed. The final benchmark expands these seeds into \textbf{1,768 execution-validated MLIR program pairs}, with \textbf{888} pairs in \texttt{linalg} and \textbf{880} pairs in \texttt{torch}. Additional source-program and seed-category details are provided in Appendix A.1.
+
+\subsection{Lowering PyTorch to MLIR}
+
+Each PyTorch program is lowered using the Torch-MLIR compilation pipeline into two MLIR dialects: \texttt{torch} and \texttt{linalg}. The \texttt{torch} dialect preserves a representation closer to the original PyTorch program, while \texttt{linalg} exposes structured tensor computation, indexing behavior, and explicit dataflow.
+
+After lowering, MLIRBench applies dialect-specific mutation rules across five mutation levels. In total, the dataset uses \textbf{46 mutation rules}: \textbf{24} for \texttt{linalg} and \textbf{22} for \texttt{torch}. The rules include SSA renaming, constant changes, operand substitution, operator replacement, structural rewrites, and failure-inducing mutations. Each generated pair is validated through verification, compilation, execution, and output comparison, then labeled as \textsc{EQUIV}, \textsc{DIVERGE}, or \textsc{ERROR} based on observed behavior.
+
+Further details on the Torch-MLIR lowering process are provided in Appendix A.2, while mutation-rule coverage is summarized in Appendix B.3.
+
+\begin{table}[t]
+    \centering
+    \caption{Summary of the MLIRBench dataset.}
+    \label{tab:dataset_summary}
+    \begin{tabular}{lr}
+        \toprule
+        Quantity & Count \\
+        \midrule
+        Source PyTorch programs & 40 \\
+        Total MLIR program pairs & 1,768 \\
+        \texttt{linalg} program pairs & 888 \\
+        \texttt{torch} program pairs & 880 \\
+        \texttt{linalg} mutation rules & 24 \\
+        \texttt{torch} mutation rules & 22 \\
+        Total mutation rules & 46 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\section{Results}
+
+\subsection{Model Reasoning Results}
+\label{sec:model_reasoning_results}
+
+\label{sec:benchmark_results}
+\begin{figure*}[t]
+    \centering
+    \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\textwidth]{figures/8-model-benchmark.png}
+%DIFDELCMD <     %%%
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{figures/9-model-benchmark.png}
+    \DIFaddendFL \caption{Benchmark performance across \DIFdelbeginFL \DIFdelFL{the eight }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{nine }\DIFaddendFL evaluated models \DIFaddbeginFL \DIFaddFL{on 888 \texttt{linalg} and 880 \texttt{torch} pairs}\DIFaddendFL . \DIFaddbeginFL \DIFaddFL{Label accuracy includes all attempts; result and explanation scores are normalized by their maxima and averaged over valid responses.}\DIFaddendFL }
+    \DIFdelbeginFL %DIFDELCMD < \label{fig:8-model-benchmark}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \label{fig:9-model-benchmark}
+\DIFaddendFL \end{figure*}
+
+The LLM Reasoning Agent was evaluated over the MLIR program-pair dataset produced by the Execution Sandbox Agent, with all execution artifacts withheld from the evaluated models. The final evaluation covers 888 \texttt{linalg} pairs and 880 \texttt{torch} pairs, for a total of 1{,}768 program pairs. Each pair is evaluated independently by \DIFdelbegin \DIFdel{eight }\DIFdelend \DIFaddbegin \DIFadd{nine }\DIFaddend models, producing \DIFdelbegin \DIFdel{14}\DIFdelend \DIFaddbegin \DIFadd{15}\DIFaddend {,}\DIFdelbegin \DIFdel{144 }\DIFdelend \DIFaddbegin \DIFadd{912 }\DIFaddend structured reasoning records. Each record stores the model identifier, dialect tag, pair metadata, predicted outputs for programs $A$ and $B$, predicted semantic label, confidence score, explanation, retry count, latency, and parsing status. Appendix D expands the prompt structure, response schema, retry logic, model roster, and stored record format.
+
+The protocol is \DIFdelbegin \DIFdel{deterministic }\DIFdelend \DIFaddbegin \DIFadd{controlled }\DIFaddend and fully logged. Every model receives
+the same prompt template, \DIFdelbegin \DIFdel{the same pair ordering, the same dialect tag, and the same }\DIFdelend \DIFaddbegin \DIFadd{dialect information, and }\DIFaddend deterministic
+input values \DIFdelbegin \DIFdel{when available}\DIFdelend \DIFaddbegin \DIFadd{for each program pair}\DIFaddend . All models are queried at
+temperature 0\DIFdelbegin \DIFdel{with pinned model versions.
+These controls reduce sampling variance and version drift as sources of difference between systems, while the }\DIFdelend \DIFaddbegin \DIFadd{, and provider model identifiers are recorded.
+The }\DIFaddend retained structured records \DIFdelbegin \DIFdel{allow later }\DIFdelend \DIFaddbegin \DIFadd{support }\DIFaddend auditing without rerunning
+the \DIFdelbegin \DIFdel{full }\DIFdelend benchmark. Table~\ref{tab:reasoning_scale} reports the
+evaluation scale.
+
+\begin{table}[t]
+\centering
+\caption{Reasoning Agent evaluation scale.}
+\label{tab:reasoning_scale}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value \\
+\midrule
+\texttt{linalg} program pairs & 888 \\
+\texttt{torch} program pairs  & 880 \\
+Total program pairs           & 1{,}768 \\
+Models evaluated              & \DIFdelbeginFL \DIFdelFL{8 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{9 }\DIFaddendFL \\
+Structured reasoning records  & \DIFdelbeginFL \DIFdelFL{14}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{15}\DIFaddendFL {,}\DIFdelbeginFL \DIFdelFL{144 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{912 }\DIFaddendFL \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Each response is parsed against a fixed JSON schema before storage. Responses that fail parsing or schema validation are retried once with a forced-verdict instruction that restates the required fields and requires a committed label. After validation, the retained structured responses are passed to the scoring stage together with the hidden execution record, which supplies the ground-truth label and serves as the sole reference for evaluating each prediction.
+
+\begin{table}[t]
+\centering
+\caption{Reasoning Agent scoring summary. Hard-label accuracy is computed deterministically against the execution-derived label; result-behavior accuracy measures the predicted concrete output behavior, and explanation quality measures whether the explanation is causal, dialect-aware, and grounded in the MLIR evidence.}
+\label{tab:reasoning_scoring}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value \\
+\midrule
+Structured reasoning records  & \DIFdelbeginFL \DIFdelFL{14}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{15}\DIFaddendFL {,}\DIFdelbeginFL \DIFdelFL{144 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{912 }\DIFaddendFL \\
+Mean aggregate score          & \DIFdelbeginFL \DIFdelFL{55.10 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{57.21 }\DIFaddendFL \\
+Mean hard-label accuracy      & \DIFdelbeginFL \DIFdelFL{72.34}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{74.59}\DIFaddendFL \% \\
+Mean result-behavior accuracy & \DIFdelbeginFL \DIFdelFL{3.45 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{3.63 }\DIFaddendFL / 10 \\
+Mean explanation-quality score & \DIFdelbeginFL \DIFdelFL{2.34 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{2.43 }\DIFaddendFL / 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The results expose a gap between two distinct abilities. Hard-label \DIFdelbegin \DIFdel{accuracy---whether }\DIFdelend \DIFaddbegin \DIFadd{accuracy, which measures whether }\DIFaddend a model assigns the correct \textsc{Equiv}, \textsc{Diverge}, or \textsc{Error} \DIFdelbegin \DIFdel{label---is }\DIFdelend \DIFaddbegin \DIFadd{label, is }\DIFaddend substantially higher than result-behavior accuracy, which measures whether the model correctly predicts what the two programs compute. A model can therefore often classify a pair correctly without accurately tracing the concrete behavior that justifies the classification. This distinction matters for compiler IR reasoning \DIFdelbegin \DIFdel{: }\DIFdelend \DIFaddbegin \DIFadd{because }\DIFaddend a correct label alone does not establish that a model has followed the underlying dataflow, shapes, tensor values, or failure mode. Because the label prediction and the behavioral prediction are scored separately against the same execution record, MLIRBench makes this gap measurable rather than collapsing it into a single accuracy number.
+
+
+\subsection{Benchmark}
+
+Figure ~\DIFdelbegin \DIFdel{\ref{fig:8-model-benchmark} }\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:9-model-benchmark} }\DIFaddend summarizes model performance. The main trend is a clear gap between hard-label accuracy and execution-level reasoning. Models often predict the correct \textsc{EQUIV}, \textsc{DIVERGE}, or \textsc{ERROR} label, but struggle to predict the concrete behavior that supports that label.
+
+\DIFdelbegin \DIFdel{Claude Sonnet 4.5 achieves the best }\DIFdelend \DIFaddbegin \DIFadd{Gemini 3.1 Pro~\cite{google2026gemini31pro} achieves the highest }\DIFaddend aggregate score at \DIFdelbegin \DIFdel{62.96}\DIFdelend \DIFaddbegin \DIFadd{74.18}\DIFaddend , followed by \DIFaddbegin \DIFadd{Claude Sonnet 4.5~\cite{anthropic2025sonnet45}  and }\DIFaddend GPT-OSS 120B\DIFdelbegin \DIFdel{and Kimi K2.6. However, even the strongest model reaches only 4.10}\DIFdelend \DIFaddbegin \DIFadd{~\cite{openai2025gptoss} . Gemini obtains a judge-assigned result-behavior score of 5.04}\DIFaddend /10 \DIFdelbegin \DIFdel{result-behavior accuracy , showing that current LLMs remain weak at exact MLIR execution reasoning}\DIFdelend \DIFaddbegin \DIFadd{and an explanation-quality score of 3.17/4. Its hard-label accuracy is 92.65\% across all 1,768 benchmark pairs when the five unsuccessful predictions are counted as incorrect. Among scored predictions, Gemini correctly classifies 97.02\% of \textsc{ERROR} cases but only 68.73\% of \textsc{DIVERGE} cases, including 84 divergent pairs incorrectly classified as equivalent. These results suggest that detailed output prediction remains challenging despite strong semantic classification performance}\DIFaddend .
+
+Table~\ref{tab:level_results} combines the \texttt{linalg} and
+\texttt{torch} mutation families into five mutation levels. Performance
+\DIFdelbegin \DIFdel{is strongest on lower-level syntactic and operator-like mutations, while }\DIFdelend \DIFaddbegin \DIFadd{varies across mutation levels and models. Most models show substantial
+difficulty on }\DIFaddend Level~5 failure-inducing mutations\DIFdelbegin \DIFdel{are consistently the hardest. These casesrequire compiler legality reasoning rather than output comparison. }\DIFdelend \DIFaddbegin \DIFadd{, while Gemini 3.1 Pro
+performs strongly on these cases. Its main remaining weakness is behavioral
+divergence, correctly classifying 68.73\% of \textsc{DIVERGE} pairs.
+}\DIFaddend 
+
+\begin{table}[h]
+  \caption{Average benchmark score by mutation level, combining \texttt{linalg} and \texttt{torch}.}
+  \label{tab:level_results}
+  \begin{tabular}{lrrrrr}
+    \toprule
+    Model & L1 & L2 & L3 & L4 & L5 \\
+    \midrule
+    \DIFaddbeginFL \DIFaddFL{Gemini 3.1 Pro }& \DIFaddFL{68.16 }& \DIFaddFL{68.58 }& \DIFaddFL{72.82 }& \DIFaddFL{67.57 }& \DIFaddFL{94.94 }\\
+    \DIFaddendFL Claude Sonnet 4.5 & 63.82 & 60.72 & 65.38 & 65.13 & 59.11 \\
+    GPT-OSS 120B & 60.90 & 61.08 & 65.02 & 62.47 & 52.59 \\
+    Kimi K2.6 & 57.48 & 56.52 & 63.62 & 62.11 & 51.67 \\
+    Claude Haiku 4.5 & 59.14 & 56.70 & 56.29 & 60.54 & 53.57 \\
+    GLM 5.1 & 59.34 & 58.40 & 61.50 & 61.69 & 32.78 \\
+    GPT-4.1 Mini & 61.23 & 55.90 & 53.46 & 59.82 & 26.88 \\
+    Qwen3 Coder Next & 56.62 & 52.21 & 58.23 & 57.95 & 21.18 \\
+    Llama 4 & 52.42 & 49.36 & 52.54 & 53.63 & 18.15 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Overall, MLIRBench \DIFdelbegin \DIFdel{shows that current models capture coarse semantic signals but do not reliably perform compiler-internal reasoning. The hardest cases involve structural constraints, verifier failures, and dialect-specific legality rules, which are exactly the kinds of reasoning needed }\DIFdelend \DIFaddbegin \DIFadd{distinguishes strong semantic classification
+from detailed output prediction. Gemini demonstrates strong
+compiler-error recognition, but still misses behavior-changing
+mutations and receives limited result-behavior credit. These
+remaining gaps are important }\DIFaddend for compiler transformation validation
+and debugging.
+
+%DIF >  \subsection{Dataset}
+\DIFaddbegin 
+
+%DIF >  MLIRBench is an execution-grounded dataset of MLIR program pairs spanning the \texttt{torch} and \texttt{linalg} dialects. Each benchmark instance consists of an original program, a controlled mutation generated by the Mutation Agent, and an execution-derived ground-truth label obtained through the Execution Sandbox Agent.
+
+%DIF >  For every benchmark instance, MLIRBench provides the original and mutated MLIR programs, dialect information, mutation-level annotations, mutation metadata, compiler-verification status, execution outcomes, and the final ground-truth label (\textsc{Equivalent}, \textsc{Divergent}, or \textsc{Error}). The dataset additionally includes execution metadata such as compilation status, differential-testing results, runtime measurements, and benchmarking statistics collected through IREE.
+
+%DIF >  Beyond benchmark construction, MLIRBench also contains model predictions, semantic explanations, judge evaluations, and aggregate benchmark scores, enabling studies in semantic reasoning, compiler-error correction, workload characterization, and other downstream learning tasks.
+
+%DIF >  Table~\ref{tab:dataset_contents} summarizes the overall composition of the dataset. Additional dataset construction details are provided in Appendix A, mutation-rule and mutation-record details in Appendix B, execution-status details in Appendix C, and additional result analysis in Appendix F.
+
+\DIFaddend \subsection{Dataset}
+
+MLIRBench \DIFdelbegin \DIFdel{is an execution-grounded dataset of MLIR program pairs spanning the \texttt{torch} }\DIFdelend \DIFaddbegin \DIFadd{releases the original }\DIFaddend and \DIFdelbegin \DIFdel{\texttt{linalg} dialects. Each benchmark instance consists of an original program, a controlled mutation generated by the Mutation Agent, and an execution-derived ground-truth label obtained through the Execution Sandbox Agent.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{For every benchmark instance, MLIRBench provides the original and }\DIFdelend mutated MLIR programs \DIFdelbegin \DIFdel{, dialect information, mutation-level annotations, }\DIFdelend \DIFaddbegin \DIFadd{together with
+dialect and }\DIFaddend mutation metadata, \DIFdelbegin \DIFdel{compiler-verification status, execution outcomes, and the final ground-truth label (\textsc{Equivalent}}\DIFdelend \DIFaddbegin \DIFadd{compiler and execution status}\DIFaddend , \DIFdelbegin \DIFdel{\textsc{Divergent}, or \textsc{Error}). The dataset additionally includes execution metadata such as compilation status, differential-testing results}\DIFdelend \DIFaddbegin \DIFadd{execution-derived
+semantic labels}\DIFaddend , runtime measurements, \DIFdelbegin \DIFdel{and benchmarking statistics collected through IREE.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Beyond benchmark construction, MLIRBench also contains model predictions , semantic explanations,
+judge evaluations, and aggregate benchmark scores, enabling studies in semantic reasoning, compiler-error correction, workload characterization, and
+other downstream learning tasks. }%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Table~\ref{tab:dataset_contents} summarizes the overall composition of the dataset. Additional dataset }\DIFdelend \DIFaddbegin \DIFadd{model predictions and explanations,
+and Judge Agent outputs. These artifacts support both benchmark auditing and
+downstream compiler-reasoning experiments. Dataset }\DIFaddend construction details are
+provided in Appendix A, \DIFdelbegin \DIFdel{mutation-rule and mutation-record details }\DIFdelend \DIFaddbegin \DIFadd{mutation records }\DIFaddend in Appendix B, \DIFdelbegin \DIFdel{execution-status details }\DIFdelend \DIFaddbegin \DIFadd{execution records }\DIFaddend in
+Appendix C, and additional \DIFdelbegin \DIFdel{result }\DIFdelend analysis in Appendix F.
+
+\begin{table}[t]
+\centering
+\caption{Artifacts provided by MLIRBench.}
+\label{tab:dataset_contents}
+\begin{tabular}{ll}
+\toprule
+\textbf{Category} & \textbf{Included} \\
+\midrule
+Programs & Original and mutated MLIR pairs \\
+Dialects & \texttt{torch}, \texttt{linalg} \\
+Annotations & Mutation level and metadata \\
+Execution Data & Compile, runtime, and labels \\
+Performance Data & Latency and percentile statistics \\
+Model Outputs & Predictions and explanations \\
+Evaluation Data & Judge scores and benchmark metrics \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% \subsection{Limitations}
+
+% \begin{enumerate}
+%     \item \textbf{Limited Dialect Coverage:}
+% The current version of MLIRBench focuses exclusively on the \texttt{torch} and \texttt{linalg} dialects. While these dialects cover both framework-level and structured tensor representations, they do not capture the full diversity of the MLIR ecosystem. Important dialects such as \texttt{affine}, \texttt{scf}, \texttt{vector}, \texttt{gpu}, \texttt{llvm}, \texttt{memref}, and domain-specific dialects remain unexplored. As a result, benchmark performance should not be interpreted as a comprehensive measure of reasoning ability across all MLIR dialects.
+
+%     \item \textbf{Limited Source-Program Diversity:}
+% The benchmark originates from 40 manually curated PyTorch programs selected to provide controlled coverage of common tensor-computation patterns. Although the mutation process substantially expands the dataset, the underlying workload diversity remains bounded by the characteristics of these seed programs. Larger real-world compiler workloads may expose additional reasoning challenges not captured by the current corpus.
+
+%     \item \textbf{Execution Environment Dependence:}
+% Ground-truth labels are generated using IREE under a fixed compilation and execution configuration to ensure reproducibility. While this provides a consistent execution oracle, compiler behavior and optimization outcomes may differ across alternative MLIR backends, compilation pipelines, or hardware targets.
+
+%     \item \textbf{Controlled Rather Than Real-World Transformations:}
+% MLIRBench is constructed using systematically generated mutations designed to isolate specific semantic changes and reasoning challenges. While this enables controlled evaluation and difficulty calibration, real-world compiler optimizations and developer-authored transformations may exhibit additional complexity not fully captured by the current benchmark.
+% \end{enumerate}
+
+
+% \section{Discussion}
+% \subsection{Mutation Agent}
+
+% % The Mutation Agent was one of the most challenging components of MLIRBench because controlled compiler mutations must simultaneously satisfy syntactic validity, dialect-specific constraints, and mutation-level requirements while preserving the intended scope of semantic change. Small deviations can introduce invalid SSA references, malformed tensor types, verifier failures, or unintended behavioral modifications that invalidate benchmark instances.
+
+% % During the development of MLIRBench, we conducted controlled pre-evaluation experiments using several open-source models, including \texttt{gpt-oss:20b}, \texttt{gpt-oss:120b}, \texttt{qwen2.5:3b}, \texttt{qwen2.5:7b}, \texttt{qwen2.5:14b}, \texttt{qwen3-coder:480b}, and \texttt{qwen3-coder-next}. Although these models often produced syntactically plausible MLIR, generation quality was highly inconsistent under strict mutation constraints. Common failure modes included hallucinated operations, invalid SSA references, incorrect tensor shapes, malformed affine maps, broken dataflow dependencies, and uncontrolled semantic changes extending beyond the intended mutation level. These issues became increasingly pronounced for structural and failure-inducing mutations.
+
+% % To improve reliability, we transitioned to GPT-5.5 as the mutation-generation model. In our experiments, GPT-5.5 demonstrated substantially stronger adherence to mutation requirements, better preservation of dialect-specific constraints, and significantly lower rates of uncontrolled semantic modifications across both the \texttt{torch} and \texttt{linalg} dialects. Nevertheless, automatic validation remained essential, and all generated mutations continue to pass through dialect-specific verification before entering the benchmark pipeline.
+
+% % These experiments suggest that generating syntactically plausible compiler IR is considerably easier than producing controlled semantic transformations. While frontier models can support this process when coupled with validation and regeneration, smaller open-source models continue to struggle with the precision required for large-scale benchmark construction.
+% % -----
+
+% % A key challenge in constructing MLIRBench was generating mutations that were both controlled and compiler-valid. Unlike conventional code generation, benchmark mutations must satisfy multiple constraints simultaneously: they must preserve the intended mutation scope, respect dialect-specific invariants, and avoid introducing unrelated semantic changes.
+
+% % During development, we evaluated several open-source models for mutation generation, including \texttt{gpt-oss:20b}, \texttt{gpt-oss:120b}, \texttt{qwen2.5:3b}, \texttt{qwen2.5:7b}, \texttt{qwen2.5:14b}, \\ \texttt{qwen3-coder:480b}, and \texttt{qwen3-coder-next} models. While these systems frequently produced syntactically plausible MLIR, generation quality was highly inconsistent under strict mutation constraints. Common failure modes included hallucinated operations, invalid SSA references, malformed affine maps, tensor shape inconsistencies, and unintended modifications extending beyond the requested mutation level.
+
+% % These issues became increasingly pronounced for structural and failure-inducing mutations, where small mistakes often resulted in invalid benchmark instances or compiler failures unrelated to the intended transformation. Although repeated regeneration improved success rates, reliability remained insufficient for large-scale benchmark construction.
+
+% % We therefore adopted GPT-5.5 for benchmark generation. In our experiments, GPT-5.5 consistently demonstrated stronger adherence to mutation requirements, better preservation of dialect-specific validity constraints, and substantially lower rates of uncontrolled semantic modifications across both the \texttt{torch} and \texttt{linalg} dialects. Nevertheless, all generated mutations continue to pass through dialect-specific validation before entering the benchmark pipeline.
+
+% % These observations suggest that generating semantically controlled compiler transformations remains considerably more difficult than generating syntactically plausible IR, highlighting the importance of validation-guided benchmark construction.
+% % ----
+
+% One challenge we faced while building MLIRBench was creating mutations that were both valid and consistent with the mutation we wanted to apply. This was more difficult than a normal code generation task because each generated mutation had to meet several requirements at the same time. The mutation needed to follow the specified mutation rule, satisfy the constraints of the target dialect, and avoid introducing unnecessary changes that could alter the relationship between the original program and the mutated program.
+
+% During the development process, we tested several open-source models for mutation generation, including \texttt{gpt-oss:20b}, \texttt{gpt-oss:120b}, \texttt{qwen2.5:3b}, \texttt{qwen2.5:7b}, \texttt{qwen2.5:14b}, \\ \texttt{qwen3-coder:480b}, and \texttt{qwen3-coder-next}. Many of these models were able to generate MLIR code that was syntactically correct, but the generated mutations were not always reliable. We observed problems such as hallucinated operations, invalid SSA references, incorrect affine maps, tensor shape mismatches, and changes that went beyond the requested mutation level.
+
+% These problems became more obvious when we worked with higher mutation levels, especially structural mutations and failure-inducing mutations. We found that even a small error in the generated code could make the benchmark invalid or lead to a compiler error that was not caused by the intended mutation. We also experimented with generating multiple outputs and choosing the better results. This improved the quality in some cases, but the generation process was still not reliable enough for automatically creating a large benchmark.
+
+% Because of these limitations, we chose GPT-5.5 as the main model for mutation generation. Based on our experiments, GPT-5.5 followed the mutation instructions more consistently and produced fewer invalid transformations. It also did a better job of preserving dialect-specific constraints in both the \texttt{torch} and \texttt{linalg} dialects. Even so, every generated mutation is still checked by our validation pipeline before being added to MLIRBench.
+
+% From our experience, generating compiler transformations with specific semantic requirements is much harder than generating IR that is only syntactically correct. This finding highlights the importance of using validation during benchmark construction, especially for datasets that are intended to evaluate compiler reasoning capabilities.
+
+% \subsection{Execution Sandbox Agent}
+% \label{sec:execution_experiments}
+
+% The released benchmark contains 1{,}768 program pairs (888 linalg, 880 torch).
+% One Level-2 parameter-mutation rule produced invalid MLIR across every linalg
+% program, so all 37 of its pairs were excluded during mutation generation. Of the
+% 1{,}768 pairs, 1{,}427 executed successfully: 1{,}402 with complete benchmark
+% timing, plus 25 torch T2 pairs retained as runtime errors, where both programs
+% ran but the benchmark subprocess could not bind the altered input signature. The
+% remaining records are 338 L5/T5 \texttt{expected\_invalid} pairs and 3 linalg
+% pairs that failed compilation. Table~\ref{tab:divergence} reports divergence over
+% the 1{,}765 pairs that produced a label; the full status distribution is in
+% Appendix~\ref{app:execution-status}.
+
+% Table~\ref{tab:divergence} reports divergence by mutation level and dialect.
+
+% \begin{table}[t]
+% \centering
+% \caption{Behavioral divergence by mutation level over the 1{,}765 labeled pairs.
+% \textsc{Diverge} counts pairs whose outputs differ under bit-exact equality;
+% ExpInv counts L5/T5 expected-invalid records. Three linalg pairs that failed
+% compilation are excluded (Appendix~\ref{app:execution-status}).}
+% \label{tab:divergence}
+% \small
+% % If this overflows the column, promote to table* for full-width.
+% \begin{tabular}{llrrrr}
+% \toprule
+% Dialect & Level & Total & Diverge & Equiv. & ExpInv \\
+% \midrule
+% Linalg & L1 & 185 & 17 (9\%)  & 168 (91\%) & 0   \\
+% Linalg & L2 & 147 & 76 (52\%) & 71 (48\%)  & 0   \\
+% Linalg & L3 & 184 & 41 (22\%) & 143 (78\%) & 0   \\
+% Linalg & L4 & 184 & 32 (17\%) & 152 (83\%) & 0   \\
+% Linalg & L5 & 185 & 0 (0\%)   & 7 (4\%)    & 178 \\
+% \midrule
+% Torch  & T1 & 200 & 3 (2\%)   & 197 (98\%) & 0   \\
+% Torch  & T2 & 160 & 88 (55\%)$^\dagger$ & 72 (45\%) & 0 \\
+% Torch  & T3 & 160 & 10 (6\%)  & 150 (94\%) & 0   \\
+% Torch  & T4 & 200 & 8 (4\%)   & 192 (96\%) & 0   \\
+% Torch  & T5 & 160 & 0 (0\%)   & 0 (0\%)    & 160 \\
+% \midrule
+% \multicolumn{2}{l}{\textbf{Total}} & \textbf{1{,}765}
+%   & \textbf{275 (16\%)} & \textbf{1{,}152 (65\%)} & \textbf{338 (19\%)} \\
+% \bottomrule
+% \end{tabular}
+% \\[3pt]
+% {\footnotesize $^\dagger$ 25 of the 88 T2 divergences come from mutations that
+% altered the function input signature. Among the remaining 135 matched-input
+% pairs, 47\% diverge, comparable to linalg L2.}
+% \end{table}
+
+% Level~2 mutations, which change constants, dimensions, element types, and
+% operator parameters, diverge at 52\% in linalg and 55\% in torch, the highest
+% rates at any level. Structural mutations (L3, L4, T3, T4) diverge less often,
+% between 4\% and 22\%. We report these rates descriptively rather than as a
+% difficulty ordering, because the level labels are assigned by the upstream
+% Mutation Agent and we do not re-derive them from execution. The failure-inducing
+% levels behave as designed: 96\% of linalg L5 and 100\% of torch T5 pairs fail
+% compilation. We examine the 20 L1/T1 pairs that diverge despite a syntactic
+% label, and the seven linalg L5 pairs that compile despite an invalid label, in
+% Appendix~\ref{app:execution-anomalies}.
+
+% The execution-time delta $\Delta t = t_B - t_A$ over the 1{,}402 timed pairs has
+% mean $-0.001$\,ms and standard deviation $0.020$\,ms. At these kernel sizes,
+% semantic divergence and performance divergence are effectively decoupled: a
+% mutation that changes the output rarely changes the measured latency.
+
+% \subsection{LLM Reasoning Agent}
+
+% Hard-label accuracy can overstate a model's semantic understanding. Because the label space has only three classes, a model may arrive at the correct \textsc{Equiv}, \textsc{Diverge}, or \textsc{Error} verdict without having predicted the concrete output behavior that justifies it. Scoring the label separately from the predicted behavior keeps this distinction visible: a correct classification is necessary but not sufficient evidence that the model traced what each program actually computes.
+
+% Exact reasoning over MLIR is demanding because a correct behavioral prediction requires the model to track SSA dependencies, tensor shapes, element types, affine indexing maps, iterator semantics, constants, and returned values simultaneously, together with the dialect-specific verifier constraints that determine whether a program is well formed. A local edit can propagate through the dataflow graph in ways that are not apparent from surface syntax, and predicting the result demands following that propagation rather than matching textual patterns. Failure-inducing mutations are especially hard for this reason: recognizing that a program is invalid requires compiler legality reasoning-type compatibility, shape relations, operand constraints, and dependency well-formedness, rather than comparison of two computed outputs.
+
+% For a compiler-systems audience, the broader point is that execution-hidden evaluation over MLIR pairs separates coarse classification from compiler-level semantic tracing, and the two do not move together. Models that can assign a relationship label still fall short of reliably reasoning about IR-level dataflow, shape and type propagation, and verifier legality. Compiler-assistance tools that depend on these capabilities for transformation validation, failure diagnosis, or optimization reasoning will require stronger and more auditable IR-level reasoning than current models provide.
+
+% \subsection{Judge Agent}
+
+% The Judge Agent is necessary because hard-label accuracy alone overstates model competence. A model can often guess \textsc{EQUIV}, \textsc{DIVERGE}, or \textsc{ERROR} without correctly predicting the output behavior or identifying the compiler-level cause. The judge therefore separates label correctness from result-behavior accuracy and explanation quality.
+
+% This design is particularly useful for MLIR because many failures are not visible from surface syntax alone. For example, a model may correctly predict \textsc{ERROR} but fail to identify the invalid operand type, broken SSA dependency, illegal shape relation, or dialect-specific verifier rule. Conversely, a model may produce a plausible explanation that cites operations not present in the program. By grounding the judge in both the MLIR pair and the execution record, MLIRBench penalizes fluent but unsupported reasoning.
+
+% The main risk is scorer variance from LLM-based explanation grading. We reduce this risk by computing hard-label accuracy deterministically, using one fixed judge model for all systems, requiring JSON outputs, and applying deterministic post-checks for error recognition. Nevertheless, explanation-quality scores should be interpreted as structured diagnostic signals rather than absolute measures of semantic understanding.
+
+\section{Discussion}
+
+\subsection{Mutation Agent}
+
+A major challenge in constructing MLIRBench was generating mutations that were both compiler-valid and faithful to the intended mutation rule. Unlike ordinary code generation, each mutation must preserve the intended scope of change, satisfy dialect-specific constraints, and avoid unrelated semantic edits that would make the resulting program pair ambiguous. During development, we tested several open-source models for mutation generation, including \texttt{gpt-oss:20b}, \texttt{gpt-oss:120b}, \texttt{qwen2.5} variants, \texttt{qwen3-coder:480b}, and \texttt{qwen3-coder-next}. These models often produced syntactically plausible MLIR, but they were inconsistent under strict mutation constraints. Common failures included hallucinated operations, invalid SSA references, malformed affine maps, tensor shape mismatches, and edits that extended beyond the requested mutation level.
+
+These issues became more pronounced for structural and failure-inducing mutations, where small errors could create invalid benchmark instances or compiler failures unrelated to the target transformation. Regenerating multiple candidates improved quality in some cases, but was not reliable enough for large-scale benchmark construction. We therefore used GPT-5.5 for mutation generation, which followed mutation requirements more consistently and better preserved constraints in both the \texttt{torch} and \texttt{linalg} dialects. Even with this stronger generator, validation remained necessary: every mutation is checked before entering MLIRBench. This shows that controlled compiler transformation generation is harder than producing syntactically valid IR, and that validation-guided construction is essential for reliable compiler-reasoning datasets.
+
+\subsection{Execution Sandbox Agent}
+\label{sec:execution_experiments}
+
+The released benchmark contains 1{,}768 program pairs\DIFdelbegin \DIFdel{, with }\DIFdelend \DIFaddbegin \DIFadd{: }\DIFaddend 888 \texttt{linalg}
+\DIFdelbegin \DIFdel{pairs }\DIFdelend and 880 \texttt{torch}\DIFdelbegin \DIFdel{pairs. One Level-2 }\DIFdelend \DIFaddbegin \DIFadd{. One L2 }\DIFaddend linalg parameter-mutation rule \DIFdelbegin \DIFdel{produced }\DIFdelend \DIFaddbegin \DIFadd{was
+excluded after producing }\DIFaddend invalid MLIR across all 37 programs\DIFdelbegin \DIFdel{and was excluded during mutation generation}\DIFdelend . Of the retained
+pairs, 1{,}427 executed successfully\DIFdelbegin \DIFdel{, including }\DIFdelend \DIFaddbegin \DIFadd{; }\DIFaddend 1{,}402 \DIFdelbegin \DIFdel{pairs with }\DIFdelend \DIFaddbegin \DIFadd{also have }\DIFaddend complete benchmark
+timing\DIFdelbegin \DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{, while }\DIFaddend 25 torch T2 pairs \DIFaddbegin \DIFadd{were }\DIFaddend retained as runtime errors \DIFdelbegin \DIFdel{because the benchmark subprocess could not bind the altered
+input signature}\DIFdelend \DIFaddbegin \DIFadd{due to altered
+input signatures}\DIFaddend . The remaining records include 338 L5/T5
+\texttt{expected\_invalid} pairs and 3 linalg \DIFdelbegin \DIFdel{pairs that failed compilation }\DIFdelend \DIFaddbegin \DIFadd{compilation failures}\DIFaddend .
+Table~\ref{tab:divergence} \DIFdelbegin \DIFdel{reports divergence over }\DIFdelend \DIFaddbegin \DIFadd{summarizes }\DIFaddend the 1{,}765 \DIFdelbegin \DIFdel{pairs that produced labels}\DIFdelend \DIFaddbegin \DIFadd{labeled pairs}\DIFaddend .
+
+\begin{table}[t]
+\centering
+\caption{Behavioral divergence by mutation level over 1{,}765 labeled pairs.
+\textsc{Diverge} counts \DIFdelbeginFL \DIFdelFL{pairs whose outputs differ }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{output mismatches }\DIFaddendFL under bit-exact equality; ExpInv
+\DIFdelbeginFL \DIFdelFL{counts }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{denotes }\DIFaddendFL expected-invalid L5/T5 records.\DIFdelbeginFL \DIFdelFL{Three linalg compilation failures are excluded.}\DIFdelendFL }
+\label{tab:divergence}
+\small
+\begin{tabular}{llrrrr}
+\toprule
+Dialect & Level & Total & Diverge & Equiv. & ExpInv \\
+\midrule
+Linalg & L1 & 185 & 17 (9\%)  & 168 (91\%) & 0   \\
+Linalg & L2 & 147 & 76 (52\%) & 71 (48\%)  & 0   \\
+Linalg & L3 & 184 & 41 (22\%) & 143 (78\%) & 0   \\
+Linalg & L4 & 184 & 32 (17\%) & 152 (83\%) & 0   \\
+Linalg & L5 & 185 & 0 (0\%)   & 7 (4\%)    & 178 \\
+\midrule
+Torch  & T1 & 200 & 3 (2\%)   & 197 (98\%) & 0   \\
+Torch  & T2 & 160 & 88 (55\%)$^\dagger$ & 72 (45\%) & 0 \\
+Torch  & T3 & 160 & 10 (6\%)  & 150 (94\%) & 0   \\
+Torch  & T4 & 200 & 8 (4\%)   & 192 (96\%) & 0   \\
+Torch  & T5 & 160 & 0 (0\%)   & 0 (0\%)    & 160 \\
+\midrule
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{1{,}765}
+  & \textbf{275 (16\%)} & \textbf{1{,}152 (65\%)} & \textbf{338 (19\%)} \\
+\bottomrule
+\end{tabular}
+\\[3pt]
+{\footnotesize $^\dagger$ 25 \DIFdelbeginFL \DIFdelFL{of the 88 }\DIFdelendFL T2 divergences \DIFdelbeginFL \DIFdelFL{come from mutations that altered the function input
+signature. Among }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{involve altered function input
+signatures; among }\DIFaddendFL the remaining 135 matched-input pairs, 47\% diverge.}
+\end{table}
+
+Level-2 mutations \DIFdelbegin \DIFdel{produce }\DIFdelend \DIFaddbegin \DIFadd{show }\DIFaddend the highest divergence rates \DIFdelbegin \DIFdel{, with }\DIFdelend \DIFaddbegin \DIFadd{at }\DIFaddend 52%DIF <  divergence in \texttt{linalg} and 55% in \texttt{torch}, because they directly modify constants, dimensions, element types, and operator parameters. Structural mutations diverge less often, ranging from 4% to 22%, while failure-inducing levels behave as intended: 96% of linalg L5 pairs and 100% of torch T5 pairs fail compilation or validation. Execution timing also shows that semantic and performance divergence are largely decoupled for these small kernels: over 1{,}402 timed pairs, the mean runtime delta is $-0.001$ ms with standard deviation $0.020$ ms.
+\DIFaddbegin \DIFadd{\% for
+\texttt{linalg} and 55\% for \texttt{torch}, while structural mutations
+range from 4\% to 22\%. Failure-inducing levels behave as intended, with
+96\% of L5 and 100\% of T5 pairs failing compilation or validation.
+Across 1}{\DIFadd{,}}\DIFadd{402 timed pairs, the mean runtime delta is $-0.001$ ms with
+standard deviation $0.020$ ms.
+}\DIFaddend 
+
+\DIFaddbegin \DIFadd{As an execution-contract baseline, MLIRBench uses bit-exact output equality.
+We compare this baseline against two tolerance-based variants by recomputing
+the execution labels from the stored outputs using \texttt{numpy.allclose}.
+We test NumPy's default tolerances,
+$(r_{\mathrm{tol}},a_{\mathrm{tol}})=(10^{-5},10^{-8})$, and a looser
+sensitivity setting of $(10^{-4},10^{-6})$. Neither setting changes any of
+the 275 \textsc{Diverge} labels among the 1}{\DIFadd{,}}\DIFadd{427 successfully executed
+benchmark pairs.
+}
+
+\DIFaddend \subsection{LLM Reasoning Agent}
+
+The results show that hard-label accuracy \DIFdelbegin \DIFdel{can overstate }\DIFdelend \DIFaddbegin \DIFadd{alone does not establish
+detailed }\DIFaddend semantic understanding. \DIFdelbegin \DIFdel{Because the task has only three labels, a }\DIFdelend \DIFaddbegin \DIFadd{A }\DIFaddend model may correctly predict
+\textsc{Equiv}, \textsc{Diverge}, or \textsc{Error} without predicting
+the concrete behavior that justifies the label. MLIRBench keeps
+these abilities separate by scoring hard-label accuracy independently
+from result-behavior accuracy and explanation quality.
+
+This distinction matters because exact MLIR reasoning requires
+tracking SSA dependencies, tensor shapes, element types, affine
+indexing maps, iterator semantics, constants, return values, and
+verifier constraints at the same time. A local edit can propagate
+through the dataflow graph in ways that are not obvious from surface
+syntax. Failure-inducing mutations \DIFdelbegin \DIFdel{are especially difficult because they }\DIFdelend require compiler-legality reasoning
+over type compatibility, shape relations, operand constraints, and
+dependency well-formedness\DIFaddbegin \DIFadd{, but their difficulty varies across models}\DIFaddend .
+Thus, models that recognize \DIFdelbegin \DIFdel{coarse semantic relationships still fall short of reliable IR-level semantic tracing}\DIFdelend \DIFaddbegin \DIFadd{semantic relationships or compiler errors
+may still struggle with detailed output prediction}\DIFaddend , which is \DIFdelbegin \DIFdel{necessary }\DIFdelend \DIFaddbegin \DIFadd{important
+}\DIFaddend for transformation validation, failure diagnosis, and optimization
+assistance.
+
+\subsection{Judge Agent}
+
+The Judge Agent is useful because label correctness alone does not capture whether a model understands the compiler-level cause of a result. A model may correctly predict \textsc{Error} while missing the invalid operand type, broken SSA dependency, illegal shape relation, or dialect-specific verifier rule. Conversely, it may produce a fluent explanation that cites operations or constraints not present in the program. By grounding scoring in both the MLIR pair and the execution record, MLIRBench penalizes unsupported reasoning rather than only incorrect labels.
+
+The main limitation is scorer variance in LLM-based explanation grading. We reduce this risk by computing hard-label accuracy deterministically, using a fixed judge model for all systems, requiring structured JSON outputs, and applying deterministic post-checks for error recognition. Explanation-quality scores should therefore be interpreted as diagnostic signals rather than absolute measures of semantic understanding.
+
+\DIFaddbegin \raggedbottom
+\DIFaddend \subsection{Limitations}
+
+\begin{enumerate}
+\item \textbf{Limited Dialect Coverage:}
+MLIRBench currently focuses on the \texttt{torch} and \texttt{linalg} dialects. While these dialects capture both framework-level and structured tensor representations, the benchmark does not yet cover other widely used MLIR dialects such as \texttt{affine}, \texttt{scf}, \texttt{vector}, \texttt{gpu}, \texttt{llvm}, or \texttt{memref}.
+
+\item \textbf{Limited Source-Program Diversity:}
+The benchmark originates from 40 manually curated PyTorch programs. Although mutation generation substantially expands the dataset, the underlying workload diversity remains bounded by the selected seed programs.
+
+\item \textbf{Execution Environment Dependence:}
+By using IREE ground-truth labels are generated under a fixed compilation and execution configuration. Results may vary across alternative MLIR backends, or hardware targets.
+
+\item \textbf{Controlled Rather Than Real-World Transformations:}
+MLIRBench is constructed from systematically generated mutations designed to isolate specific semantic changes. Real-world compiler optimizations and developer-authored transformations may exhibit additional complexity beyond the current benchmark.
+
+\item \textbf{Structured-Output Reliability:}
+\DIFdelbegin \DIFdel{The LLM Reasoning Agent requires each model response to satisfy a fixed JSON schema before it can be scored. During audit, two \texttt{gpt-oss-120b} responses on \texttt{torch} program pairs failed this response-contract requirement even after repeated retries}\DIFdelend \DIFaddbegin \DIFadd{Two \texttt{gpt-oss-120b} responses failed the required JSON response contract during evaluation}\DIFaddend : one produced a \texttt{PARSE\_ERROR} \DIFdelbegin \DIFdel{, returning a payload that mixed free-form reasoning text with a Python-like list/dictionary wrapper rather than a valid top-level JSON object, and the other produced a \texttt{SCHEMA\_ERROR}, selecting an \textsc{Error} verdict but returning null predicted-output fields in violation of the required predicted-output schema. These are structured-output compliance failures at the model interface, not defects in the underlying MLIR program pairs or in the }\DIFdelend \DIFaddbegin \DIFadd{and another a \texttt{SCHEMA\_ERROR}. These were model-interface formatting failures rather than issues with the MLIR pairs or }\DIFaddend execution-derived labels, \DIFdelbegin \DIFdel{which are fixed and computed independently of any evaluated model. They motivate stricter constrained decoding or schema-enforced }\DIFdelend \DIFaddbegin \DIFadd{and suggest using stricter schema-constrained }\DIFaddend generation in future versions of the harness.
+
+\end{enumerate}
+
+%DIF >  \section{Downstream Tasks}
+%DIF >  \subsection{Task 1: Compiler-Grounded Optimization-Benefit Prediction}
+\DIFaddbegin 
+
+%DIF >  The first downstream task evaluates whether MLIRBench can support
+%DIF >  compiler-aware optimization reasoning. Given an MLIR program, the model
+%DIF >  predicts how much a real compiler transformation will benefit the program
+%DIF >  using only the original program and its static structure. We define one task
+%DIF >  for each dialect in MLIRBench: elementwise producer--consumer fusion for
+%DIF >  \texttt{linalg} using \path{linalg-fuse-elementwise-ops}, and
+%DIF >  \path{torch-simplification-pipeline} for \texttt{torch}. The actual compiler
+%DIF >  output is used to assign each program a \textsc{Low}, \textsc{Medium}, or
+%DIF >  \textsc{High} benefit label, while the transformed IR and measured result are
+%DIF >  hidden from the model.
+
+%DIF >  After compiler validation, the task contains 693 Linalg and 687 Torch
+%DIF >  programs. We use family-disjoint five-fold evaluation so that programs from
+%DIF >  the same source family do not appear in both training and evaluation. We
+%DIF >  compare zero-shot prompting, three-shot prompting, and LoRA-based supervised
+%DIF >  fine-tuning. Since the benefit classes are imbalanced, we use macro-F1 as the
+%DIF >  main metric.
+
+%DIF >  Figure~\ref{fig:dt1_supervision} shows the main results. For Linalg fusion,
+%DIF >  macro-F1 increases from 26.8\% zero-shot and 24.1\% three-shot to
+%DIF >  \textbf{60.9\%} after SFT. For Torch simplification, it increases from
+%DIF >  9.3\% and 22.1\% to \textbf{48.0\%}. The compiler transformations also
+%DIF >  change the IR for 91.8\% of compiler-valid Linalg programs and 45.0\% of
+%DIF >  Torch programs, showing that the labels are based on real compiler behavior
+%DIF >  rather than model-generated guesses.
+
+%DIF >  \begin{figure}[t]
+%DIF >      \centering
+%DIF >      \includegraphics[width=\linewidth]
+%DIF >      {../../figures/downstream-tasks/DT1/dt1_01_supervision_gain.png}
+%DIF >      \caption{Optimization-benefit prediction for Linalg fusion and Torch
+%DIF >      simplification. Fine-tuning on MLIRBench-derived supervision improves
+%DIF >      macro-F1 over zero-shot and few-shot prompting for both dialects.}
+%DIF >      \label{fig:dt1_supervision}
+%DIF >  \end{figure}
+
+%DIF >  We also check whether the Linalg fusion result carries over to RISC-V code
+%DIF >  generation. We compile both the original and fusion-transformed programs
+%DIF >  through the RISC-V backend and compare their static instruction streams.
+%DIF >  Backend improvement is seen in 1.7\% of \textsc{Low}, 31.6\% of
+%DIF >  \textsc{Medium}, and 24.9\% of \textsc{High} cases. As shown in
+%DIF >  Figure~\ref{fig:dt1_riscv}, programs with medium or high IR-level fusion
+%DIF >  benefit are substantially more likely to show backend improvement than
+%DIF >  low-benefit programs. Overall, Task 1 shows that MLIRBench can support compiler-grounded optimization-benefit prediction across both \texttt{linalg} and \texttt{torch}, with additional analysis of how the predicted IR-level benefit relates to RISC-V code generation.
+
+%DIF >  \begin{figure}[t]
+%DIF >      \centering
+%DIF >      \includegraphics[width=0.72\linewidth]
+%DIF >      {../../figures/downstream-tasks/DT1/riscv_backend_improvement.png}
+%DIF >      \caption{RISC-V backend improvement rate after Linalg fusion, grouped by
+%DIF >      IR-level fusion-benefit class.}
+%DIF >      \label{fig:dt1_riscv}
+%DIF >  \end{figure}
+
+%DIF >  \subsection{Task 2: Transfer of Execution-Grounded Semantic Supervision}
+
+%DIF >  The second downstream task studies whether the semantic labels produced by
+%DIF >  MLIRBench can be reused as supervision for previously unseen program families.
+%DIF >  Each example contains an original MLIR program and a mutated version generated
+%DIF >  by the Mutation Agent, with one of three execution-grounded labels:
+%DIF >  \textbf{EQUIV}, \textbf{DIVERGE}, or \textbf{ERROR}. \textit{EQUIV}
+%DIF >  represents transformations that preserve program behavior, \textit{DIVERGE}
+%DIF >  represents valid transformations that change behavior, and \textit{ERROR}
+%DIF >  represents verification, compilation, or execution failures. These labels are
+%DIF >  obtained from the execution-based MLIRBench pipeline rather than generated by
+%DIF >  the downstream model.
+
+%DIF >  We use \path{Qwen2.5-Coder-14B-Instruct} and construct \\family-disjoint train,
+%DIF >  validation, and test splits so that mutations from the same source-program
+%DIF >  family cannot appear in both training and evaluation. We compare zero-shot and
+%DIF >  balanced six-shot prompting as baselines, and use LoRA-based supervised
+%DIF >  fine-tuning to test whether the execution-grounded relationships captured by
+%DIF >  MLIRBench can be learned and transferred beyond the examples provided in the
+%DIF >  prompt.
+
+%DIF >  Figure~\ref{fig:dt2_supervision} summarizes the results. Zero-shot prompting
+%DIF >  achieves 57.8\% accuracy and 48.5\% macro-F1, while six-shot prompting
+%DIF >  achieves 56.1\% accuracy and 53.2\% macro-F1. When trained using MLIRBench
+%DIF >  supervision, the model reaches \textbf{84.3\% accuracy} and
+%DIF >  \textbf{80.9\% macro-F1} on held-out program families. The improvement is
+%DIF >  consistent across both dialects, reaching 80.8\% macro-F1 on
+%DIF >  \texttt{linalg} and 80.4\% on \texttt{torch}. This indicates that the learned
+%DIF >  semantic relationships transfer across unseen source families and are not
+%DIF >  specific to a single MLIR representation.
+
+%DIF >  We also examine a compiler-relevant failure mode: predicting \textit{EQUIV}
+%DIF >  for a pair that actually \textit{DIVERGEs} or produces an \textit{ERROR}.
+%DIF >  The false-equivalence rate decreases from 59.1\% in the zero-shot setting to
+%DIF >  27.4\% with six-shot prompting and \textbf{24.1\%} after training on
+%DIF >  MLIRBench labels. The final model achieves per-class F1 scores of 88.1\% for
+%DIF >  \textit{EQUIV}, 59.7\% for \textit{DIVERGE}, and 94.8\% for
+%DIF >  \textit{ERROR}, showing that the benefit extends beyond the dominant semantic
+%DIF >  class.
+
+%DIF >  Overall, these results show that MLIRBench captures execution-grounded semantic information that can be learned and transferred to unseen program families across both \texttt{linalg} and \texttt{torch}.
+
+%DIF >  Full details of the prompt format, LoRA configuration, dataset splits, and
+%DIF >  evaluation setup are provided in Appendix G.
+
+%DIF >  \begin{figure}[t]
+%DIF >      \centering
+%DIF >      \includegraphics[width=\linewidth]
+%DIF >      {../../figures/downstream-tasks/DT2/dt2_01_supervision_gain.png}
+%DIF >      \caption{Semantic relationship classification on family-disjoint
+%DIF >      MLIRBench program pairs. Execution-grounded MLIRBench supervision
+%DIF >      transfers to unseen program families and substantially improves semantic
+%DIF >      classification across both dialects.}
+%DIF >      \label{fig:dt2_supervision}
+%DIF >  \end{figure}
+
+\DIFaddend \section{Downstream Tasks}
+\DIFdelbegin \subsection{\DIFdel{Task 1: RISC-V-Aware Optimization Planning}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+\DIFdelend 
+
+\DIFaddbegin \subsection{\DIFadd{Task 1: Compiler-Grounded Optimization-Benefit Prediction}}
+
+\DIFaddend The first downstream task evaluates whether MLIRBench can support
+\DIFdelbegin \DIFdel{hardware-aware compiler }\DIFdelend \DIFaddbegin \DIFadd{compiler-aware optimization }\DIFaddend reasoning. Given an MLIR program, the model
+\DIFdelbegin \DIFdel{generates a RISC-V-aware optimization plan from static program structure rather than execution results. The task asks the model to decide whether the program is suitable for RVV vectorization, reduction vectorization, elementwise fusion, layout cleanup, or whether vectorization should be avoided}\DIFdelend \DIFaddbegin \DIFadd{predicts the benefit of a real compiler transformation using only the original
+program and its static structure}\DIFaddend . \DIFaddbegin \DIFadd{We define one task for each dialect:
+elementwise producer--consumer fusion for \texttt{linalg} using
+}\path{linalg-fuse-elementwise-ops}\DIFadd{, and the
+}\path{torch-simplification-pipeline} \DIFadd{for \texttt{torch}. Compiler outputs are
+used to assign \textsc{Low}, \textsc{Medium}, or \textsc{High} benefit labels,
+while the transformed IR and measured result are hidden from the model.
+}\DIFaddend 
+
+\DIFdelbegin \DIFdel{Each example contains the MLIR program,
+dialect information, mutation metadata, extracted operation features, and a target JSON plan. Target includes four fields: }%DIFDELCMD < \path{optimization_label}%%%
+\DIFdel{, }%DIFDELCMD < \path{recommended_passes}%%%
+\DIFdel{,
+}%DIFDELCMD < \path{rvv_expected_benefit}%%%
+\DIFdel{, and }%DIFDELCMD < \path{reason}%%%
+\DIFdel{. For example, regular elementwise or reduction-heavy programs may receive vectorization-oriented labels, while programswith slicing, irregular indexing, gather/scatter behavior, or structural validity issues may be labeled as poor vectorization candidates.In such cases, the recommended passes are usually lightweight cleanup passes such as }%DIFDELCMD < \path{canonicalize} %%%
+\DIFdelend \DIFaddbegin \DIFadd{After compiler validation, the task contains 693 Linalg and 687 Torch
+programs. We use family-disjoint five-fold evaluation and compare zero-shot,
+three-shot, }\DIFaddend and \DIFdelbegin %DIFDELCMD < \path{cse}%%%
+\DIFdel{.}\DIFdelend \DIFaddbegin \DIFadd{LoRA-based SFT. Since the classes are imbalanced, macro-F1 is
+used as the main metric.
+}\DIFaddend 
+
+\DIFdelbegin \DIFdel{We evaluate this task using zero-shot prompting, }\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:dt1_supervision} shows the results. For Linalg fusion,
+macro-F1 increases from 26.8\% zero-shot and 24.1\% }\DIFaddend three-shot \DIFdelbegin \DIFdel{prompting, and supervised fine-tuning.
+In the fine-tuning setting, the model is trained to generate the target JSON optimization plan directly from the prompt. This downstream task }\DIFdelend \DIFaddbegin \DIFadd{to
+\textbf{60.9\%} after SFT. For Torch simplification, it increases from
+9.3\% and 22.1\% to \textbf{48.0\%}. The compiler transformations modify
+91.8\% of compiler-valid Linalg programs and 45.0\% of Torch programs, with
+the labels derived directly from observed compiler transformations.
+}
+
+{
+\setlength{\intextsep}{3pt}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\linewidth]
+    {\DIFaddFL{../../figures/downstream-tasks/DT1/dt1_01_supervision_gain.png}}
+    \caption{\DIFaddFL{Optimization-benefit prediction for Linalg fusion and Torch
+    simplification. Fine-tuning on MLIRBench-derived supervision improves
+    macro-F1 over zero-shot and few-shot prompting for both dialects.}}
+    \label{fig:dt1_supervision}
+\end{figure}
+}
+
+\DIFadd{We also evaluate how Linalg fusion relates to RISC-V code generation by
+compiling the original and fusion-transformed programs and comparing their
+static instruction streams. Backend improvement is observed in 1.7\% of
+\textsc{Low}, 31.6\% of \textsc{Medium}, and 24.9\% of \textsc{High} cases.
+As shown in Figure~\ref{fig:dt1_riscv}, medium- and high-benefit programs are
+substantially more likely to show backend improvement than low-benefit
+programs. Overall, Task~1 }\DIFaddend shows that MLIRBench \DIFdelbegin \DIFdel{can be used not only for semantic relationship classification, but also for target-specific compiler optimization planning}\DIFdelend \DIFaddbegin \DIFadd{supports compiler-grounded
+optimization-benefit prediction across both dialects, with additional
+RISC-V-aware analysis}\DIFaddend .
+
+\DIFdelbegin \subsection{\DIFdel{Task 2: Semantic Relationship Classification}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+%DIF <  The second downstream task focuses on evaluating whether LLMs can comprehend and identify the semantic relationships between compiler-level program transformations. Given an original MLIR and its mutated version produced by the Mutation Agent, the goal of the task is to classify the relationship between the two input programs into one of three categories: \textbf{EQUIV}, \textbf{DIVERGE}, or \textbf{ERROR}. The EQUIV label indicates semantics-preserving transformations, DIVERGE denotes valid transformations that alter program behavior, and ERROR indicates mutations that might lead to failures in verification, compilation, or execution.
+\DIFdelend \DIFaddbegin \begin{figure}[t]
+    \centering
+    \includegraphics[width=0.72\linewidth]
+    {\DIFaddFL{../../figures/downstream-tasks/DT1/riscv_backend_improvement.png}}
+    \caption{\DIFaddFL{RISC-V backend improvement rate after Linalg fusion, grouped by
+    IR-level fusion-benefit class.}}
+    \label{fig:dt1_riscv}
+\end{figure}
+\DIFaddend 
+
+
+%DIF <  We investigate two adaptation strategies for this task using \texttt{\textbf{Qwen2.5-Coder-14B-Instruct}}. First, we assess two types of \textbf{In-Context Learning (ICL)}: \textbf{zero-shot} and \textbf{three-shot}. In these approaches, foundation models perform classification based solely on prompts containing task instructions and a limited number of examples, without altering the model parameters. Second, we evaluate \textbf{Supervised Fine-Tuning (SFT)}, in which models are trained on labeled MLIRBench program pairs to explicitly learn the classification task.
+\DIFaddbegin \subsection{\DIFadd{Task 2: Transfer of Execution-Grounded Semantic Supervision}}
+\DIFaddend 
+
+%DIF <  In both settings, the model receives the original and mutated MLIR programs as input and is tasked with predicting a single semantic relationship label. Performance is evaluated using classification metrics, including accuracy, macro F1-score, and per-class performance. This comparison enables us to quantify the extent to which parameter updates enhance compiler-oriented semantic reasoning compared to prompt-based adaptation alone.
+\DIFdelbegin %DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF <  The prompts used for both ICL and SFT experiments are provided in Appendix \textbf{\Large ??}.
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend The second downstream task \DIFdelbegin \DIFdel{is designed to study whether LLMs can understand the semantic relationship between compiler-level program transformations. For each example , we provide the model with }\DIFdelend \DIFaddbegin \DIFadd{studies whether MLIRBench's semantic labels can
+provide supervision for unseen program families. Each example contains }\DIFaddend an
+original MLIR program and a mutated version\DIFdelbegin \DIFdel{generated by the Mutation Agent. The model is then asked to classify the relationship between the two programs into }\DIFdelend \DIFaddbegin \DIFadd{, with }\DIFaddend one of three
+\DIFdelbegin \DIFdel{categories}\DIFdelend \DIFaddbegin \DIFadd{execution-grounded labels}\DIFaddend : \textbf{EQUIV}, \textbf{DIVERGE}, or
+\textbf{ERROR}\DIFdelbegin \DIFdel{. The \textit{EQUIV} label represents transformations that preserve the original program semantics, \textit{DIVERGE} represents valid transformations that change the program behavior, and \textit{ERROR} represents mutations that may cause verification, compilation, or
+execution failures}\DIFdelend \DIFaddbegin \DIFadd{, representing preserved behavior, changed behavior, or
+verification/compilation/execution failure, respectively}\DIFaddend .
+
+We use \path{Qwen2.5-Coder-14B-Instruct} \DIFdelbegin \DIFdel{to explore this path and evaluate two different adaptation approaches. The first approach is \textit{In-Context Learning (ICL)}, where we test both \textit{zero-shot} }\DIFdelend \DIFaddbegin \DIFadd{model with family-disjoint train, validation, }\DIFaddend and \DIFdelbegin \DIFdel{\textit{three-shot} settings. In these experiments, the model is given task instructions and a small number of example demonstrations through prompts, and no model parameters are updated. The second approach is \textit{Supervised Fine-Tuning (SFT)} using the Low-Rank Adaptation (LoRA) method. Instead of fine-tuning all parameters of the model, LoRA adds a small number of trainable low-rank matrices to selected transformer layers while keeping the original model weights unchanged. We chose this approach because it requires fewer computational resources and memory while still allowing the model to learn from labeled MLIRBench program pairs}\DIFdelend \DIFaddbegin \DIFadd{test splits. We compare zero-shot and balanced six-shot prompting with LoRA-based SFT to study whether MLIRBench supervision generalizes beyond the examples seen during training or prompting}\DIFaddend .
+
+Figure~\DIFdelbegin \DIFdel{\ref{fig:forward_ft_vs_icl} summarizes the accuracy achieved by the three evaluation settings}\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:dt2_supervision} summarizes the results}\DIFaddend . Zero-shot prompting
+\DIFdelbegin \DIFdel{obtains 34.14\% accuracy , while three-shot prompting
+improves performance to 41.46\% . Supervised fine-tuning with LoRA further increases accuracy to 49.38\%, representing an improvement of 12.86 percentage points over zero-shot prompting and
+8.15 percentage points over three-shot prompting. }\DIFdelend \DIFaddbegin \DIFadd{achieves 57.8\% accuracy and 48.5\% macro-F1, while six-shot prompting
+achieves 56.1\% and 53.2\%. SFT reaches \textbf{84.3\% accuracy} and
+\textbf{80.9\% macro-F1} on held-out program families. The improvement is
+consistent across both dialects, reaching 80.8\% macro-F1 on \texttt{linalg}
+and 80.4\% on \texttt{torch}.
+}\DIFaddend 
+
+\DIFdelbegin \DIFdel{For both ICL and SFT, the input consists of the original MLIR program and its mutated counterpart, and the model predicts a
+single semantic relationship label. We evaluate the results using common classification metrics, including accuracy, macro F1-score, and
+}\DIFdelend \DIFaddbegin \DIFadd{We additionally examine false-equivalence predictions, where a
+\textit{DIVERGE} or \textit{ERROR} pair is incorrectly classified as
+\textit{EQUIV}. This rate decreases from 59.1\% zero-shot to 27.4\%
+six-shot and \textbf{24.1\%} after SFT. The final model achieves }\DIFaddend per-class
+\DIFdelbegin \DIFdel{performance.
+By comparing these two approaches, we aim to better understand whether updating model parameters through fine-tuning can improve semantic reasoning on compiler-related tasks compared to using prompts alone. }%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Full details for each downstream task, including promptformats, trainingsetup}\DIFdelend \DIFaddbegin \DIFadd{F1 scores of 88.1\% for \textit{EQUIV}, 59.7\% for \textit{DIVERGE}, and
+94.8\% for \textit{ERROR}.
+}
+
+\DIFadd{Overall, these results show that MLIRBench captures the execution-grounded semantic information that transfers to unseen program families across both
+\texttt{linalg} and \texttt{torch}. Full prompt}\DIFaddend , \DIFaddbegin \DIFadd{training, }\DIFaddend and evaluation
+\DIFdelbegin \DIFdel{settings, }\DIFdelend \DIFaddbegin \DIFadd{details }\DIFaddend are provided in Appendix G.
+
+\begin{figure}[t]
+    \centering
+    \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=0.85\linewidth]{figures/dt-2.png}
+%DIFDELCMD <     %%%
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\linewidth]
+    {\DIFaddFL{../../figures/downstream-tasks/DT2/dt2_01_supervision_gain.png}}
+    \DIFaddendFL \caption{\DIFdelbeginFL \DIFdelFL{Comparison of zero-shot in-context learning (ICL), three-shot ICL, and supervised fine-tuning (SFT) on the semantic relationship }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Semantic }\DIFaddendFL classification \DIFdelbeginFL \DIFdelFL{task. Fine-tuning achieves the highest accuracy, demonstrating the benefit of task-specific adaptation }\DIFdelendFL on \DIFaddbeginFL \DIFaddFL{family-disjoint }\DIFaddendFL MLIRBench program
+    pairs. \DIFaddbeginFL \DIFaddFL{MLIRBench supervision improves both accuracy and macro-F1 on
+    held-out program families.}\DIFaddendFL }
+    \DIFdelbeginFL %DIFDELCMD < \label{fig:forward_ft_vs_icl}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \label{fig:dt2_supervision}
+\DIFaddendFL \end{figure}
+
+%DIF >  \section{Conclusion}
+ \DIFaddbegin 
+
+%DIF >  We introduced MLIRBench, an execution-grounded benchmark for
+%DIF >  LLM semantic reasoning over MLIR program pairs. The benchmark combines
+%DIF >  dialect-aware mutation generation across five levels, deterministic
+%DIF >  IREE execution for ground-truth labeling, execution-hidden model
+%DIF >  prediction, and structured judge-based scoring of label correctness,
+%DIF >  result behavior, and explanation quality.
+
+%DIF >  Our evaluation of nine models over 1{,}768 MLIR pairs shows that
+%DIF >  current LLMs retain coarse semantic signals over MLIR but fail at
+%DIF >  exact execution-level reasoning. The strongest model achieves 62.96
+%DIF >  aggregate score, with a substantial gap between label accuracy
+%DIF >  (78.52\%) and \path{result-behavior} accuracy (4.10/10). The largest
+%DIF >  failures occur on failure-inducing mutations (L5/T5), where models
+%DIF >  must reason about compiler legality rather than output comparison.
+%DIF >  Two downstream tasks demonstrate that MLIRBench can support targeted model adaptation for both hardware-aware optimization planning and semantic relationship classification over MLIR programs.
+
+%DIF >  The benchmark is limited to the torch and linalg dialects with a
+%DIF >  single input seed. Future work includes expanding dialect coverage,
+%DIF >  multi-seed evaluation, and using the structured failure signals for
+%DIF >  compiler-IR-specialized model training.
+
+\DIFaddend \section{Conclusion}
+
+We introduced MLIRBench, an execution-grounded benchmark \DIFdelbegin \DIFdel{for
+LLM }\DIFdelend \DIFaddbegin \DIFadd{and dataset for
+evaluating }\DIFaddend semantic reasoning over MLIR \DIFdelbegin \DIFdel{program pairs. The benchmark }\DIFdelend \DIFaddbegin \DIFadd{programs. MLIRBench }\DIFaddend combines
+dialect-aware mutation generation\DIFdelbegin \DIFdel{across five levels, deterministic IREE executionfor ground-truth labeling}\DIFdelend , \DIFaddbegin \DIFadd{deterministic compilation and execution,
+}\DIFaddend execution-hidden model prediction, and structured \DIFdelbegin \DIFdel{judge-based scoring of label correctness,result behavior, }\DIFdelend \DIFaddbegin \DIFadd{scoring across
+\texttt{torch} }\DIFaddend and \DIFdelbegin \DIFdel{explanation quality}\DIFdelend \DIFaddbegin \DIFadd{\texttt{linalg}. The resulting dataset contains 1,768
+execution-validated program pairs spanning five mutation levels and three
+semantic outcomes: \textsc{EQUIV}, \textsc{DIVERGE}, and \textsc{ERROR}}\DIFaddend .
+
+Our evaluation \DIFdelbegin \DIFdel{of eight models over 1}%DIFDELCMD < {%%%
+\DIFdel{,}%DIFDELCMD < }%%%
+\DIFdel{768 MLIR pairs }\DIFdelend shows that current LLMs \DIFdelbegin \DIFdel{retain coarse semantic signals over MLIR but fail at
+exact execution-level reasoning
+. The strongest model achieves 62.96
+aggregate score , with a substantial gap between label accuracy (78.52\%) and }%DIFDELCMD < \path{result-behavior} %%%
+\DIFdel{accuracy (4.10}\DIFdelend \DIFaddbegin \DIFadd{can often identify the high-level
+semantic relationship between MLIR programs, but exact execution reasoning
+remains considerably harder. Gemini 3.1 Pro achieves the strongest overall
+performance with an aggregate score of 74.18 and 92.65\% hard-label accuracy,
+while its result-behavior score reaches 5.04}\DIFaddend /\DIFdelbegin \DIFdel{10).
+The largest
+failures occur on failure-inducing mutations (L5/T5), where models
+must reason about compiler legality rather than output comparison.
+Two downstream tasks demonstrate }\DIFdelend \DIFaddbegin \DIFadd{10. Performance also varies across
+mutation types and models, with behavioral divergence, structural changes, and
+compiler-legality constraints exposing important reasoning failures. These
+results show why execution-grounded evaluation is useful: label accuracy alone
+does not capture whether a model correctly understands the behavior that
+produces that label.
+}
+
+\DIFadd{The downstream experiments further show }\DIFaddend that MLIRBench can \DIFdelbegin \DIFdel{support targeted model adaptation for both hardware-aware optimization planning and semantic relationship classification over MLIR programs}\DIFdelend \DIFaddbegin \DIFadd{provide useful
+supervision beyond benchmark evaluation. Execution-grounded semantic
+supervision reaches 84.3\% accuracy and 80.9\% macro-F1 on held-out program
+families, with similar performance across \texttt{linalg} and \texttt{torch}.
+For compiler optimization reasoning, MLIRBench-derived supervision improves
+optimization-benefit prediction for both Linalg fusion and Torch
+simplification, while the RISC-V backend analysis connects the predicted
+IR-level benefit to downstream code generation. Together, these results show
+that MLIRBench supports both semantic reasoning and compiler-grounded
+optimization analysis across multiple MLIR representations}\DIFaddend .
+
+The benchmark \DIFdelbegin \DIFdel{is limited to the torch and linalg dialects with a single input seed}\DIFdelend \DIFaddbegin \DIFadd{remains limited to two dialects and 40 source programs, and its
+execution labels are produced under a fixed compiler configuration}\DIFaddend . Future
+work \DIFdelbegin \DIFdel{includes expanding dialect coverage,
+multi-seed evaluation, and using the structured failure signals for
+compiler-IR-specialized model training}\DIFdelend \DIFaddbegin \DIFadd{will expand dialect and workload coverage, evaluate additional compiler
+backends and hardware targets, and use the benchmark's structured execution
+and failure signals to develop more capable compiler-reasoning models}\DIFaddend .
+
+% \section{Title Information}
+
+% The title of your work should use capital letters appropriately -
+% \url{https://capitalizemytitle.com/} has useful rules for
+% capitalization. Use the {\verb|title|} command to define the title of
+% your work. If your work has a subtitle, define it with the
+% {\verb|subtitle|} command.  Do not insert line breaks in your title.
+
+% If your title is lengthy, you must define a short version to be used
+% in the page headers, to prevent overlapping text. The \verb|title|
+% command has a ``short title'' parameter:
+% \begin{verbatim}
+%   \title[short title]{full title}
+%   \title[MLIRBench]{MLIRBench: Multi-Agent Semantic Code Divergence Benchmark for Compiler Optimization}
+% \end{verbatim}
+
+% \section{Rights Information}
+
+% Authors of any work published by ACM will need to complete a rights
+% form. Depending on the kind of work, and the rights management choice
+% made by the author, this may be copyright transfer, permission,
+% license, or an OA (open access) agreement.
+
+% Regardless of the rights management choice, the author will receive a
+% copy of the completed rights form once it has been submitted. This
+% form contains \LaTeX\ commands that must be copied into the source
+% document. When the document source is compiled, these commands and
+% their parameters add formatted text to several areas of the final
+% document:
+% \begin{itemize}
+% \item the ``ACM Reference Format'' text on the first page.
+% \item the ``rights management'' text on the first page.
+% \item the conference information in the page header(s).
+% \end{itemize}
+
+% Rights information is unique to the work; if you are preparing several
+% works for an event, make sure to use the correct set of commands with
+% each of the works.
+
+% The ACM Reference Format text is required for all articles over one
+% page in length, and is optional for one-page articles (abstracts).
+
+% \section{Tables}
+
+% \begin{table}
+%   \caption{Frequency of Special Characters}
+%   \label{tab:freq}
+%   \begin{tabular}{ccl}
+%     \toprule
+%     Non-English or Math&Frequency&Comments\\
+%     \midrule
+%     \O & 1 in 1,000& For Swedish names\\
+%     $\pi$ & 1 in 5& Common in math\\
+%     \$ & 4 in 5 & Used in business\\
+%     $\Psi^2_1$ & 1 in 40,000& Unexplained usage\\
+%   \bottomrule
+% \end{tabular}
+% \end{table}
+
+% \begin{table*}
+%   \caption{Some Typical Commands - Wider Table}
+%   \label{tab:commands}
+%   \begin{tabular}{ccl}
+%     \toprule
+%     Command &A Number & Comments\\
+%     \midrule
+%     \texttt{{\char'134}author} & 100& Author \\
+%     \texttt{{\char'134}table}& 300 & For tables\\
+%     \texttt{{\char'134}table*}& 400& For wider tables\\
+%     \bottomrule
+%   \end{tabular}
+% \end{table*}
+
+% \section{Figures}
+
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=\linewidth]{sample-franklin}
+%   \caption{1907 Franklin Model D roadster. Photograph by Harris \&
+%     Ewing, Inc. [Public domain], via Wikimedia
+%     Commons. (\url{https://goo.gl/VLCRBB}).}
+%   \Description{A woman and a girl in white dresses sit in an open car.}
+% \end{figure}
+
+\begin{acks}
+The research reported in this paper is partially supported by the HPC@ISU equipment at Iowa State University, some of which has been purchased through funding provided by NSF under MRI grants number 1726447 and 2018594.
+\end{acks}
+
+\newpage
+
+\nocite{*}
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references/references_neurips}
+
+
+\end{document}
+\endinput
+%%
+%% End of file `sample-sigplan.tex'.

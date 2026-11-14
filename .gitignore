@@ -226,3 +226,8 @@ old_readme.txt
 /runs/
 
 .DS_Store
+
+# Generated AE data and weight caches
+/data/downstream/records/
+/data/checkpoints/
+/results/
