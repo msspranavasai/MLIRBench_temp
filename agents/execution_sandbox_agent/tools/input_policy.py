@@ -8,7 +8,7 @@ import ast
 import numpy as np
 from .execution import _parse_mlir_type
 
-POLICY_VERSION = 'valid-domain-v2'
+POLICY_VERSION = 'valid-domain-v3'
 SSA = r'%[\w.$-]+'
 
 
@@ -200,9 +200,14 @@ def _linalg_preflight(source):
     if re.search(r'\b(memref\.|scf\.|cf\.|vector\.)', source):
         unsupported('unanalysed memory/control-flow operation')
     constants = set()
-    for m in re.finditer(rf'({SSA})\s*=\s*arith.constant\s+(?:dense<)?([-+\d.eE]+)', source):
+    for m in re.finditer(rf'({SSA})\s*=\s*arith.constant\s+(?:dense<)?([-+\d.eE]+)([^\n]*)', source):
+        declared = re.search(r':\s*(?:tensor<)?(?:\d+x)*(f16|f32|f64)>?', m[3])
+        if not declared:
+            continue
         try:
-            if float(m[2]) != 0: constants.add(m[1])
+            with np.errstate(all='ignore'):
+                value = np.asarray(float(m[2]), dtype={'f16': 'float16', 'f32': 'float32', 'f64': 'float64'}[declared[1]])
+            if np.isfinite(value) and value != 0: constants.add(m[1])
         except ValueError: pass
     # Bind scalar region arguments to constant tensors, scoped per generic region.
     checked = 0
@@ -212,10 +217,13 @@ def _linalg_preflight(source):
         outs = re.search(r'outs\((.*?)\s*:', head, re.S)
         operands = re.findall(SSA, ins[1] if ins else '') + re.findall(SSA, outs[1] if outs else '')
         params = re.findall(rf'({SSA})\s*:', block)
-        local = {p for p, v in zip(params, operands) if v in constants}
+        # Output/reduction block arguments can change across iterations even if
+        # initialized from a nonzero constant. Only immutable inputs are trusted.
+        ins_operands = re.findall(SSA, ins[1] if ins else '')
+        local = {p for p, v in zip(params, ins_operands) if v in constants}
         for m in re.finditer(rf'arith.divf\s+{SSA}\s*,\s*({SSA})', body):
             checked += 1
-            if m[1] not in local and m[1] not in constants:
+            if m[1] not in local and not (m[1] in constants and m[1] not in params):
                 unsupported('Linalg runtime divisor requires analysis')
     if checked != len(re.findall(r'\barith.divf\b', source)):
         unsupported('unresolved Linalg division region')

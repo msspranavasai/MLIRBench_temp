@@ -63,3 +63,10 @@ Recomputed Gemini hard-label accuracy is 92.6470588% over 1,768 pairs. The store
 
 
 The explicit-Torch-lowering image passed both offline compiler smoke checks and all 18 execution tests in 52.854 seconds. Repeating the complete 26-pair five-seed/two-repeat sample after this compiler-selection change produced the same categories: 6 witnessed DIVERGE, 10 NO_DIFFERENCE_OBSERVED, 2 incomparable signatures, 5 compile errors, 3 unsupported Linalg preconditions. See reports/reproducibility/final_sample.jsonl and its CSV/Markdown summaries. This targeted/stratified sample is not an estimate of the dataset's error rate.
+
+
+## Clean-snapshot verification and final domain guard
+
+Commit 0b2080d built successfully from `git archive` alone, using a 24.93 MB clean build context. Its image verified/unpacked all 21 published distribution files, passed 24 offline tests in 45.844 seconds, passed both compiler smoke checks, replayed the exact valid gather inputs through the CLI, and produced an offline score summary identical to the host's. The first clean build's ignored-cache manifest error and its full log are retained; the correction excludes only cache metadata, not dataset content.
+
+A final conservative review tightened Linalg denominator validation: only immutable input region parameters may inherit a constant's nonzero property, and constants must remain finite/nonzero at their declared f16/f32/f64 precision. The policy is now valid-domain-v3. Thirteen input/validation contracts passed, and all 160 program/input checks from the successful five-seed sample trials remained admissible under v3 (`domain_v3_recheck.txt`). The sample outcomes therefore remain applicable; execution behavior and input generation were unchanged. A realistic mutable-reduction denominator regression fixture was added for the final image tests.

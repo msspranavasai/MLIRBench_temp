@@ -105,3 +105,30 @@ class Contracts(unittest.TestCase):
             result = judge_agent(state)
         self.assertEqual(result['judge_payload']['status'], 'skipped_unverified_ground_truth')
         llm.assert_not_called()
+
+    def test_linalg_denominator_uses_declared_precision(self):
+        source = """module {
+ func.func @main(%x: tensor<2xf32>) -> tensor<2xf32> {
+ %c = arith.constant dense<1.0> : tensor<f32>
+ %e = tensor.empty() : tensor<2xf32>
+ %r = linalg.generic {indexing_maps = [affine_map<(d0)->(d0)>, affine_map<(d0)->()>, affine_map<(d0)->(d0)>], iterator_types = ["parallel"]} ins(%x, %c : tensor<2xf32>, tensor<f32>) outs(%e : tensor<2xf32>) {
+ ^bb0(%v: f32, %den: f32, %out: f32):
+ %d = arith.divf %v, %den : f32
+ linalg.yield %d : f32
+ } -> tensor<2xf32>
+ return %r : tensor<2xf32>
+ } }"""
+        check_inputs(source, ['%x'], [np.ones(2, dtype=np.float32)], 'linalg')
+        with self.assertRaises(InputPolicyError): check_inputs(source.replace('dense<1.0>', 'dense<1e-50>'), ['%x'], [np.ones(2, dtype=np.float32)], 'linalg')
+        # Trusting the mutable output region argument would be unsound.
+        unsafe = """module {
+ func.func @main(%x: tensor<2xf32>) -> tensor<f32> {
+ %c = arith.constant dense<1.0> : tensor<f32>
+ %r = linalg.generic {indexing_maps = [affine_map<(d0)->(d0)>, affine_map<(d0)->()>], iterator_types = ["reduction"]} ins(%x : tensor<2xf32>) outs(%c : tensor<f32>) {
+ ^bb0(%v: f32, %out: f32):
+ %d = arith.divf %v, %out : f32
+ linalg.yield %d : f32
+ } -> tensor<f32>
+ return %r : tensor<f32>
+ } }"""
+        with self.assertRaises(InputPolicyError): check_inputs(unsafe, ['%x'], [np.ones(2, dtype=np.float32)], 'linalg')
