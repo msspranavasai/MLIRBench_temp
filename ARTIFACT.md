@@ -16,6 +16,45 @@ Prerequisites: Docker on an ARM64 or AMD64 host, and space for compiler tools an
 
 This builds current source and creates a fresh result directory containing data verification, compiler execution, core tests, benchmark metrics, downstream metrics and a readiness report. Open the printed START_HERE.md first.
 
+## Reviewer CPU alternatives
+
+An ARM device is not required. On an Intel/AMD Docker host, ./ae.sh quickstart automatically builds linux/amd64. On Apple Silicon or an ARM64 Docker host, the same command automatically builds linux/arm64. Linux reports these as x86_64 and aarch64 respectively; Docker calls them amd64 and arm64. Windows reviewers need Docker configured for Linux containers and a Bash environment such as WSL2.
+
+Explicit alternatives use the same launcher:
+
+~~~bash
+# Intel/AMD variant (native on an x86-64 Docker host).
+AE_PLATFORM=linux/amd64 ./ae.sh quickstart
+
+# ARM64 variant (native on an ARM64 Docker host).
+AE_PLATFORM=linux/arm64 ./ae.sh quickstart
+~~~
+
+Running the opposite architecture requires emulation. The launcher and environment.json identify this. Both variants passed 35 core tests and all 76 downstream comparisons on the preparation Mac; only ARM64 was native. A native Intel/AMD evaluator-host run remains required before marking that hardware gate verified.
+
+## Combined reviewer image
+
+Authors can build both variants under one local tag using a manifest-capable image store, such as Docker Desktop's containerd image store:
+
+~~~bash
+docker buildx build --platform linux/amd64,linux/arm64 --load \
+  --tag mlirbench-ae:reviewer .
+~~~
+
+This creates a local multi-platform image. It does not upload or publish an image. Docker automatically selects its ARM64 variant on ARM64 hosts and its AMD64 variant on Intel/AMD hosts. Engines without multi-platform local image support can use the single-platform ./ae.sh route above. An eventual registry/archive distribution must retain both platform manifests.
+
+From the repository root, run the already-built combined image offline:
+
+~~~bash
+mkdir -p results
+docker run --rm --network none \
+  -e "MLIRBENCH_DOCKER_HOST_ARCH=$(docker info --format '{{.Architecture}}')" \
+  -v "$PWD/results:/results" \
+  mlirbench-ae:reviewer quickstart --output /results/reviewer-run
+~~~
+
+Use a fresh output directory name for each run. The host-architecture environment value allows the native-execution check to verify the selected variant. With the combined image, omit --platform to let Docker select the native variant. These are CPU evaluation paths; GPU checkpoint inference remains a separate requirement.
+
 ## Individual experiments
 
 ~~~bash
