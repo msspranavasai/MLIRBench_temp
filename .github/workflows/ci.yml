@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 env:
   IMAGE: ghcr.io/msspranavasai/mlirbench-ae
-  VERSION: 0.3.0rc3
+  VERSION: 0.3.0rc4
 jobs:
   macos-launcher:
     runs-on: macos-15

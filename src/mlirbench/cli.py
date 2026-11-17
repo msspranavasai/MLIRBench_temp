@@ -93,6 +93,14 @@ def main(argv=None):
                             ('reproduce-downstream', 'Regenerate downstream metrics from saved predictions')]:
         parser = sub.add_parser(name, help=help_text)
         parser.add_argument('--output', type=Path, required=True)
+    evidence = sub.add_parser('index-evidence', help='Pin an independent results ZIP and optional downloaded CI artifacts without changing them')
+    evidence.add_argument('--archive', type=Path, required=True)
+    evidence.add_argument('--ci-evidence', type=Path)
+    evidence.add_argument('--run', help='Independent run folder name, required when the ZIP contains several runs')
+    evidence.add_argument('--output', type=Path, required=True)
+    release = sub.add_parser('release-readiness', help='Verify pinned independent evidence and write consolidated release readiness')
+    release.add_argument('--evidence', type=Path, required=True)
+    release.add_argument('--output', type=Path, required=True)
     audit = sub.add_parser('audit-provenance', help='Verify original execution sources and audit published labels without changing them')
     audit.add_argument('--output', type=Path, required=True)
     audit.add_argument('--all', action='store_true', help='Audit every published pair; default is a stratified diagnostic sample')
@@ -157,6 +165,21 @@ def main(argv=None):
     if args.command == 'quickstart':
         from .ae import quickstart
         return quickstart(ROOT, args.output)
+    if args.command == 'index-evidence':
+        from .release_readiness import index_evidence
+        index_evidence(args.archive, args.output, ci=args.ci_evidence, run=args.run)
+        print(json.dumps({'evidence_index': str(args.output)})); return 0
+    if args.command == 'release-readiness':
+        from .release_readiness import assess_release, write_report, prepare_release_data
+        prepare_release_data(ROOT)
+        report = assess_release(ROOT, args.evidence)
+        write_report(report, args.output)
+        print(json.dumps({'status': report['status'], 'sections': report['sections'],
+                          'read_first': str(args.output / 'REPORT.md')}, indent=2))
+        # Scientific open questions are report contents. Invalid functional/metric
+        # evidence still causes a failing command, independently of science scope.
+        return 0 if all(g['status'] == 'PASS' for g in report['gates']
+                        if g['section'] not in ('scientific', 'build_provenance')) else 1
     if args.command == 'audit-provenance':
         from .execution.provenance import audit_provenance
         report = audit_provenance(ROOT, args.output, all_records=args.all, workers=args.workers)

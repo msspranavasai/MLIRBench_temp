@@ -220,7 +220,7 @@ def readiness(root, results):
         elif claim['status'] != 'verified':
             gates.append({'id': claim['id'], 'status': 'OPEN', 'reason': claim['remaining']})
     return {'status': 'READY_FOR_SUBMISSION_REVIEW' if all(g['status'] == 'PASS' for g in gates if g.get('required',True)) else 'NOT_SUBMISSION_READY',
-            'gates': gates, 'note': 'Passing container tests does not establish paper-result or label validity.'}
+            'scope': 'single_run', 'gates': gates, 'note': 'This report describes one run; use release-readiness to verify linked independent compiler and CI evidence. Passing container tests does not establish paper-result or label validity.'}
 
 
 def quickstart(root, output):

@@ -6,7 +6,7 @@ With Docker and Python 3 available, run the reviewer workflow without paid model
 ./ae.sh quickstart
 ```
 
-The launcher pulls the single versioned image, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc3`, and uses the host's native ARM64 or AMD64 CPU. Docker automatically selects AMD64 or ARM64; each invocation starts one container containing all four agents and both compiler toolchains. No model credentials or paid API calls are needed. The workflow verifies published inputs, tests the implementation, replays **mutation → execution → reasoning → judge**, recomputes score totals and paper tables, reproduces downstream prediction metrics, and runs the execution agent locally on one Linalg and one Torch pair.
+The launcher pulls the single versioned image, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc4`, and uses the host's native ARM64 or AMD64 CPU. Docker automatically selects AMD64 or ARM64; each invocation starts one container containing all four agents and both compiler toolchains. No model credentials or paid API calls are needed. The workflow verifies published inputs, tests the implementation, replays **mutation → execution → reasoning → judge**, recomputes score totals and paper tables, reproduces downstream prediction metrics, and runs the execution agent locally on one Linalg and one Torch pair.
 
 While the repository/package are private, the image requires registry read access. After both are made public, reviewers can pull it anonymously. See [image publication and visibility](docs/container-publication.md).
 
@@ -47,3 +47,5 @@ The resolver asks yes/no before downloading missing files from the pinned Huggin
 See [ARTIFACT.md](ARTIFACT.md) for explicit platform selection, optional fresh model calls and new test cases; [STATUS.md](STATUS.md) for remaining AE work; and [repository layout](docs/repository-layout.md) for the source map. Published data, labels and manuscript expectations are unchanged.
 
 Compiler/backend reproduction is available through `./ae.sh compiler`; see [the commands](ARTIFACT.md#compiler-and-risc-v-experiments). See [release scope](docs/release-scope.md) for required versus optional experiments, local checkpoint assets and remaining evidence. Code and data licenses are described in [DATA_LICENSE.md](DATA_LICENSE.md).
+
+For independent full-corpus and CI results collected outside quickstart, use the [consolidated release evidence report](docs/release-evidence.md). It validates the linked records and preserves per-run reports and scientific open questions.

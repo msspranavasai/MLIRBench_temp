@@ -131,7 +131,7 @@ AE_PLATFORM=linux/arm64 ./ae.sh quickstart
 
 Selecting the opposite architecture uses emulation. The versioned publication workflow requires native ARM64 and AMD64 build-and-test runs, followed by fresh pulls and complete reviewer runs on both architectures. Per-version CI evidence identifies the tested source and image configurations. Both variants retain the same compiler/runtime pins and semantic compiler flags. CPU semantic checks are not performance benchmarks.
 
-The distribution uses one registry reference, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc3`. The registry manifest contains exactly the two tested native variants. Reviewers run the same command on both CPU types; they do not select separate agent images or start supporting services. See [container publication](docs/container-publication.md).
+The distribution uses one registry reference, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc4`. The registry manifest contains exactly the two tested native variants. Reviewers run the same command on both CPU types; they do not select separate agent images or start supporting services. See [container publication](docs/container-publication.md).
 
 ## Additional checks
 
@@ -173,3 +173,7 @@ The original downstream IREE 3.12.0rc20260916 is installed at `/opt/paper-backen
 Add `--limit 8` for a small demonstration. Subsets are explicitly identified and cannot certify the full experiment. Fresh commands save exact commands, IR, diagnostics, assembly and observed comparisons outside the repository. RISC-V analysis is cross-compilation/static instruction analysis, not measured RISC-V hardware speedup. A mismatch returns a failing status and retains both observed and archived values.
 
 See [release scope](docs/release-scope.md) for the author-excluded judging ablation, the separately published dataset and remaining scientific checks. The code does not upload or replace the existing Zenodo dataset.
+
+## Consolidated independent evidence
+
+Quickstart readiness describes its own run. Later compiler experiments and external native CI evidence are assessed by `release-readiness`, using a checksum-pinned evidence index. See [release evidence](docs/release-evidence.md). The consolidated report credits complete verified experiments; it does not certify semantic labels or replace the original per-run reports.

@@ -34,14 +34,14 @@
       "paper": "CPU execution",
       "command": "quickstart on native AMD64",
       "status": "open",
-      "remaining": "The default launcher now uses native ARM64 on Apple Silicon. Native AMD64 evaluator verification remains outstanding; ARM64 success does not establish AMD64 native performance."
+      "remaining": "Native AMD64 evidence from other runs is not inferred from this single run. Use release-readiness with pinned native build and fresh-pull CI artifacts; ARM64 success alone does not establish AMD64 execution or performance."
     },
     {
       "id": "dependency_freeze",
       "paper": "environment",
       "command": "clean Docker build",
       "status": "open",
-      "remaining": "Freeze apt/toolchain provenance and validate a fresh evaluator setup."
+      "remaining": "A linked successful source-build test verifies that installation, not a frozen future apt repository snapshot. Dependency freezing remains separate."
     },
     {
       "id": "judge_reliability",
