@@ -187,7 +187,7 @@ if sys.argv[1:2] == ['build']:
                 self.assertEqual(run.returncode,0,run.stderr)
                 pulls=[c for c in calls if c[0]=='pull'];containers=[c for c in calls if c[0]=='run']
                 self.assertEqual(len(pulls),1);self.assertEqual(len(containers),1)
-                self.assertIn('ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc4',pulls[0])
+                self.assertIn('ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc5',pulls[0])
                 self.assertFalse(any(c[0]=='build' for c in calls))
                 self.assertEqual(containers[0][containers[0].index('--network')+1],'none')
 

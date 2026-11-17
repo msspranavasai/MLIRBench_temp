@@ -1,0 +1,4508 @@
+{
+  "schema": "mlirbench-label-dispositions-v1",
+  "review_date": "2026-11-17",
+  "status": "DOCUMENTED_WITH_LIMITATIONS",
+  "scope": {
+    "cases": 30,
+    "original_assessments": {
+      "UNVERIFIED": 1,
+      "LABEL_COUNTEREXAMPLE": 12,
+      "PUBLISHED_WITNESS_NOT_REPRODUCED": 15,
+      "STRUCTURAL_LABEL_CONFLICT": 2
+    },
+    "scope_reason": "12 LABEL_COUNTEREXAMPLE + 2 STRUCTURAL_LABEL_CONFLICT + 15 PUBLISHED_WITNESS_NOT_REPRODUCED + 1 nondeterministic UNVERIFIED case from Syam audit; not the 495-case unsupported backlog.",
+    "published_master_sha256": "84718efccae10e5bbd66fd7c4455ca9f22a8957c968151465b830855335a0541",
+    "archive_sha256": "72b70bbdf5df6ca2d351bea760eb0e98b2336d261409d405e9118638d884f9db",
+    "original_audit_source_fingerprint": "46fccb57bfc9089c270d434da428da50b54dcfc9130e7bedafae00f5991b1b1c",
+    "review_image": "ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc4",
+    "review_image_index_digest": "sha256:1509a7b49f6931d6564ab5e34b6f9f43dadb0e1409a885dbae84b5212eb4f52f",
+    "comparison_policy": "typed-exact-value-v1",
+    "input_policy": "valid-domain-v5",
+    "core_compiler": "20241104.1068",
+    "paper_backend_verifier": "3.12.0rc20260916",
+    "hardware_scope": "Native ARM64 only; fresh-process repetitions, no paid API calls."
+  },
+  "disposition_counts": {
+    "NONDETERMINISTIC_ITERATOR_CONFLICT": 1,
+    "INPUT_DEPENDENT_NUMERIC_DIFFERENCE": 2,
+    "HISTORICAL_INPUT_HYPOTHESIS_SUPPORTED": 6,
+    "INPUT_DEPENDENT_FP_DIFFERENCE": 4,
+    "VERIFIER_VERSION_DEPENDENT_L5": 2,
+    "HISTORICAL_WITNESS_UNRESOLVED": 1,
+    "MIXED_DTYPE_AND_PRECISION_CONTRACT": 4,
+    "STRUCTURAL_CONFLICT_UNSAFE_METADATA": 2,
+    "UNREPRODUCED_UNSAFE_METADATA": 8
+  },
+  "scientific_limits": [
+    "Documented disposition is not historical runtime provenance or universal equivalence proof.",
+    "No labels, source programs, archived responses, scores, tolerances or paper results are changed.",
+    "Four selected witnesses are dtype-only comparisons. Three dtype-changing cases also have numeric differences on saved seed 123; the fourth has a numeric difference on preflight-accepted stored metadata. Metadata does not prove actual historical runtime use.",
+    "A shared-input counterexample establishes current behavior on that input, not that a fixed historical-input label was computed incorrectly.",
+    "Unresolved historical inputs/toolchain, unsafe metadata, verifier-version differences and precision behavior remain explicit; no corrected-label table or claim of unchanged conclusions under relabeling is adopted."
+  ],
+  "nondeterminism": {
+    "program_id": "seed1_linalg_prog10_L2_R4",
+    "repeats_per_program": 100,
+    "verdict": "NONDETERMINISTIC",
+    "unique_output_fingerprints": [
+      1,
+      2
+    ],
+    "original_boolean_vectors": [
+      {
+        "values": [
+          false,
+          false,
+          false
+        ],
+        "observations": 100
+      }
+    ],
+    "mutated_boolean_vectors": [
+      {
+        "values": [
+          true,
+          true,
+          false
+        ],
+        "observations": 96
+      },
+      {
+        "values": [
+          true,
+          false,
+          true
+        ],
+        "observations": 4
+      }
+    ],
+    "diagnostic_control": {
+      "published_programs_modified": false,
+      "patch": "Only in a separate diagnostic copy, change the affected iterator_types from [parallel,reduction] to [reduction,parallel].",
+      "patched_source_sha256": "b26adf2b967cd9a21e3330ef9b8486020af950a36edf6091a5bee325b9144be2",
+      "repeats_per_program": 20,
+      "unique_output_fingerprints": [
+        1,
+        1
+      ],
+      "expected_original_row_all": [
+        false,
+        false,
+        false
+      ],
+      "expected_patched_column_all": [
+        true,
+        false,
+        false
+      ],
+      "observed_original_row_all": [
+        false,
+        false,
+        false
+      ],
+      "observed_patched_column_all": [
+        true,
+        false,
+        false
+      ]
+    },
+    "evidence_sha256": {
+      "deep-review/nondeterminism-100.json": "6c1e9a03ecf419899c7ec7ea401365bd0c501950577cf7f244d684c378c34d69",
+      "deep-review/nondeterminism-iterator-control.json": "3eff5c3ab1c4802733d7f1ffd44b4524d2ff340b90126c0bd2e1d4bc8da918eb",
+      "deep-review/diagnostic-mutated-iterator-fix.mlir": "b26adf2b967cd9a21e3330ef9b8486020af950a36edf6091a5bee325b9144be2"
+    }
+  },
+  "references": {
+    "numpy_array_equal": "https://numpy.org/doc/stable/reference/generated/numpy.array_equal.html",
+    "linalg": "https://mlir.llvm.org/docs/Dialects/Linalg/",
+    "linalg_iterator_inference": "https://github.com/llvm/llvm-project/blob/main/mlir/lib/Dialect/Linalg/IR/LinalgInterfaces.cpp",
+    "gather_bounds": "https://github.com/pytorch/pytorch/blob/main/aten/src/ATen/native/cpu/ScatterGatherKernel.cpp",
+    "ssa": "https://mlir.llvm.org/docs/LangRef/"
+  },
+  "cases": [
+    {
+      "program_id": "seed1_linalg_prog10_L2_R4",
+      "dialect": "linalg",
+      "published_label": "DIVERGE",
+      "original_assessment": "UNVERIFIED",
+      "source_sha256": [
+        "ef76aee49fdc7a6488c7ae1a71b7138c60c686eb81aa65279edd518454641eb7",
+        "d0f90de997de9fed9d2b0a60582ebfc1cecc5b4b4a99eb96b529008d7d246448"
+      ],
+      "original_audit_record_sha256": "21e85acb1312e57205d767ededd6bfc3e08f8e48f05cefe24b8fd90e04c19cd9",
+      "documented_disposition": "NONDETERMINISTIC_ITERATOR_CONFLICT",
+      "diagnosis": "Output map changes d0 to d1, but iterator types remain [parallel,reduction]. Different d0 iterations target the same d1 output accumulator. The saved source is accepted by both verifiers; repeated execution is not stable. A separate iterator-only diagnostic repair is stable and matches a column-wise NumPy reference.",
+      "action": "Quarantine from new deterministic semantic-label claims; preserve the original program and recorded DIVERGE label.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "d813349609614d53874fcd820810d96fdf9e29335d896eb303ca8b471233dd5f",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NONDETERMINISTIC",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": false,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "DIVERGE",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": true,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed1_linalg_prog10_L2_R4.json": "8bab695b06142f9e845692bdd2df7eb345db80780ec99942731bd92768c5700b",
+        "deep-review/seed1_linalg_prog10_L2_R4.json": "dd6311554e0a0bad74a7c49d24e96eb7b663eb8a470480e7ed11ab4ed39a99b5"
+      }
+    },
+    {
+      "program_id": "seed1_linalg_prog4_L3_R4",
+      "dialect": "linalg",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "094479526a96e73cce29932d933ee4ae1038b3bea62095a0fb0ab1abf45fdf2f",
+        "35aa594927ec9e356a3f1c33331bca87e4c54862489baa941ab77d744cb27799"
+      ],
+      "original_audit_record_sha256": "ded1373aaa2bd418abc6816bed649b06a523133f908ecfa71497c761d5cc8c70",
+      "documented_disposition": "INPUT_DEPENDENT_NUMERIC_DIFFERENCE",
+      "diagnosis": "The divisor changes from 9 to 1. Independently generated shared arguments can differ, exposing a nonzero mean absolute difference multiplied by nine. Stored metadata has equal arguments and yields zero in both versions.",
+      "action": "Retain the current-suite counterexample and the archived EQUIV observation as different input scopes; do not claim recovery of actual historical inputs.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "f5fc7af56345f9e650fe392f62a221a94229b0ae3eac02c2b8d17d986d9aeffe",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/"
+        },
+        {
+          "position": 1,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 1,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 42,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": false,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": true,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed1_linalg_prog4_L3_R4.json": "00f663a5b623dd095dbb5b4eea182760309ff8775b98b753d31a35ab29ce1c6a",
+        "deep-review/seed1_linalg_prog4_L3_R4.json": "5af589cd24d25536507223493d0501b9e73e59612e3aa5e3645a5adbca0990be"
+      }
+    },
+    {
+      "program_id": "seed1_linalg_prog5_L2_R3",
+      "dialect": "linalg",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "ae0fecd8c758bbb5e61851427c7b15f6efa89c1dcde2c5aa9669c873cb76d4e3",
+        "3af1578f19a23b2bc336e489c7486d1e10f05c074421ad2362704cc30c0c9c73"
+      ],
+      "original_audit_record_sha256": "f61db8557c06d953823437397e7db7b5e9c1ab7842ba948e50c221f21396715f",
+      "documented_disposition": "HISTORICAL_INPUT_HYPOTHESIS_SUPPORTED",
+      "diagnosis": "The only source edit changes the NaN-count divisor from 12 to 1. With finite inputs, cmpf une(x,x) is false, so the numerator is zero and this output is unchanged. All shared-input trials agree. Independently embedded inputs differ and reproduce both stored outputs, including their differing final sums; this is evidence for a different-input historical hypothesis, not a semantic divergence.",
+      "action": "Preserve the original observation; do not use different-input output replay as a semantic divergence witness. Do not assert universal equivalence.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "205b09b324e0e9fd91bb55dcee3ab58d31f97fe47a20aa71bc1c9cfe410e6d88",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            4
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218
+            ],
+            [
+              -0.5356693863868713,
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858
+            ],
+            [
+              -0.7037352323532104,
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": false,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed1_linalg_prog5_L2_R3.json": "542fc688c67b04af8e29489caca2c5d31bbb75fa714dea0e09d488ddc7c992fe",
+        "deep-review/seed1_linalg_prog5_L2_R3.json": "64310900be5cfd06d1fdc6f3c625cac249eb11b74fa0100bbde210d77b14ee4c"
+      }
+    },
+    {
+      "program_id": "seed1_linalg_prog5_L4_R5",
+      "dialect": "linalg",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "ae0fecd8c758bbb5e61851427c7b15f6efa89c1dcde2c5aa9669c873cb76d4e3",
+        "b872c361f9051ef2aa581adf4e4a7e3d11e1485cfe76869f8d15c94c897e4ff4"
+      ],
+      "original_audit_record_sha256": "bed60c5e22a3fba0d75b3e6e11baef10559daf8f9f54a506e46646c51fc5f8aa",
+      "documented_disposition": "INPUT_DEPENDENT_FP_DIFFERENCE",
+      "diagnosis": "The mutation fuses compare and cast into a multi-output linalg.generic. The signed seed-0 input exposes an exact floating-point difference in the returned sum; stored metadata replay agrees. The precise compiler pass causing the low-bit difference has not been isolated.",
+      "action": "Retain as an exact current-suite difference, with compiler-layout sensitivity unresolved; do not add an output tolerance.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "205b09b324e0e9fd91bb55dcee3ab58d31f97fe47a20aa71bc1c9cfe410e6d88",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            4
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218
+            ],
+            [
+              -0.5356693863868713,
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858
+            ],
+            [
+              -0.7037352323532104,
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": false,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": true,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed1_linalg_prog5_L4_R5.json": "502c347fd70008e4a307552a868cc323cb1527bd0cb2a10da4c475ab4fd6ae3f",
+        "deep-review/seed1_linalg_prog5_L4_R5.json": "64593844ffdcd20bfe51bd4d937f09048054d6df30d31bf4656f5b5f4f35a859"
+      }
+    },
+    {
+      "program_id": "seed1_linalg_prog7_L1_R2",
+      "dialect": "linalg",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f623fafd4ae712ddc1c7a07da19c4e54bb01645f9ecbca95895db8edcbdbc907",
+        "64cf7f2eec07c313f7b6d169ba7eb687fb2b2f40315d9187f1603307a65e9112"
+      ],
+      "original_audit_record_sha256": "63250d370a80407244ed20a7fc8a6137dfc6e178da8b7190a207df7a2bd183e5",
+      "documented_disposition": "HISTORICAL_INPUT_HYPOTHESIS_SUPPORTED",
+      "diagnosis": "All five saved shared-input trials agree. Ten-repeat replay agrees. Independently embedded original/mutated inputs differ and reproduce both stored historical outputs. This explains those outputs under a concrete hypothesis, not a recovered actual-runtime trace.",
+      "action": "Preserve the original observation; do not use different-input output replay as a semantic divergence witness. Do not assert universal equivalence.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "205b09b324e0e9fd91bb55dcee3ab58d31f97fe47a20aa71bc1c9cfe410e6d88",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            4
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218
+            ],
+            [
+              -0.5356693863868713,
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858
+            ],
+            [
+              -0.7037352323532104,
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": false,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed1_linalg_prog7_L1_R2.json": "7fa271fc4a899f124999281f8f26f179a3494d85fe0f3f3580ebe2759214b777",
+        "deep-review/seed1_linalg_prog7_L1_R2.json": "425a3a038bf521a28e0f5cd52438ff31bcade3dee5eecc2fb2f04dc2fb007e68"
+      }
+    },
+    {
+      "program_id": "seed1_linalg_prog7_L4_R3",
+      "dialect": "linalg",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f623fafd4ae712ddc1c7a07da19c4e54bb01645f9ecbca95895db8edcbdbc907",
+        "85db791d6a957258c4d2739310e03cd5a3ecdfc85c0bea390e2782e70036ab92"
+      ],
+      "original_audit_record_sha256": "dfd93666544a3ec1ac924354d21b5496532aa6086d9e5140ebfe157b6f92eae0",
+      "documented_disposition": "HISTORICAL_INPUT_HYPOTHESIS_SUPPORTED",
+      "diagnosis": "All five saved shared-input trials agree. Ten-repeat replay agrees. Independently embedded original/mutated inputs differ and reproduce both stored historical outputs. This explains those outputs under a concrete hypothesis, not a recovered actual-runtime trace.",
+      "action": "Preserve the original observation; do not use different-input output replay as a semantic divergence witness. Do not assert universal equivalence.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "205b09b324e0e9fd91bb55dcee3ab58d31f97fe47a20aa71bc1c9cfe410e6d88",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            4
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218
+            ],
+            [
+              -0.5356693863868713,
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858
+            ],
+            [
+              -0.7037352323532104,
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": false,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed1_linalg_prog7_L4_R3.json": "bdd2bcfe5b10305fa23beda457a55792e5f71b80fe43feee79f503337faffcae",
+        "deep-review/seed1_linalg_prog7_L4_R3.json": "e07590314707cddaf67e4cdedcc584469566618726db6dcf70c3e98eb044bed1"
+      }
+    },
+    {
+      "program_id": "seed1_linalg_prog9_L5_R2",
+      "dialect": "linalg",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "a23cb1dc42a62f7620f0549a592c8c05df8b5007c1b4149222dff0a428fd7360",
+        "e1d7cec548754858d60afcc7d4fd1ca72de0c739d89bda77d7bb684588cdec6c"
+      ],
+      "original_audit_record_sha256": "bda03497135343145326d47c81b00b95fc5d812a2f06d431300519b6ed68a02e",
+      "documented_disposition": "VERIFIER_VERSION_DEPENDENT_L5",
+      "diagnosis": "The fill seed changes from i1 true to f32 zero for an i1 output. LLVM19 and IREE 2024 accept the source; the packaged IREE 3.12 backend verifier rejects the mismatched fill type. Legacy execution also changes the boolean reduction on saved seed 123.",
+      "action": "Treat as a version-dependent verification/error-test case, not an unconditional well-defined semantic counterexample. Preserve the archived label.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 123,
+      "witness_input_sha256": "8071177b704c9ff4a2e677199a073967fa39f5bf958c98d9f9406c421a367585",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": false,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 1,
+          "diagnostic": "/review/cases/seed1_linalg_prog9_L5_R2/mutated.mlir:54:11: error: 'linalg.fill' op expected fill value type ('f32') to match output element type ('i1')\n    %10 = linalg.fill ins(%cst_0 : f32) outs(%9 : tensor<i1>) -> tensor<i1>\n          ^\n/review/cases/seed1_linalg_prog9_L5_R2/mutated.mlir:54:11: note: see current operation: \n%20 = \"linalg.fill\"(%2, %19) <{operandSegmentSizes = array<i32: 1, 1>}> ({\n^bb0(%arg29: f32, %arg30: i1):\n  \"linalg.yield\"(%arg29) : (f32) -> ()\n}) : (f32, tensor<i1>) -> tensor<i1>\n"
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": true,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed1_linalg_prog9_L5_R2.json": "5132a03705fb9c5969b97471a8182b0078ef5344e190ca3554dc6615e9fcfab7",
+        "deep-review/seed1_linalg_prog9_L5_R2.json": "90a2e43a98aac35c42e409bb5b1599560129cd08565a86f4efb9ad031edc95c6"
+      }
+    },
+    {
+      "program_id": "seed2_linalg_prog15_L1_R2",
+      "dialect": "linalg",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "566c40fd5a3143b66225f9a1d63a4434f035216d43d2e7613a355242bc080af0",
+        "f71a733b6d0e7cb409377bb32a7954e0ce405b5c70f78a29b85d8320e3740013"
+      ],
+      "original_audit_record_sha256": "ab08d43cfb5c1c70eda20b2656aab228e5604e3aca6963e4c75bd99dcb48e8c8",
+      "documented_disposition": "HISTORICAL_WITNESS_UNRESOLVED",
+      "diagnosis": "Operation scheduling changes are present. Shared-input saved trials and ten-repeat replay agree, but independent-embedding replay does not reproduce either stored historical output.",
+      "action": "Historical divergence remains unresolved. Matching finite trials neither recovers the old inputs nor proves universal equivalence.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "f80ef356107d58cb3dc86276e245dbd89e82ea0d0e5ab0ae189f027b3a26a8b7",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            4,
+            4
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218
+            ],
+            [
+              -0.5356693863868713,
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858
+            ],
+            [
+              -0.7037352323532104,
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187,
+              -0.7322673797607422
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7vw=="
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_NOT_REPRODUCED",
+        "matches_original_outputs": [
+          false,
+          false
+        ],
+        "inputs_equal": false,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed2_linalg_prog15_L1_R2.json": "df8ac8baae54ff2d702dcb17505376e6b7f6d58c601772d4e00610e2344e9f1e",
+        "deep-review/seed2_linalg_prog15_L1_R2.json": "5c82a0d144ce724c77f73840ca3bdef73aa5eafb19d56eb319dcd27961486bd7"
+      }
+    },
+    {
+      "program_id": "seed3_linalg_prog21_L2_R5",
+      "dialect": "linalg",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "08de25ffa780bfcdb06fa0b49dcb748ca0bf81d3cf7bda390d52007d4e95d160",
+        "07581eda2a0fdf5c5cac70dfaa3727112656c8e759eea377bc9a87aef500ed65"
+      ],
+      "original_audit_record_sha256": "d99252c1cd5c6ef45b9df4da6b6a6922a704fe9524b89b34cdd35db08dbe2add",
+      "documented_disposition": "HISTORICAL_INPUT_HYPOTHESIS_SUPPORTED",
+      "diagnosis": "All five saved shared-input trials agree. Ten-repeat replay agrees. Independently embedded original/mutated inputs differ and reproduce both stored historical outputs. This explains those outputs under a concrete hypothesis, not a recovered actual-runtime trace.",
+      "action": "Preserve the original observation; do not use different-input output replay as a semantic divergence witness. Do not assert universal equivalence.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "bf36c8e229a7deaf79734662509ea02c0ea1faf1f68450741c7d8777dc1e7c3b",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            4,
+            5
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218,
+              -0.5356693863868713
+            ],
+            [
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104,
+              -1.2654215097427368
+            ],
+            [
+              -0.6232744455337524,
+              0.04132597893476486,
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998,
+              0.4116305410861969,
+              1.042513370513916
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+PcHSPhRxhT8="
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": false,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed3_linalg_prog21_L2_R5.json": "bf5475d590a558618a27e836973c454f163fde4ff7ecd71309994db031bebde0",
+        "deep-review/seed3_linalg_prog21_L2_R5.json": "24095e0de5bb15d0b127d55438bb6f9a8a10c40ade3a3d5c52bb3856c330f891"
+      }
+    },
+    {
+      "program_id": "seed3_linalg_prog22_L1_R2",
+      "dialect": "linalg",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "d9941b58afeb9321a91bb6707aeeb0ae678663830158db87a570e90977245fba",
+        "da2cb3bb2fa59d50839a93bf4a471918494697a67124508fc4afd3c8da6ca95d"
+      ],
+      "original_audit_record_sha256": "208277b4a7df40ae9f46153735b8b0d4287e608e37397b744578931ef88da315",
+      "documented_disposition": "HISTORICAL_INPUT_HYPOTHESIS_SUPPORTED",
+      "diagnosis": "All five saved shared-input trials agree. Ten-repeat replay agrees. Independently embedded original/mutated inputs differ and reproduce both stored historical outputs. This explains those outputs under a concrete hypothesis, not a recovered actual-runtime trace.",
+      "action": "Preserve the original observation; do not use different-input output replay as a semantic divergence witness. Do not assert universal equivalence.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "f80ef356107d58cb3dc86276e245dbd89e82ea0d0e5ab0ae189f027b3a26a8b7",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            4,
+            4
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218
+            ],
+            [
+              -0.5356693863868713,
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858
+            ],
+            [
+              -0.7037352323532104,
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187,
+              -0.7322673797607422
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7vw=="
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": false,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed3_linalg_prog22_L1_R2.json": "2aa0a74f472b856e529b8972518a85ec9c4041236ed5089f5363e8354c922d36",
+        "deep-review/seed3_linalg_prog22_L1_R2.json": "4ed3d46fe636928d13b95d86da5c53b7ecd875117b8346ad061e595d3727ae9f"
+      }
+    },
+    {
+      "program_id": "seed4_linalg_prog33_L1_R2",
+      "dialect": "linalg",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "d6efc601ea9d05586165f8fbeb13723ddc59bfb55f785676c828938efe40a54e",
+        "0f47d0f6d4de85e428858fd0ec37436fc8f392b40548c850cc5a751316e808a3"
+      ],
+      "original_audit_record_sha256": "afe3f4b18ea1dbe922a98ededd803e6c3f0aba0add6fa5b722a6976253687bb1",
+      "documented_disposition": "HISTORICAL_INPUT_HYPOTHESIS_SUPPORTED",
+      "diagnosis": "All five saved shared-input trials agree. Ten-repeat replay agrees. Independently embedded original/mutated inputs differ and reproduce both stored historical outputs. This explains those outputs under a concrete hypothesis, not a recovered actual-runtime trace.",
+      "action": "Preserve the original observation; do not use different-input output replay as a semantic divergence witness. Do not assert universal equivalence.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "bf36c8e229a7deaf79734662509ea02c0ea1faf1f68450741c7d8777dc1e7c3b",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            4,
+            5
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218,
+              -0.5356693863868713
+            ],
+            [
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104,
+              -1.2654215097427368
+            ],
+            [
+              -0.6232744455337524,
+              0.04132597893476486,
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998,
+              0.4116305410861969,
+              1.042513370513916
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+PcHSPhRxhT8="
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": false,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed4_linalg_prog33_L1_R2.json": "9f18d45f1d6d4454797ed46a3e832ba4e57af34321ebc0e2545fbe2bc86a6cda",
+        "deep-review/seed4_linalg_prog33_L1_R2.json": "4e4377b757cf4afdb36546560caedc4e01f5c3576c74457b70a371ee50fba9ce"
+      }
+    },
+    {
+      "program_id": "seed4_linalg_prog33_L5_R2",
+      "dialect": "linalg",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "d6efc601ea9d05586165f8fbeb13723ddc59bfb55f785676c828938efe40a54e",
+        "2c62d0d366e897f003258a17684e6761ae0c9737dfb8b86a5e76e73048e902ca"
+      ],
+      "original_audit_record_sha256": "b651f9d81de4fee7bab8f6f72dabe0683d24b395732aa868cd41a3fc1be3dc89",
+      "documented_disposition": "VERIFIER_VERSION_DEPENDENT_L5",
+      "diagnosis": "The row-maximum initializer changes from a floating sentinel to i64 zero for an f32 tensor. The newer backend verifier rejects that fill type; the legacy compiler accepts it. Negative seed-42 inputs expose zeros instead of negative row maxima and changed argmax indices.",
+      "action": "Retain toolchain-specific acceptance and execution evidence; do not assign one cross-version corrected label.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 42,
+      "witness_input_sha256": "c6be4bb69193beeb210e69a7dbe53f97503487e82ea2ce9da71c60407002eb17",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            4,
+            5
+          ],
+          "data": [
+            [
+              -0.6455768942832947,
+              -1.2319626808166504,
+              -0.49745362997055054,
+              -0.7796059250831604,
+              -1.835189700126648
+            ],
+            [
+              -0.2926608920097351,
+              -0.6680055260658264,
+              -0.6243874430656433,
+              -1.775801181793213,
+              -1.211824655532837
+            ],
+            [
+              -1.35110342502594,
+              -0.3781612813472748,
+              -0.8732360601425171,
+              -0.5601671934127808,
+              -1.2240251302719116
+            ],
+            [
+              -1.6023322343826294,
+              -1.0294766426086426,
+              -1.8883198499679565,
+              -0.5516454577445984,
+              -0.8945872783660889
+            ]
+          ],
+          "bytes_b64": "h0Qlv/Swnb8+sv6+QZRHv3/n6r+m15W+aQIrv9vXH790TeO/Eh2bv/XwrL9bnsG+Zoxfvx5nD7/brJy/ORnNv+TFg793tPG/ozgNv6wDZb8="
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": false,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 1,
+          "diagnostic": "/review/cases/seed4_linalg_prog33_L5_R2/mutated.mlir:32:10: error: 'linalg.fill' op expected fill value type ('i64') to match output element type ('f32')\n    %9 = linalg.fill ins(%c0_i64 : i64) outs(%8 : tensor<4xf32>) -> tensor<4xf32>\n         ^\n/review/cases/seed4_linalg_prog33_L5_R2/mutated.mlir:32:10: note: see current operation: \n%12 = \"linalg.fill\"(%2, %11) <{operandSegmentSizes = array<i32: 1, 1>}> ({\n^bb0(%arg16: i64, %arg17: f32):\n  \"linalg.yield\"(%arg16) : (i64) -> ()\n}) : (i64, tensor<4xf32>) -> tensor<4xf32>\n"
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "HISTORICAL_OUTPUTS_REPRODUCED",
+        "matches_original_outputs": [
+          true,
+          true
+        ],
+        "inputs_equal": true,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/seed4_linalg_prog33_L5_R2.json": "9912032ccdadee0c3c40f067afc36716c7b175a3117aa2ad76893770974f9dce",
+        "deep-review/seed4_linalg_prog33_L5_R2.json": "560e2965cb1a989d4d79700680b295711f148884dfc4b71aace9ada8baacc74f"
+      }
+    },
+    {
+      "program_id": "torch_seed1_prog3_T2_R3",
+      "dialect": "torch",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "adeadc6c579551f92370f78836131a7ceb02cfcf9bef8694b2ae454defce3803",
+        "5d9c1b287c875a43672a1f26abb1ab827f3afd95d1763ac3131abea548659bac"
+      ],
+      "original_audit_record_sha256": "495afc9eeae0139d6b32f3327e67845c9af6cb4bd78be065a21ff229c3865f40",
+      "documented_disposition": "INPUT_DEPENDENT_NUMERIC_DIFFERENCE",
+      "diagnosis": "The equality-count divisor changes from 9 to 8. With all-one equal arguments (saved seed 123), the fraction changes from 1 to 1.125. Archived outputs have zero equality count, where either divisor gives zero. Safe metadata replay differs, showing that metadata is not sufficient to prove the historical runtime.",
+      "action": "Document a genuine current-input numeric difference; do not silently overwrite the fixed historical label or claim the metadata was executed.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 123,
+      "witness_input_sha256": "7a3cefc15f08e1d6f5267bfda95af793d1be2969ebb15e3b60038920efbc27df",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "position": 1,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": false,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "DIVERGE",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed1_prog3_T2_R3.json": "dc16a54cad8957f39a927b5f1830b9e0d3634c4b6e6ee63ce26326803286c13c",
+        "deep-review/torch_seed1_prog3_T2_R3.json": "aef183ccc7b9a31a47696de94d2fda71ab961226bdbd11efb94bea7cc7f68d86"
+      }
+    },
+    {
+      "program_id": "torch_seed1_prog3_T2_R5",
+      "dialect": "torch",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "adeadc6c579551f92370f78836131a7ceb02cfcf9bef8694b2ae454defce3803",
+        "8c83101158efd598138bc11f2ccca9ca9cb2d341006e28c0a20f9ad5b991a5e6"
+      ],
+      "original_audit_record_sha256": "470463e4abb1699ad8b2cb55cc9a6469e5c0514894e79d5ce86cf490ec4173df",
+      "documented_disposition": "MIXED_DTYPE_AND_PRECISION_CONTRACT",
+      "diagnosis": "The mutation changes returned scalar f32 computations to f64. Four saved trials are numerically equal but dtype-different; seed 123 also has a genuine numeric precision difference.",
+      "action": "Separate dtype-only flags from numeric divergence. Do not interpret every typed-exact failure as a paper-style value-comparison failure.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "f5fc7af56345f9e650fe392f62a221a94229b0ae3eac02c2b8d17d986d9aeffe",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/"
+        },
+        {
+          "position": 1,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 2026,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "DIVERGE",
+        "executed": true,
+        "reason": null,
+        "numpy_array_equal_first_outputs": false
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed1_prog3_T2_R5.json": "b85d88f683b07469e11a77f52de95a6f8502cff754fc09fa5a20fd31e37c9413",
+        "deep-review/torch_seed1_prog3_T2_R5.json": "b7cad257bfb88a1fc21ac796b12f4291ad583da573757669c9198a4ba25125a2"
+      },
+      "additional_numeric_witness": {
+        "seed": 123,
+        "inputs": [
+          {
+            "position": 0,
+            "dtype": "<f4",
+            "shape": [
+              3,
+              3
+            ],
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          },
+          {
+            "position": 1,
+            "dtype": "<f4",
+            "shape": [
+              3,
+              3
+            ],
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          }
+        ],
+        "input_sha256": "7a3cefc15f08e1d6f5267bfda95af793d1be2969ebb15e3b60038920efbc27df"
+      }
+    },
+    {
+      "program_id": "torch_seed1_prog4_T2_R5",
+      "dialect": "torch",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "63d2b028e169a7509b606574cf8a9d9977df8d6f6ffa342da4a064d5687defac",
+        "2fbf4cd32c1d966474753aef17d5ed6aebcc1b337e17a6de3d817748dc538b47"
+      ],
+      "original_audit_record_sha256": "0f096c16e208c9cd56d52e1c13660cc7d1fd2af3a0da3148a0d75336b0780e63",
+      "documented_disposition": "MIXED_DTYPE_AND_PRECISION_CONTRACT",
+      "diagnosis": "The mutation changes returned f32 scalar computations to f64. Four saved trials differ only in dtype; seed 123 also differs numerically.",
+      "action": "Retain both comparison results and preserve the original label; no tolerance or dtype-coercion change is applied to the validator.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "f5fc7af56345f9e650fe392f62a221a94229b0ae3eac02c2b8d17d986d9aeffe",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/"
+        },
+        {
+          "position": 1,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 2026,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "DIVERGE",
+        "executed": true,
+        "reason": null,
+        "numpy_array_equal_first_outputs": false
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed1_prog4_T2_R5.json": "5654fbada9f9cfbc17fa35fb7cb58dddcbd1d5c6a9fff4227103232d57f862b1",
+        "deep-review/torch_seed1_prog4_T2_R5.json": "d19d8c4aff5a4c063a2d559ab8f01128741c410d95c1ccda68a364c979445d85"
+      },
+      "additional_numeric_witness": {
+        "seed": 123,
+        "inputs": [
+          {
+            "position": 0,
+            "dtype": "<f4",
+            "shape": [
+              3,
+              3
+            ],
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          },
+          {
+            "position": 1,
+            "dtype": "<f4",
+            "shape": [
+              3,
+              3
+            ],
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          }
+        ],
+        "input_sha256": "7a3cefc15f08e1d6f5267bfda95af793d1be2969ebb15e3b60038920efbc27df"
+      }
+    },
+    {
+      "program_id": "torch_seed2_prog19_T3_R2",
+      "dialect": "torch",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "349d25ebc0f3bf3ab7ce483c4924f287de879b14e5d145ba4a8b36dc7ad35090",
+        "e00d0d093981ca581db95371235cc7b2e77ab8e6c532f7bd6a5a8ae8281d761f"
+      ],
+      "original_audit_record_sha256": "fe1842bc06882550e3f6913d77c0428de62980d90f42d32758baeeec771eb3df",
+      "documented_disposition": "INPUT_DEPENDENT_FP_DIFFERENCE",
+      "diagnosis": "A vector matmul/dot is rewritten as multiply followed by sum. Seed 42 exposes a low-bit result difference; safe metadata replay agrees. Arithmetic grouping/lowering changes are implicated, not a proven defect in a particular compiler pass.",
+      "action": "Retain the exact current-suite difference and document input/precision sensitivity; original runtime provenance remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 42,
+      "witness_input_sha256": "bdfa9cea9cf97c0cacccf8344ee459e29a2ebf054f044b6014b0b6f3dcd9dfbd",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6
+          ],
+          "data": [
+            -0.6455768942832947,
+            -1.2319626808166504,
+            -0.49745362997055054,
+            -0.7796059250831604,
+            -1.835189700126648,
+            -0.2926608920097351
+          ],
+          "bytes_b64": "h0Qlv/Swnb8+sv6+QZRHv3/n6r+m15W+"
+        },
+        {
+          "position": 1,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            3
+          ],
+          "data": [
+            [
+              -0.6680055260658264,
+              -0.6243874430656433,
+              -1.775801181793213
+            ],
+            [
+              -1.211824655532837,
+              -1.35110342502594,
+              -0.3781612813472748
+            ],
+            [
+              -0.8732360601425171,
+              -0.5601671934127808,
+              -1.2240251302719116
+            ]
+          ],
+          "bytes_b64": "aQIrv9vXH790TeO/Eh2bv/XwrL9bnsG+Zoxfvx5nD7/brJy/"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": false,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed2_prog19_T3_R2.json": "8c529f09e78e67cd1e89de468c1a861dca76ac0dc6c14423095ea0bf579ae677",
+        "deep-review/torch_seed2_prog19_T3_R2.json": "a5294a010eb4d79465428970639d8c5645f4f0377910c2798fa7fadbab51c503"
+      }
+    },
+    {
+      "program_id": "torch_seed3_prog28_T2_R5",
+      "dialect": "torch",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "549ac29589156a63a0aac64a5a483ca5dfcb0d6e6af3a466c18ebe134aad80ae",
+        "4acabb2e73ad52cbd38617f6aff5917732af8eeff307df4908065ef291c41003"
+      ],
+      "original_audit_record_sha256": "108ce87d68a72ef26fef3165c06a1c97ed72753c663a84e38fb12fe917ce2933",
+      "documented_disposition": "MIXED_DTYPE_AND_PRECISION_CONTRACT",
+      "diagnosis": "The returned row output changes from f32 to f64. All five saved generated trials are numerically equal and differ only in dtype. Expanding the review to preflight-accepted stored metadata also exposes a real numeric precision difference. That metadata is not proven to be the actual historical input.",
+      "action": "Separate the dtype-only saved trials from the additional numeric witness; do not dismiss the pair or silently adopt a corrected historical label.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "0fd095498193d0e47452eab1ba5190e06b9581c3e6ff51a586e179797c13eeac",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            3,
+            5
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218,
+              -0.5356693863868713
+            ],
+            [
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104,
+              -1.2654215097427368
+            ],
+            [
+              -0.6232744455337524,
+              0.04132597893476486,
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "DIVERGE",
+        "executed": true,
+        "reason": null,
+        "numpy_array_equal_first_outputs": false
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed3_prog28_T2_R5.json": "1a63ebe39e17f1ec140b7717467e5478f9059358e08edf98204c1fb2ee43336b",
+        "deep-review/torch_seed3_prog28_T2_R5.json": "33d717d27672cfa5d46efbcdd5017b97a14213dcdf9fff00ca929dd1f1bb4e83"
+      },
+      "additional_numeric_witness": {
+        "seed": null,
+        "origin": "stored_metadata_not_proven_runtime",
+        "inputs": [
+          {
+            "position": 0,
+            "dtype": "<f4",
+            "shape": [
+              3,
+              5
+            ],
+            "data": [
+              [
+                0.0,
+                19.0,
+                19.899999618530273,
+                20.0,
+                20.100000381469727
+              ],
+              [
+                21.0,
+                1.0,
+                -1.0,
+                0.5,
+                -0.5
+              ],
+              [
+                2.0,
+                -2.0,
+                1.5,
+                -1.5,
+                0.25
+              ]
+            ],
+            "bytes_b64": "AAAAAAAAmEEzM59BAACgQc3MoEEAAKhBAACAPwAAgL8AAAA/AAAAvwAAAEAAAADAAADAPwAAwL8AAIA+"
+          }
+        ],
+        "input_sha256": "7ea4840c25db97fb90e5575774c155f84cb2a13e207d0234afeafba4b83483d8"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog35_T3_R2",
+      "dialect": "torch",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "abc111af3bd898e28b0a754ff5e9b34ac62f7f6688f61093a95732e2bb42d89d",
+        "2527bd70530638bdf7f6f563258d8351c4eac305331861edf206e641a7b2229a"
+      ],
+      "original_audit_record_sha256": "ea7d98e11fe74832a39440fcad38673a376309aeacba0a7a66eae7e2fa1f1e82",
+      "documented_disposition": "INPUT_DEPENDENT_FP_DIFFERENCE",
+      "diagnosis": "Variance calculations using f64 accumulation are rewritten to f32 paths. Seeds 1 and 2026 expose low-bit differences; safe metadata replay agrees.",
+      "action": "Document precision-dependent behavior rather than rounding it away or treating mathematical equivalence as machine equality.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 1,
+      "witness_input_sha256": "9e344f33af5074c47d998160e76fbecd24a7644d4f11e359daf9dfdea4e5bf6a",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            4,
+            7
+          ],
+          "data": [
+            [
+              1.1456878185272217,
+              1.91331148147583,
+              0.5022793412208557,
+              1.9101365804672241,
+              0.7957050204277039,
+              0.9908213019371033,
+              1.6984795331954956
+            ],
+            [
+              0.9660984873771667,
+              1.2117890119552612,
+              0.2982284426689148,
+              1.5686479806900024,
+              1.1917507648468018,
+              0.8270304799079895,
+              1.6297502517700195
+            ],
+            [
+              0.7805909514427185,
+              1.043621301651001,
+              0.48457297682762146,
+              0.9554477334022522,
+              0.6060466766357422,
+              0.709048330783844,
+              1.5631381273269653
+            ],
+            [
+              0.7407153248786926,
+              1.0990842580795288,
+              1.9662901163101196,
+              1.932900071144104,
+              1.5183824300765991,
+              1.197147011756897,
+              0.7345595955848694
+            ]
+          ],
+          "bytes_b64": "5qWSP2Tn9D9hlQA/W3/0P1OzSz93pn0/x2fZPztSdz/nG5s/ZrGYPnXJyD9Ki5g/RbhTP6ib0D/P1Ec/YpWFP/MZ+D45mHQ/4CUbPzGENT/pFMg/hZ89P8uujD9lr/s/RWn3P1tawj8dPJk/GQw8Pw=="
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": false,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog35_T3_R2.json": "3061ab4aa4b4602f6dabfbabeeeb4fbb02b2d087b451ec2c89ac6fff316fe187",
+        "deep-review/torch_seed4_prog35_T3_R2.json": "c3f81b458369178c686e07bf5a0a71bfdfd6e7b943c5adb0d3351cecbcbbfcee"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog36_T2_R5",
+      "dialect": "torch",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "7367ac061b78b51f39ae234caf1a929adad339189939079f182725a4b32292fc",
+        "40b2db5d43987e792bccae42b7dfd1a1e89b6f8cbd2ef61710e3f532b2d15341"
+      ],
+      "original_audit_record_sha256": "7b824373a8480ce0832dfa27502543bf25796e4c8cfb7232ab140687f31cbdc9",
+      "documented_disposition": "MIXED_DTYPE_AND_PRECISION_CONTRACT",
+      "diagnosis": "The fraction/one-minus-fraction output changes from f32 to f64. Four saved trials are numerically equal; seed 123 also differs numerically.",
+      "action": "Report contract and precision effects separately; preserve historical scoring.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "37397d7991113855820f6f8982b04880ed7afc8b3636c1a906bbb205d120b1fb",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            5,
+            5
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875,
+              0.10490011423826218,
+              -0.5356693863868713
+            ],
+            [
+              0.3615950644016266,
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104,
+              -1.2654215097427368
+            ],
+            [
+              -0.6232744455337524,
+              0.04132597893476486,
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998,
+              0.4116305410861969,
+              1.042513370513916
+            ],
+            [
+              -0.12853465974330902,
+              1.3664634227752686,
+              -0.6651946902275085,
+              0.35151007771492004,
+              0.9034701585769653
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+PcHSPhRxhT+XngO+RuiuPzNKKr8h+bM+0klnPw=="
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 2026,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "DIVERGE",
+        "executed": true,
+        "reason": null,
+        "numpy_array_equal_first_outputs": false
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog36_T2_R5.json": "eb94a27f7b47f0403efc64a4e6c6c5a166ff31f041812e5c1746f7a1b774aa60",
+        "deep-review/torch_seed4_prog36_T2_R5.json": "d0acdfacdf715496fdfa4d537fffdc2048df71271c8511f6349ee5ecf2b48dae"
+      },
+      "additional_numeric_witness": {
+        "seed": 123,
+        "inputs": [
+          {
+            "position": 0,
+            "dtype": "<f4",
+            "shape": [
+              5,
+              5
+            ],
+            "data": [
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+          }
+        ],
+        "input_sha256": "e1bf815eaa6fcb2df0ce166f92626c79256816429266b968ce0c2e97bddb2760"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog38_T3_R2",
+      "dialect": "torch",
+      "published_label": "EQUIV",
+      "original_assessment": "LABEL_COUNTEREXAMPLE",
+      "source_sha256": [
+        "4f5b61f68ef771cfb9ef9041b376d7f9dabb8fb8be282efe5d2c802790a96a39",
+        "40d41b5fde3f71efbc7908ac6ecf38f93dfc0d0b3f2f1f42636099ba882dbbe7"
+      ],
+      "original_audit_record_sha256": "dc8120ccf75c26d97ac3ab212f582ffd1770326def15aca917cc5cf514caae5f",
+      "documented_disposition": "INPUT_DEPENDENT_FP_DIFFERENCE",
+      "diagnosis": "pow(x,2) is rewritten as x*x in a variance computation. Seeds 42 and 123 expose low-bit output differences; safe metadata replay agrees. The lowering-level cause is not fully isolated.",
+      "action": "Retain exact differences and the limitation on backend-independent conclusions.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 42,
+      "witness_input_sha256": "f6f7f87489dc5479867f885d0e66fe7058affef305215d9916146d4dc0916cef",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            4,
+            7
+          ],
+          "data": [
+            [
+              -0.3736198842525482,
+              1.04616117477417,
+              0.45588016510009766,
+              0.1223016083240509,
+              1.6669762134552002,
+              -1.0239938497543335,
+              -0.24871507287025452
+            ],
+            [
+              -0.781883955001831,
+              -0.6964408159255981,
+              0.0027555180713534355,
+              1.0318129062652588,
+              -0.1573815941810608,
+              -2.292823553085327,
+              0.20108193159103394
+            ],
+            [
+              -0.625320553779602,
+              -0.6660398840904236,
+              -0.24754372239112854,
+              -0.9137001037597656,
+              -0.9015794396400452,
+              0.9904192090034485,
+              -1.7379740476608276
+            ],
+            [
+              -0.4963107407093048,
+              0.40680044889450073,
+              -0.4077933728694916,
+              -2.1422080993652344,
+              1.1409211158752441,
+              -1.2447543144226074,
+              -0.3673311769962311
+            ]
+          ],
+          "bytes_b64": "G0u/vpzohT8gaek+RHn6PXpf1T87EoO/Kq9+vowpSL/ySTK/7JU0O3IShD+kKCG+n70SwGzoTT4CFSC/l4Eqvxp8fb5A6Gm/6c1mvx2MfT/vdd6/cRz+viZI0D5LytC+8BkJwLQJkj8cVJ+/1RK8vg=="
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 123,
+          "typed_status": "DIVERGE",
+          "numpy_array_equal": false
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "DIVERGE",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": false,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "NO_DIFFERENCE_OBSERVED",
+        "executed": true,
+        "reason": null
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog38_T3_R2.json": "810813ca8b17e1a68ffb54463447d58e2f480b9eb22953a772ffb7ac023af6a7",
+        "deep-review/torch_seed4_prog38_T3_R2.json": "3207ceb6d0613a7350f275de431a3e62e305058c8f7a34e6a5c53be7a2c13dbc"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T1_R1",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "STRUCTURAL_LABEL_CONFLICT",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "a621df5477b6ae36e746217fff1ba85e16fa75a732408b816c1474ce4a221146"
+      ],
+      "original_audit_record_sha256": "59f3a1c3d714b218e95cb4b0b379de27579b2156db67fb9676c07be0cecaa126",
+      "documented_disposition": "STRUCTURAL_CONFLICT_UNSAFE_METADATA",
+      "diagnosis": "The pair is token-identical after flat SSA-name normalization. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T1_R1.json": "5cf883f570f6a7aa2365810ea19867006fd75b10135635c4bc112985f3173adf",
+        "deep-review/torch_seed4_prog40_T1_R1.json": "60706e0a395126bfcef3dee143f0dc4875c68470e4ca7a85702cd2e23837fa87"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T1_R2",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "ee34bae29a953e208eb9062723cc25641137a3b1e5fade9ff6951e93d77420b3"
+      ],
+      "original_audit_record_sha256": "42be60ff67c68c1ff20f9a837fe3e6ede36b86e2c0a4907037905f72a8d8d569",
+      "documented_disposition": "UNREPRODUCED_UNSAFE_METADATA",
+      "diagnosis": "The mutation is a constant reorder, copy flag, common-subexpression reuse, or value-preserving structural rewrite; current tested executions agree. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T1_R2.json": "7c0565fd33d6b0b1a1c80f80cc2c6b876554015e042ba24d53ffce28d0ab2d57",
+        "deep-review/torch_seed4_prog40_T1_R2.json": "bd050dada3d33e29ed4abf4cf3aaa520beb9a71b958290359ebfc6a8a1c1f677"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T1_R4",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "STRUCTURAL_LABEL_CONFLICT",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "68424cda9e654493618b523b881d77abfc4a6736c63b89d5375869ea10d5fc32"
+      ],
+      "original_audit_record_sha256": "08ef0f29b873c946ac5854cff88d392c3fbd2318df1c5cf85ef52346446655b2",
+      "documented_disposition": "STRUCTURAL_CONFLICT_UNSAFE_METADATA",
+      "diagnosis": "The pair is token-identical after flat SSA-name normalization. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T1_R4.json": "0a924469688e5b9ea0201bffb7f80e004a39bac57b67db8915e59e8f243e28dd",
+        "deep-review/torch_seed4_prog40_T1_R4.json": "2d7fff72c9bc495d8d418e8c19a073a0a49e53eeb450eb6035f1d8003f624781"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T2_R5",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "4d96b2e256badfea73c595050965888c82592500bdbbf7d37087b59c8c622641"
+      ],
+      "original_audit_record_sha256": "745a92cf0300ff98666a403e0db9958be92c572bad1c3b996983014eb78615ee",
+      "documented_disposition": "UNREPRODUCED_UNSAFE_METADATA",
+      "diagnosis": "The mutation is a constant reorder, copy flag, common-subexpression reuse, or value-preserving structural rewrite; current tested executions agree. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T2_R5.json": "07a47fcbc4aab86020ba79a351eb0b71586f9d911806a39227cf389b2ffe73f1",
+        "deep-review/torch_seed4_prog40_T2_R5.json": "593aefa43728978149cfc31e37bb6861a3ba35834dbf588d90f2616568ebb5f8"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T3_R5",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "bf26502df72db6456f3bc1282683cb93f6df23284ef38a554f37eb2892160ce3"
+      ],
+      "original_audit_record_sha256": "1ed178f39029defcc8a6af6efef158358d1900f90e9f6826a946441652f6ed03",
+      "documented_disposition": "UNREPRODUCED_UNSAFE_METADATA",
+      "diagnosis": "The mutation is a constant reorder, copy flag, common-subexpression reuse, or value-preserving structural rewrite; current tested executions agree. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T3_R5.json": "8edc7fdae9ed001ce3d7c4875443b09c49481ca6e16ba574ff7ffd1da01774c1",
+        "deep-review/torch_seed4_prog40_T3_R5.json": "c5289d91237c3b43ea8c43eafb7e761dec35b1b28c77f63da08f00be0d628b0a"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T4_R1",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "a62aceb38130fc43b81c36a53b0dd58f1a60fd3c841e7ab0667472d52e59edc1"
+      ],
+      "original_audit_record_sha256": "633d28755624def53edfd3260b02f3ec299009dbfd294bc3459c976f68f082b8",
+      "documented_disposition": "UNREPRODUCED_UNSAFE_METADATA",
+      "diagnosis": "The mutation is a constant reorder, copy flag, common-subexpression reuse, or value-preserving structural rewrite; current tested executions agree. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T4_R1.json": "1f93b5b278aba17fd4789bed2a89869cef9adb75e0e0b97b9b9f3c384c6c1824",
+        "deep-review/torch_seed4_prog40_T4_R1.json": "a10e070be2f0c541e15fa9d639b8ce147ce14c0cd1ee1ab5b0dba786e52605a0"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T4_R2",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "01bb251c60cda1a26f3fac315a3bb36d1695ddda4998acf6dd28a61ff9d90542"
+      ],
+      "original_audit_record_sha256": "e2dbd9fac1c1ba1d7aec9bbb423164b788abb1fafda59743bd832ec64af67c80",
+      "documented_disposition": "UNREPRODUCED_UNSAFE_METADATA",
+      "diagnosis": "The mutation is a constant reorder, copy flag, common-subexpression reuse, or value-preserving structural rewrite; current tested executions agree. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T4_R2.json": "0b7320346d58b6de85942f7c51b9554311499f5943cadf8d1880be8ede68fbb3",
+        "deep-review/torch_seed4_prog40_T4_R2.json": "79476a8b3c386105c2d03e50dcb8a1de7bcf490e621f40875d86a2b2f4498efc"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T4_R3",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "2c388e85f1731fcafcfab111e6c95571ce8ddae34fc0bb45a343a31b4f95bed6"
+      ],
+      "original_audit_record_sha256": "1976a718186931ff7ef0afd7807b3f24050e00284cb31fc2a1c2b87b157ed8d9",
+      "documented_disposition": "UNREPRODUCED_UNSAFE_METADATA",
+      "diagnosis": "The mutation is a constant reorder, copy flag, common-subexpression reuse, or value-preserving structural rewrite; current tested executions agree. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T4_R3.json": "96580492831f796fb445b82426f63a03867a04ca7c0a2f46b966b06981998ed0",
+        "deep-review/torch_seed4_prog40_T4_R3.json": "2efaf0ea98b8a1b9b822e95ab97b90ee175618e6a96681579bf3bafbd5cceaef"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T4_R4",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "1482c2c404a45963bf2035280069986aec8a88475e3eb815660fbdd3bf6da610"
+      ],
+      "original_audit_record_sha256": "5d6d182d57385458b4302030bf819d474911a36bc9df557cdfba95bbc00f6392",
+      "documented_disposition": "UNREPRODUCED_UNSAFE_METADATA",
+      "diagnosis": "The mutation is a constant reorder, copy flag, common-subexpression reuse, or value-preserving structural rewrite; current tested executions agree. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T4_R4.json": "014f5fb8af31eeddca591cee920d4d750450d2fbe32b00208300a2623fce9146",
+        "deep-review/torch_seed4_prog40_T4_R4.json": "5a7b45002b430ddddc2c6e738e9d19fff4da220324564bfec63ada29dbf3ba1e"
+      }
+    },
+    {
+      "program_id": "torch_seed4_prog40_T4_R5",
+      "dialect": "torch",
+      "published_label": "DIVERGE",
+      "original_assessment": "PUBLISHED_WITNESS_NOT_REPRODUCED",
+      "source_sha256": [
+        "f0f5a31602750db182e9fddaa92eade06f6232a6ad448156b9dfdf15ba8ff785",
+        "7a211d231aa96667bcf80bdc24405a8277919fba724f6664e8529f0fe9127d5a"
+      ],
+      "original_audit_record_sha256": "8d3c405ea1819e2e3061f686329c51d5a2c18082195c32002b37b23497c2151f",
+      "documented_disposition": "UNREPRODUCED_UNSAFE_METADATA",
+      "diagnosis": "The mutation is a constant reorder, copy flag, common-subexpression reuse, or value-preserving structural rewrite; current tested executions agree. This family metadata contains gather index -1 for a dimension of size 3. Preflight rejects it; this review does not execute those unsafe metadata values. Metadata is not proof of actual historical input use.",
+      "action": "Retain the historical record for paper replay, but quarantine the historical divergence from claims of a validated valid-input semantic witness. Actual historical cause remains unproven.",
+      "historical_runtime_inputs_proven": false,
+      "published_record_modified": false,
+      "selected_saved_seed": 0,
+      "witness_input_sha256": "c7f865e1164b22b525e11dac6a60f4564c93776f6eb9a4bb7646b13ca69de2de",
+      "witness_inputs": [
+        {
+          "position": 0,
+          "dtype": "<f4",
+          "shape": [
+            6,
+            3
+          ],
+          "data": [
+            [
+              0.1257302165031433,
+              -0.13210485875606537,
+              0.6404226422309875
+            ],
+            [
+              0.10490011423826218,
+              -0.5356693863868713,
+              0.3615950644016266
+            ],
+            [
+              1.3040000200271606,
+              0.9470809698104858,
+              -0.7037352323532104
+            ],
+            [
+              -1.2654215097427368,
+              -0.6232744455337524,
+              0.04132597893476486
+            ],
+            [
+              -2.32503080368042,
+              -0.218791663646698,
+              -1.2459110021591187
+            ],
+            [
+              -0.7322673797607422,
+              -0.5442590117454529,
+              -0.3163001537322998
+            ]
+          ],
+          "bytes_b64": "bL8APn9GB7698iM/39XWPaEhCb/9Irk+eemmP+Zzcj/+JzS/Vfmhv+qOH79uRSk9Ts0UwOwKYL4Dep+/4HU7v49UC78Y8qG+"
+        },
+        {
+          "position": 1,
+          "dtype": "<i8",
+          "shape": [
+            6
+          ],
+          "data": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "bytes_b64": "AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "saved_trial_comparisons": [
+        {
+          "seed": 0,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 1,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 42,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 123,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        },
+        {
+          "seed": 2026,
+          "typed_status": "NO_DIFFERENCE_OBSERVED",
+          "numpy_array_equal": true
+        }
+      ],
+      "fresh_replay": {
+        "repeats_per_program": 10,
+        "verdict": "NO_DIFFERENCE_OBSERVED",
+        "unique_output_fingerprints": [
+          1,
+          1
+        ],
+        "numpy_array_equal_first_outputs": true,
+        "same_program_value_stability": [
+          true,
+          true
+        ]
+      },
+      "source_verification": {
+        "original_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "original_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_standalone": {
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        "mutated_paper_backend": {
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      },
+      "metadata_replay": {
+        "status": "INVALID_INPUT",
+        "executed": false,
+        "reason": "gather indices out of bounds"
+      },
+      "independent_embedding_hypothesis": {
+        "status": "NOT_RUN_TORCH_UNSAFE_HISTORICAL_PATH",
+        "matches_original_outputs": null,
+        "inputs_equal": null,
+        "semantic_verdict": "NOT_APPLICABLE"
+      },
+      "raw_review_file_sha256": {
+        "core-replays/torch_seed4_prog40_T4_R5.json": "925411fc86c706ebb0e6da5aada2f4162626c1eb248e74857cca5942ca6c0b50",
+        "deep-review/torch_seed4_prog40_T4_R5.json": "865b68dca6198119af167634a0286dd5e1b757c1bcd1b89b08ee5529fa3878df"
+      }
+    }
+  ]
+}

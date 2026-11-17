@@ -101,6 +101,14 @@ def main(argv=None):
     release = sub.add_parser('release-readiness', help='Verify pinned independent evidence and write consolidated release readiness')
     release.add_argument('--evidence', type=Path, required=True)
     release.add_argument('--output', type=Path, required=True)
+    labels = sub.add_parser('review-labels', help='Verify the documented case dispositions; optionally replay saved witnesses without relabeling')
+    labels.add_argument('--output', type=Path, required=True)
+    labels.add_argument('--fresh', action='store_true')
+    labels.add_argument('--id', action='append')
+    labels.add_argument('--all', action='store_true')
+    labels.add_argument('--repeats', type=int, default=10)
+    labels.add_argument('--numeric-witness', action='store_true')
+    labels.add_argument('--iterator-control', action='store_true')
     audit = sub.add_parser('audit-provenance', help='Verify original execution sources and audit published labels without changing them')
     audit.add_argument('--output', type=Path, required=True)
     audit.add_argument('--all', action='store_true', help='Audit every published pair; default is a stratified diagnostic sample')
@@ -180,6 +188,15 @@ def main(argv=None):
         # evidence still causes a failing command, independently of science scope.
         return 0 if all(g['status'] == 'PASS' for g in report['gates']
                         if g['section'] not in ('scientific', 'build_provenance')) else 1
+    if args.command == 'review-labels':
+        from .release_readiness import prepare_release_data
+        from .label_dispositions import review_labels
+        prepare_release_data(ROOT)
+        report = review_labels(ROOT, args.output, fresh=args.fresh, ids=args.id,
+            all_cases=args.all, repeats=args.repeats, numeric_witness=args.numeric_witness, control=args.iterator_control)
+        print(json.dumps({'status': report['status'], 'cases': report['cases'],
+                          'fresh_experiments': report['fresh_experiments'],
+                          'read_first': str(args.output / 'REPORT.md')}, indent=2)); return 0
     if args.command == 'audit-provenance':
         from .execution.provenance import audit_provenance
         report = audit_provenance(ROOT, args.output, all_records=args.all, workers=args.workers)

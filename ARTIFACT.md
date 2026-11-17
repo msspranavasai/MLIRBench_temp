@@ -131,7 +131,7 @@ AE_PLATFORM=linux/arm64 ./ae.sh quickstart
 
 Selecting the opposite architecture uses emulation. The versioned publication workflow requires native ARM64 and AMD64 build-and-test runs, followed by fresh pulls and complete reviewer runs on both architectures. Per-version CI evidence identifies the tested source and image configurations. Both variants retain the same compiler/runtime pins and semantic compiler flags. CPU semantic checks are not performance benchmarks.
 
-The distribution uses one registry reference, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc4`. The registry manifest contains exactly the two tested native variants. Reviewers run the same command on both CPU types; they do not select separate agent images or start supporting services. See [container publication](docs/container-publication.md).
+The distribution uses one registry reference, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc5`. The registry manifest contains exactly the two tested native variants. Reviewers run the same command on both CPU types; they do not select separate agent images or start supporting services. See [container publication](docs/container-publication.md).
 
 ## Additional checks
 
@@ -177,3 +177,7 @@ See [release scope](docs/release-scope.md) for the author-excluded judging ablat
 ## Consolidated independent evidence
 
 Quickstart readiness describes its own run. Later compiler experiments and external native CI evidence are assessed by `release-readiness`, using a checksum-pinned evidence index. See [release evidence](docs/release-evidence.md). The consolidated report credits complete verified experiments; it does not certify semantic labels or replace the original per-run reports.
+
+## Documented label-conflict dispositions
+
+The [case review](docs/label-dispositions.md) provides a disposition for all 30 selected flags, saved-input replay commands and the nondeterminism diagnostic control. The review overlay does not alter published labels or scoring. `review-labels` verifies it; `--fresh` explicitly repeats current compiler experiments without APIs. Historical label provenance remains a separate REVIEW_REQUIRED gate.

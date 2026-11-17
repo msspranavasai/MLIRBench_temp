@@ -36,7 +36,7 @@ if [[ -z "$AE_IMAGE_SOURCE" ]]; then
   esac
 fi
 case "$AE_IMAGE_SOURCE" in
-  pull) AE_DEFAULT_IMAGE=ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc4 ;;
+  pull) AE_DEFAULT_IMAGE=ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc5 ;;
   build|local) AE_DEFAULT_IMAGE=mlirbench-ae:reviewer ;;
   *) echo "AE_IMAGE_SOURCE must be pull, build, or local." >&2; exit 1 ;;
 esac

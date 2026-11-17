@@ -383,10 +383,17 @@ def assess_release(root, evidence_path):
                     'nondeterministic_cases': [r['program_id'] for r in rows if any(t['status'] == 'NONDETERMINISTIC' for t in r.get('trials', []))],
                     'runtime_inputs_proven': summary['source_verification']['runtime_inputs_proven']}
         gate('full_label_audit_completed', 'software', labels)
+        def disposition_documentation():
+            from .label_dispositions import load_dossier
+            dossier, _, matches = load_dossier(root)
+            return {'reviewed_cases': len(dossier['cases']), 'status': dossier['status'],
+                    'execution_code_matches_review': matches, 'document': 'docs/label-dispositions.md',
+                    'historical_runtime_inputs_proven': False}
+        gate('label_conflict_dispositions', 'documentation', disposition_documentation)
         audit = next(g for g in gates if g['id'] == 'full_label_audit_completed')
         gates.append({'id': 'execution_label_provenance', 'section': 'scientific', 'status': 'REVIEW_REQUIRED',
                       'details': audit.get('details', {}),
-                      'reason': 'A completed audit does not certify labels. Original runtime inputs remain unrecorded; conflicts, unsupported domains and nondeterminism require review.'})
+                      'reason': 'A completed audit and documented disposition do not certify historical labels. See docs/label-dispositions.md for the 30-case review. Original runtime inputs remain unrecorded; unsupported domains and remaining provenance gaps stay explicit.'})
         ci = index.get('ci')
         ci_files_verified = {}
         def ci_read(relative):
@@ -474,6 +481,8 @@ def write_report(report, output):
             description = f"{detail['comparisons']} downstream comparisons independently recalculated from saved predictions; no GPU inference or training."
         elif 'arch' in detail:
             description = 'Native ' + detail['arch'] + ': verified build/test and fresh registry-pull/test evidence.'
+        elif 'reviewed_cases' in detail:
+            description = f"{detail['reviewed_cases']} case dispositions verified against the dossier and immutable master; historical provenance remains unproven. See docs/label-dispositions.md."
         elif 'records' in detail and gate['id'] == 'full_label_audit_completed':
             description = f"All {detail['records']} published pairs audited; completion does not establish label validity."
         lines += ['- **' + gate['id'] + ': ' + gate['status'] + '**. ' + description]
