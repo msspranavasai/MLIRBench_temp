@@ -14,7 +14,7 @@ env:
   VERSION: 0.3.0rc3
 jobs:
   macos-launcher:
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
