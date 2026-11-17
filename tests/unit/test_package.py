@@ -6,5 +6,5 @@ import mlirbench
 
 class PackageVersion(unittest.TestCase):
     def test_installed_version_matches_source(self):
-        self.assertEqual(mlirbench.__version__, "0.3.0rc1")
+        self.assertEqual(mlirbench.__version__, "0.3.0rc2")
         self.assertEqual(importlib.metadata.version("mlirbench"), mlirbench.__version__)

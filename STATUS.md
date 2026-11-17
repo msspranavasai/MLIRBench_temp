@@ -10,11 +10,13 @@ The complete artifact is still under preparation. Remaining work includes:
 
 - Original execution runtime inputs/toolchain provenance and scientific label conflicts.
 - GPU checkpoint inference/access and evaluation on agreed hardware.
-- Native AMD64 evaluator-host verification.
+- Native-platform evidence is generated per version by the image publication/pull workflow; scientific readiness remains separate.
 - Final dependency/build/resource freezing.
 - Judge-reliability ablation: excluded from required reproduction by the author; not reproduced (docs/release-scope.md).
 - Full compiler/RISC-V execution evidence; portable commands and the original isolated compiler are now included.
 
 Paid provider calls were not used to validate this implementation. Tests use mocked model endpoints and real CPU execution where appropriate; saved subjective judge ratings are disclosed inputs to the no-cost paper replay.
 
-Release hardening adds failed-mutation rejection (with explicit expected-invalid Level 5 handling), sanitized failure evidence, explicit OpenRouter Chat Completions routing, environment-file exclusions and a pre-hardening preservation guard. Quickstart uses the single `mlirbench-ae:reviewer` image and writes `preservation.json`; archived scientific claims still require the outstanding evidence above. Optional fresh validation differs from the paper’s historical fallback/clamping failure protocol, as disclosed in docs/live-configuration.md.
+Release hardening adds failed-mutation rejection (with explicit expected-invalid Level 5 handling), sanitized failure evidence, explicit OpenRouter Chat Completions routing, environment-file exclusions and a pre-hardening preservation guard. Quickstart pulls the single versioned multi-platform registry image and writes `preservation.json`; archived scientific claims still require the outstanding evidence above. Optional fresh validation differs from the paper’s historical fallback/clamping failure protocol, as disclosed in docs/live-configuration.md.
+
+The default rc2 launcher pulls one versioned multi-platform registry image. One container includes all packaged agents and compiler tools. The publication guide distinguishes private preparation from anonymous reviewer downloads after release.

@@ -1,0 +1,37 @@
+name: Verify public image downloads
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  anonymous-pull:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Pull without registry credentials and reproduce the results
+        env:
+          AE_IMAGE_SOURCE: pull
+        run: |
+          export DOCKER_CONFIG="$RUNNER_TEMP/anonymous-docker"
+          mkdir -p "$DOCKER_CONFIG"
+          AE_OUTPUT_ROOT="$RUNNER_TEMP/results" ./ae.sh quickstart --output /results/anonymous
+      - name: Check native execution and preservation
+        run: |
+          python3 tools/release/collect_evidence.py --arch '${{ matrix.arch }}' \
+            --results "$RUNNER_TEMP/results/anonymous" --output "$RUNNER_TEMP/anonymous/${{ matrix.arch }}"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: anonymous-image-evidence-${{ matrix.arch }}
+          path: ${{ runner.temp }}/anonymous/
+          if-no-files-found: warn
+          retention-days: 90

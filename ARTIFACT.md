@@ -2,7 +2,7 @@
 
 ## Default: no paid model calls
 
-Prerequisites: Docker with Linux containers and Python 3 (standard library only for host-side build-input checks) and disk space for the compiler image, published data and generated stage artifacts. Windows users can use WSL2/Bash. The launcher builds one image containing the compiler/runtime and the original optional agent dependencies. Building downloads package dependencies; replay needs no runtime network or credentials.
+Prerequisites: Docker with Linux containers and Python 3 (standard library only for host-side build-input checks) and disk space for the compiler image, published data and generated stage artifacts. Windows users can use WSL2/Bash. The launcher pulls one versioned multi-platform image containing the compiler/runtime and original optional agent dependencies. Its native platform is selected automatically. Image acquisition needs network access; the archived experiment container runs with networking disabled. A private package requires registry authentication until the author makes it public. An explicit source build is available with AE_IMAGE_SOURCE=build.
 
 ```bash
 ./ae.sh quickstart
@@ -41,7 +41,7 @@ The execution agent compiles and executes both programs with positional shared i
 
 ## Optional live-agent code (outside the required reviewer route)
 
-The optional live implementation is provided for users who independently choose and arrange provider access. The submission does not provide or promise API keys, credits or an API access server, and evaluators are not expected to supply them for the required route. Its runtime guards still require explicit --allow-paid-api, a valid configuration and the relevant credentials before any model call; no credentials are distributed with the code. The launcher enables networking only for this explicit opt-in and forwards named provider environment variables or an explicitly supplied AE_ENV_FILE. Credentials are not copied into the image or saved in run artifacts.
+The optional live implementation is provided for users who independently choose and arrange provider access. The submission does not provide or promise API keys, credits or an API access server, and evaluators are not expected to supply them for the required route. Its runtime guards still require explicit --allow-paid-api, a valid configuration and the relevant credentials before any model call; no credentials are distributed with the code. The launcher enables container networking only for this explicit opt-in and forwards named provider environment variables or an explicitly supplied AE_ENV_FILE. Credentials are not copied into the image or saved in run artifacts.
 
 ```bash
 # Optional additional experiment using independently arranged access; may incur API costs.
@@ -115,7 +115,7 @@ AE_SKIP_BUILD=1 ./ae.sh pipeline --stage metrics \
   --input /results/FRESH_COMPLETED_RUN --output /results/FRESH_METRICS_RUN
 ```
 
-`AE_SKIP_BUILD=1` requires the selected `AE_IMAGE` to exist locally; it does not pull an image. It skips host bundle checks and Docker rebuilding and uses that image's code and dependencies. This is useful when the host published bundles are absent but the container and checkpoint already exist. Without this setting the launcher verifies/repairs all build inputs and builds the complete artifact image. Live API opt-in remains separate and explicit.
+`AE_IMAGE_SOURCE=pull` is the default and downloads the versioned image for the Docker daemon’s CPU. Its source-fingerprint label must match the checkout. `AE_IMAGE_SOURCE=build` explicitly verifies the host bundles and builds one local image. `AE_IMAGE_SOURCE=local` uses a previously loaded image without pulling or building. Legacy explicit `AE_SKIP_BUILD=0` selects build and `AE_SKIP_BUILD=1` selects local mode when AE_IMAGE_SOURCE is unset. An explicit AE_IMAGE_SOURCE takes precedence. Live API opt-in is independent of image acquisition.
 
 At runtime, fresh checkpoints supply their own program pairs and stage outputs. Fresh execution/reasoning/judging and fresh/mixed scoped metrics resolve only the published views actually needed. Archived execution checkpoints still require frozen master/history verification, and full archived paper reproduction still needs its published views. Source/parent checks and Hugging Face consent are not bypassed.
 
@@ -129,15 +129,9 @@ AE_PLATFORM=linux/amd64 ./ae.sh quickstart
 AE_PLATFORM=linux/arm64 ./ae.sh quickstart
 ```
 
-Selecting the opposite architecture uses emulation. Native ARM64 is tested locally; native AMD64 evaluator verification remains outstanding. Both variants retain the same compiler/runtime pins and semantic compiler flags. CPU semantic checks are not performance benchmarks.
+Selecting the opposite architecture uses emulation. The versioned publication workflow requires native ARM64 and AMD64 build-and-test runs, followed by fresh pulls and complete reviewer runs on both architectures. Per-version CI evidence identifies the tested source and image configurations. Both variants retain the same compiler/runtime pins and semantic compiler flags. CPU semantic checks are not performance benchmarks.
 
-A multi-platform distribution image can be built with a manifest-capable Docker image store:
-
-```bash
-docker buildx build --platform linux/amd64,linux/arm64 --load -t mlirbench-ae:reviewer .
-```
-
-This builds a local image; it does not publish one.
+The distribution uses one registry reference, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc2`. The registry manifest contains exactly the two tested native variants. Reviewers run the same command on both CPU types; they do not select separate agent images or start supporting services. See [container publication](docs/container-publication.md).
 
 ## Additional checks
 
@@ -152,20 +146,13 @@ The historical label audit is an additional scientific diagnostic. It is no long
 
 ## One reviewer image and one container
 
-The launcher builds and uses one image reference, `mlirbench-ae:reviewer`, from the sole root `Dockerfile`. All four agents, both dialect toolchains, CPU validation, archived records, downstream replay and optional live SDKs are included. Every invocation starts exactly one disposable container (`docker run --rm`); there is no Compose stack, database, external compiler service or second live-agent image to start. Sequential stage commands use the same image and external `/results` directory. Set `AE_SKIP_BUILD=1` to reuse it; the launcher checks that its architecture matches the requested platform.
+The sole root Dockerfile builds all four agents, both dialect toolchains, the isolated original downstream compiler, archived records and optional live SDKs. One published version tag contains native AMD64 and ARM64 variants of that same environment. Docker selects the host-compatible variant; each invocation runs exactly one disposable reviewer container. There is no Compose stack, database or external compiler service.
 
-ARM64 and AMD64 need different native binaries. The same Dockerfile and image reference support both; build on the reviewer's host to select native execution. An ARM64 image archive must not be described as native AMD64. Native AMD64 verification remains a separate outstanding check. `AE_IMAGE` remains an explicit expert override, not a required extra image.
+The default launcher pulls the versioned registry reference and verifies that the selected image’s source fingerprint matches the checkout. Use AE_IMAGE to pin the published index digest when an immutable binary reference is desired. Version publication refuses to replace an existing tag with different platform digests. The default does not require manually loading architecture-specific tar files.
 
-To transfer the built image for a reviewer with the **same architecture**, use Docker's export command outside the repository:
+Keep the repository and image package private while preparing the candidate. GitHub repository visibility and GHCR package visibility must both be checked when the author releases it. Changing repository visibility alone must not be assumed to enable anonymous image pulls. See [the publication guide](docs/container-publication.md) for the public-download check.
 
-```bash
-docker image save --output ../MLIRBench-AE-runs/mlirbench-ae-reviewer.tar mlirbench-ae:reviewer
-shasum -a 256 ../MLIRBench-AE-runs/mlirbench-ae-reviewer.tar
-# Reviewer: docker image load --input mlirbench-ae-reviewer.tar
-AE_SKIP_BUILD=1 ./ae.sh quickstart
-```
-
-A single published image reference can later contain a multi-architecture manifest; native verification of each variant is still required. No registry publication is performed by these commands.
+For offline delivery, Docker can export/load the same image; AE_IMAGE_SOURCE=local prevents registry access. Older rc1 tar archives remain platform-specific and should be used with their matching source checkout.
 
 Quickstart also writes `preservation.json`, comparing newly recalculated archived results and frozen inputs against the pre-hardening baseline. This check fails on changed numbers or records, without changing expected paper values, tolerances, labels or scoring rules. For a completed full quickstart run, repeat it with `./ae.sh verify-preservation --results /results/<run-folder>`. Scientific provenance and fresh experimental outcomes remain separate evidence.
 

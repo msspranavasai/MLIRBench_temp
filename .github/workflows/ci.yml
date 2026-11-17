@@ -1,30 +1,160 @@
-name: Reviewer reproduction
+name: Reviewer image publication
 on:
   push:
+    branches: [codex/release-v0.3.0rc2]
   pull_request:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: reviewer-image-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  IMAGE: ghcr.io/msspranavasai/mlirbench-ae
+  VERSION: 0.3.0rc2
 jobs:
-  native-amd64:
-    runs-on: ubuntu-24.04
+  native-build-and-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 45
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Build the single reviewer image
-        run: docker build --platform linux/amd64 -t mlirbench-ae:reviewer .
-      - name: Offline reviewer workflow
-        run: AE_SKIP_BUILD=1 AE_OUTPUT_ROOT="$RUNNER_TEMP/mlirbench-results" ./ae.sh quickstart --output /results/ci
-      - name: Show result and preservation checks
-        if: always()
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069
+      - name: Build one complete native image
+        shell: bash
         run: |
-          python3 - <<'PY'
-          import json, os
+          SOURCE_ID="$(python3 tools/release/source_identity.py)"
+          echo "SOURCE_ID=$SOURCE_ID" >> "$GITHUB_ENV"
+          docker buildx build --platform "linux/${{ matrix.arch }}" --load --provenance=false --sbom=false \
+            --metadata-file "$RUNNER_TEMP/test-build.json" \
+            --label "org.mlirbench.source-fingerprint=$SOURCE_ID" \
+            --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY" \
+            --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+            --label "org.opencontainers.image.version=$VERSION" \
+            --tag mlirbench-ae:ci .
+      - name: Test the complete reviewer workflow without runtime networking
+        env:
+          AE_IMAGE_SOURCE: local
+          AE_SKIP_BUILD: '1'
+          AE_IMAGE: mlirbench-ae:ci
+        run: AE_OUTPUT_ROOT="$RUNNER_TEMP/results" ./ae.sh quickstart --output /results/ci
+      - name: Validate native execution and preserved results
+        run: |
+          python3 tools/release/collect_evidence.py --arch '${{ matrix.arch }}' \
+            --results "$RUNNER_TEMP/results/ci" --output "$RUNNER_TEMP/publication/${{ matrix.arch }}"
+      - name: Check package visibility before pushing source-bearing layers
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/codex/release-v0.3.0rc2'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 tools/release/registry_preflight.py
+      - name: Authenticate to the private repository's container registry
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/codex/release-v0.3.0rc2'
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+      - name: Push the tested platform by digest, without architecture tags
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/codex/release-v0.3.0rc2'
+        shell: bash
+        run: |
+          docker buildx build --platform 'linux/${{ matrix.arch }}' --provenance=false --sbom=false \
+            --metadata-file "$RUNNER_TEMP/push-build.json" \
+            --label "org.mlirbench.source-fingerprint=$SOURCE_ID" \
+            --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY" \
+            --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+            --label "org.opencontainers.image.version=$VERSION" \
+            --output "type=image,name=$IMAGE,push-by-digest=true,name-canonical=true,push=true" .
+          python3 - '${{ matrix.arch }}' <<'PY'
+          import json, os, sys
           from pathlib import Path
-          root=Path(os.environ['RUNNER_TEMP'])/'mlirbench-results/ci'
-          for name in ['tests.json','preservation.json','readiness.json']:
-              path=root/name
-              if path.exists():
-                  report=json.loads(path.read_text())
-                  print(name, {k:report[k] for k in ('passed','tests_run','failures','errors','skipped','status') if k in report})
+          root=Path(os.environ['RUNNER_TEMP'])
+          tested=json.loads((root/'test-build.json').read_text())
+          pushed=json.loads((root/'push-build.json').read_text())
+          config=tested['containerimage.config.digest']
+          assert config==pushed['containerimage.config.digest'], 'Pushed image differs from tested configuration'
+          record={'arch':sys.argv[1],'digest':pushed['containerimage.digest'],'tested_config_digest':config}
+          (root/'publication'/sys.argv[1]/'digest.json').write_text(json.dumps(record,indent=2)+'\n')
           PY
+      - name: Retain per-platform verification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: image-evidence-${{ matrix.arch }}
+          path: ${{ runner.temp }}/publication/
+          if-no-files-found: warn
+          retention-days: 90
+  publish-one-image:
+    needs: native-build-and-test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/codex/release-v0.3.0rc2'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: image-evidence-*
+          path: ${{ runner.temp }}/publication
+          merge-multiple: true
+      - name: Authenticate
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+      - name: Combine exactly the two tested native variants into one immutable tag
+        run: |
+          python3 tools/release/publish_index.py --image "$IMAGE" --version "$VERSION" \
+            --evidence "$RUNNER_TEMP/publication" --output "$RUNNER_TEMP/published-image.json"
+          cat "$RUNNER_TEMP/published-image.json" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: published-image
+          path: ${{ runner.temp }}/published-image.json
+          retention-days: 90
+  verify-published-pull:
+    needs: publish-one-image
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Authenticate for private-package verification
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+      - name: Pull the one versioned image and run the default reviewer command
+        env:
+          AE_IMAGE_SOURCE: pull
+        run: AE_OUTPUT_ROOT="$RUNNER_TEMP/results" ./ae.sh quickstart --output /results/pulled
+      - name: Require native execution and complete result preservation after pulling
+        run: |
+          python3 tools/release/collect_evidence.py --arch '${{ matrix.arch }}' \
+            --results "$RUNNER_TEMP/results/pulled" --output "$RUNNER_TEMP/pulled/${{ matrix.arch }}"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pulled-image-evidence-${{ matrix.arch }}
+          path: ${{ runner.temp }}/pulled/
+          if-no-files-found: warn
+          retention-days: 90

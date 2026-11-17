@@ -34,6 +34,7 @@ class Launcher(unittest.TestCase):
             project=source.parent
             shutil.copy2(project/'run.py',root/'run.py')
             shutil.copytree(project/'src',root/'src')
+            shutil.copytree(project/'tools/release',root/'tools/release')
             fixture(root)
             # A fourth build input, outside the old three-file sentinels.
             import gzip,hashlib
@@ -60,8 +61,16 @@ with open(os.environ['AE_TEST_LOG'], 'a') as stream:
     stream.write(json.dumps(sys.argv[1:]) + '\\n')
 if sys.argv[1:2] == ['info'] and '--format' in sys.argv:
     print(os.environ['AE_TEST_ARCH'])
+if sys.argv[1:3] == ['image','inspect'] and '--help' in sys.argv:
+    print('--platform')
+if sys.argv[1:2] == ['pull'] and os.environ.get('AE_TEST_PULL_FAIL'):
+    raise SystemExit(1)
 if sys.argv[1:3] == ['image','inspect'] and '--format' in sys.argv:
-    print(os.environ.get('AE_TEST_IMAGE_PLATFORM') or os.environ.get('AE_PLATFORM') or ('linux/arm64' if os.environ['AE_TEST_ARCH'] in ('aarch64','arm64') else 'linux/amd64'))
+    if 'source-fingerprint' in sys.argv[sys.argv.index('--format')+1]:
+        import subprocess
+        print(os.environ.get('AE_TEST_IMAGE_SOURCE_ID') or subprocess.check_output([sys.executable,'tools/release/source_identity.py'],text=True).strip())
+    else:
+        print(os.environ.get('AE_TEST_IMAGE_PLATFORM') or os.environ.get('AE_PLATFORM') or ('linux/arm64' if os.environ['AE_TEST_ARCH'] in ('aarch64','arm64') else 'linux/amd64'))
 if sys.argv[1:2] == ['build']:
     from pathlib import Path
     import hashlib
@@ -72,8 +81,11 @@ if sys.argv[1:2] == ['build']:
 ''')
             docker.chmod(0o755)
             log = root / 'calls.jsonl'
-            env = {k: v for k, v in os.environ.items() if k not in ('AE_PLATFORM', 'AE_IMAGE', 'AE_SKIP_BUILD')}
+            env = {k: v for k, v in os.environ.items() if k not in ('AE_PLATFORM', 'AE_IMAGE', 'AE_SKIP_BUILD', 'AE_IMAGE_SOURCE')}
             env.update(PATH=str(root) + os.pathsep + env['PATH'], AE_TEST_LOG=str(log), AE_TEST_ARCH=architecture, AE_OUTPUT_ROOT=str(root/'outputs'))
+            env['AE_IMAGE_SOURCE']='build'
+            if environment and 'AE_SKIP_BUILD' in environment and 'AE_IMAGE_SOURCE' not in environment:
+                env.pop('AE_IMAGE_SOURCE')
             env.update(environment or {})
             if requested:
                 env['AE_PLATFORM'] = requested
@@ -152,3 +164,32 @@ if sys.argv[1:2] == ['build']:
         self.assertNotEqual(run.returncode,0)
         self.assertIn('Rebuild',run.stderr)
         self.assertFalse(any(c[0]=='run' for c in calls))
+
+    def test_default_pulls_one_native_image_without_host_data_or_build(self):
+        for arch in ('aarch64','x86_64'):
+            with self.subTest(arch=arch):
+                run,calls=self.launch(arch,environment={'AE_IMAGE_SOURCE':''},damage='no_data')
+                self.assertEqual(run.returncode,0,run.stderr)
+                pulls=[c for c in calls if c[0]=='pull'];containers=[c for c in calls if c[0]=='run']
+                self.assertEqual(len(pulls),1);self.assertEqual(len(containers),1)
+                self.assertIn('ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc2',pulls[0])
+                self.assertFalse(any(c[0]=='build' for c in calls))
+                self.assertEqual(containers[0][containers[0].index('--network')+1],'none')
+
+    def test_pull_or_source_identity_failure_never_starts_container(self):
+        for extra in ({'AE_TEST_PULL_FAIL':'1'},{'AE_TEST_IMAGE_SOURCE_ID':'stale'}):
+            with self.subTest(extra=extra):
+                run,calls=self.launch('aarch64',environment={'AE_IMAGE_SOURCE':'pull',**extra})
+                self.assertNotEqual(run.returncode,0)
+                self.assertFalse(any(c[0] in ('build','run') for c in calls))
+
+    def test_pull_mode_inspects_the_selected_platform(self):
+        run,calls=self.launch('aarch64','linux/amd64',environment={'AE_IMAGE_SOURCE':'pull'})
+        self.assertEqual(run.returncode,0,run.stderr)
+        inspect=next(c for c in calls if c[:2]==['image','inspect'] and '--format' in c)
+        self.assertEqual(inspect[inspect.index('--platform')+1],'linux/amd64')
+
+    def test_invalid_image_source_stops_before_pull_build_or_run(self):
+        run,calls=self.launch('aarch64',environment={'AE_IMAGE_SOURCE':'unknown'})
+        self.assertNotEqual(run.returncode,0)
+        self.assertFalse(any(c[0] in ('pull','build','run') for c in calls))
