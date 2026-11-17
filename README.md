@@ -6,7 +6,7 @@ With Docker and Python 3 available, run the reviewer workflow without paid model
 ./ae.sh quickstart
 ```
 
-The launcher pulls the single versioned image, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc2`, and uses the host's native ARM64 or AMD64 CPU. Docker automatically selects AMD64 or ARM64; each invocation starts one container containing all four agents and both compiler toolchains. No model credentials or paid API calls are needed. The workflow verifies published inputs, tests the implementation, replays **mutation → execution → reasoning → judge**, recomputes score totals and paper tables, reproduces downstream prediction metrics, and runs the execution agent locally on one Linalg and one Torch pair.
+The launcher pulls the single versioned image, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc3`, and uses the host's native ARM64 or AMD64 CPU. Docker automatically selects AMD64 or ARM64; each invocation starts one container containing all four agents and both compiler toolchains. No model credentials or paid API calls are needed. The workflow verifies published inputs, tests the implementation, replays **mutation → execution → reasoning → judge**, recomputes score totals and paper tables, reproduces downstream prediction metrics, and runs the execution agent locally on one Linalg and one Torch pair.
 
 While the repository/package are private, the image requires registry read access. After both are made public, reviewers can pull it anonymously. See [image publication and visibility](docs/container-publication.md).
 

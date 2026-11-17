@@ -131,7 +131,7 @@ AE_PLATFORM=linux/arm64 ./ae.sh quickstart
 
 Selecting the opposite architecture uses emulation. The versioned publication workflow requires native ARM64 and AMD64 build-and-test runs, followed by fresh pulls and complete reviewer runs on both architectures. Per-version CI evidence identifies the tested source and image configurations. Both variants retain the same compiler/runtime pins and semantic compiler flags. CPU semantic checks are not performance benchmarks.
 
-The distribution uses one registry reference, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc2`. The registry manifest contains exactly the two tested native variants. Reviewers run the same command on both CPU types; they do not select separate agent images or start supporting services. See [container publication](docs/container-publication.md).
+The distribution uses one registry reference, `ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc3`. The registry manifest contains exactly the two tested native variants. Reviewers run the same command on both CPU types; they do not select separate agent images or start supporting services. See [container publication](docs/container-publication.md).
 
 ## Additional checks
 

@@ -11,8 +11,15 @@ concurrency:
   cancel-in-progress: false
 env:
   IMAGE: ghcr.io/msspranavasai/mlirbench-ae
-  VERSION: 0.3.0rc2
+  VERSION: 0.3.0rc3
 jobs:
+  macos-launcher:
+    runs-on: macos-14
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Test the launcher with macOS system Bash and Docker fixtures
+        run: PYTHONPATH=src:. python3 -m unittest tests.unit.test_container_platform -v
   native-build-and-test:
     strategy:
       fail-fast: false
@@ -93,7 +100,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
   publish-one-image:
-    needs: native-build-and-test
+    needs: [native-build-and-test, macos-launcher]
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/codex/release-v0.3.0rc2'
     runs-on: ubuntu-24.04
     timeout-minutes: 15

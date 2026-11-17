@@ -36,7 +36,7 @@ if [[ -z "$AE_IMAGE_SOURCE" ]]; then
   esac
 fi
 case "$AE_IMAGE_SOURCE" in
-  pull) AE_DEFAULT_IMAGE=ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc2 ;;
+  pull) AE_DEFAULT_IMAGE=ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc3 ;;
   build|local) AE_DEFAULT_IMAGE=mlirbench-ae:reviewer ;;
   *) echo "AE_IMAGE_SOURCE must be pull, build, or local." >&2; exit 1 ;;
 esac
@@ -91,19 +91,19 @@ case "$AE_IMAGE_SOURCE" in
     docker build --platform "$AE_PLATFORM" \
       --label "org.mlirbench.source-fingerprint=$AE_SOURCE_ID" -t "$AE_IMAGE" . ;;
   local)
-    if ! docker image inspect "${AE_INSPECT_PLATFORM[@]}" "$AE_IMAGE" >/dev/null 2>&1; then
+    if ! docker image inspect ${AE_INSPECT_PLATFORM[@]+"${AE_INSPECT_PLATFORM[@]}"} "$AE_IMAGE" >/dev/null 2>&1; then
       echo "Local mode requires an existing image for $AE_PLATFORM: $AE_IMAGE. Use AE_IMAGE_SOURCE=build or pull." >&2
       exit 1
     fi ;;
 esac
-AE_ACTUAL_PLATFORM="$(docker image inspect "${AE_INSPECT_PLATFORM[@]}" --format '{{.Os}}/{{.Architecture}}' "$AE_IMAGE")"
+AE_ACTUAL_PLATFORM="$(docker image inspect ${AE_INSPECT_PLATFORM[@]+"${AE_INSPECT_PLATFORM[@]}"} --format '{{.Os}}/{{.Architecture}}' "$AE_IMAGE")"
 if [[ "$AE_ACTUAL_PLATFORM" != "$AE_PLATFORM" ]]; then
   echo "Image platform $AE_ACTUAL_PLATFORM differs from $AE_PLATFORM. Rebuild with AE_IMAGE_SOURCE=build." >&2
   exit 1
 fi
 if [[ "$AE_IMAGE_SOURCE" == pull ]]; then
   AE_SOURCE_ID="$(python3 "$AE_ROOT/tools/release/source_identity.py")"
-  AE_IMAGE_SOURCE_ID="$(docker image inspect "${AE_INSPECT_PLATFORM[@]}" --format '{{index .Config.Labels "org.mlirbench.source-fingerprint"}}' "$AE_IMAGE")"
+  AE_IMAGE_SOURCE_ID="$(docker image inspect ${AE_INSPECT_PLATFORM[@]+"${AE_INSPECT_PLATFORM[@]}"} --format '{{index .Config.Labels "org.mlirbench.source-fingerprint"}}' "$AE_IMAGE")"
   if [[ "$AE_IMAGE_SOURCE_ID" != "$AE_SOURCE_ID" ]]; then
     echo "Downloaded image does not match this checkout. Use the matching release or AE_IMAGE_SOURCE=build." >&2
     exit 1
@@ -112,7 +112,7 @@ fi
 docker run --rm --platform "$AE_PLATFORM" --network "$AE_NETWORK" \
   -e "MLIRBENCH_DOCKER_HOST_ARCH=$AE_HOST_ARCH" \
   -e "MLIRBENCH_DOCKER_PLATFORM=$AE_PLATFORM" \
-  "${AE_FLAGS[@]}" -v "$AE_OUTPUT_ROOT:/results" "$AE_IMAGE" "${AE_ARGS[@]}"
+  ${AE_FLAGS[@]+"${AE_FLAGS[@]}"} -v "$AE_OUTPUT_ROOT:/results" "$AE_IMAGE" "${AE_ARGS[@]}"
 if [[ "$AE_HAS_OUTPUT" == false && ( ${AE_ARGS[0]} == quickstart || ${AE_ARGS[0]} == pipeline || ${AE_ARGS[0]} == compiler ) ]]; then
   if [[ ${AE_ARGS[0]} == quickstart ]]; then AE_REPORT=START_HERE.md; elif [[ ${AE_ARGS[0]} == compiler ]]; then AE_REPORT=summary.json; else AE_REPORT=REPORT.md; fi
   echo "Read: $AE_OUTPUT_ROOT/$AE_RUN/$AE_REPORT"

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mlirbench"
-version = "0.3.0rc2"
+version = "0.3.0rc3"
 description = "MLIRBench - A Benchmark and Dataset for Compiler and Hardware-Aware Reasoning"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"

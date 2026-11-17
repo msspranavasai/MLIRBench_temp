@@ -3,7 +3,7 @@
 Published image reference for this candidate:
 
 ```text
-ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc2
+ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc3
 ```
 
 The single root Dockerfile packages the four agents, local validation tools, both IREE toolchains, archived observations and metric computation. The registry index has two native variants of that same environment: linux/amd64 and linux/arm64. Docker chooses the CPU-compatible variant; the reviewer runs one container per invocation. There is no supporting database, remote compiler server, Compose stack or per-agent image.

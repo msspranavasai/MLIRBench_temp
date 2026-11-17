@@ -26,7 +26,7 @@ class CpuEvidence(unittest.TestCase):
 
 
 class Launcher(unittest.TestCase):
-    def launch(self, architecture, requested=None, arguments=None, environment=None, damage=None):
+    def launch(self, architecture, requested=None, arguments=None, environment=None, damage=None, shell="bash"):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             source = Path(__file__).resolve().parents[2] / 'ae.sh'
@@ -62,7 +62,7 @@ with open(os.environ['AE_TEST_LOG'], 'a') as stream:
 if sys.argv[1:2] == ['info'] and '--format' in sys.argv:
     print(os.environ['AE_TEST_ARCH'])
 if sys.argv[1:3] == ['image','inspect'] and '--help' in sys.argv:
-    print('--platform')
+    print('' if os.environ.get('AE_TEST_OLD_INSPECT') else '--platform')
 if sys.argv[1:2] == ['pull'] and os.environ.get('AE_TEST_PULL_FAIL'):
     raise SystemExit(1)
 if sys.argv[1:3] == ['image','inspect'] and '--format' in sys.argv:
@@ -89,10 +89,25 @@ if sys.argv[1:2] == ['build']:
             env.update(environment or {})
             if requested:
                 env['AE_PLATFORM'] = requested
-            run = subprocess.run(['bash', str(root / 'ae.sh'), *(arguments or ['dataset-info'])], env=env,
+            run = subprocess.run([shell, str(root / 'ae.sh'), *(arguments or ['dataset-info'])], env=env,
                                  capture_output=True, text=True)
             calls = [json.loads(line) for line in log.read_text().splitlines()]
             return run, calls
+
+    def test_system_bash_handles_empty_and_populated_optional_arrays(self):
+        for shell in dict.fromkeys(('bash', '/bin/bash')):
+            for populated in (False, True):
+                with self.subTest(shell=shell, populated=populated):
+                    env={'AE_IMAGE_SOURCE':'pull','AE_TEST_OLD_INSPECT':'1'}
+                    args=['dataset-info']
+                    if populated:
+                        env['OPENAI_API_KEY']='dummy-test-key'
+                        args.append('--allow-paid-api')
+                    run,calls=self.launch('arm64',environment=env,arguments=args,shell=shell)
+                    self.assertEqual(run.returncode,0,run.stderr)
+                    containers=[c for c in calls if c[0]=='run']
+                    self.assertEqual(len(containers),1)
+                    self.assertEqual('--env' in containers[0],populated)
 
     def test_defaults_to_docker_daemon_architecture(self):
         for daemon, arch in [('aarch64', 'arm64'), ('x86_64', 'amd64')]:
@@ -172,7 +187,7 @@ if sys.argv[1:2] == ['build']:
                 self.assertEqual(run.returncode,0,run.stderr)
                 pulls=[c for c in calls if c[0]=='pull'];containers=[c for c in calls if c[0]=='run']
                 self.assertEqual(len(pulls),1);self.assertEqual(len(containers),1)
-                self.assertIn('ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc2',pulls[0])
+                self.assertIn('ghcr.io/msspranavasai/mlirbench-ae:0.3.0rc3',pulls[0])
                 self.assertFalse(any(c[0]=='build' for c in calls))
                 self.assertEqual(containers[0][containers[0].index('--network')+1],'none')
 
