@@ -1,0 +1,15 @@
+# Code release scope
+
+The required reviewer route is `./ae.sh quickstart`, with archived observations, independently recalculated scores and paper tables, saved-prediction metric replay, archived compiler arithmetic, and real repeated CPU execution. No API credentials, provider credits, Nova login or paid judging is required. Each stage can also be replayed independently; fresh model stages remain explicit optional experiments with their own observations and may differ from historical results.
+
+The author reports that the dataset is already published on Zenodo. This code release does not create, replace or republish that deposit. The pinned scientific files and their existing hashes remain unchanged. The dataset release DOI should be linked in the public repository description when supplied; the code currently identifies its exact frozen Hugging Face revision and the accepted arXiv manuscript.
+
+The author excluded the reviewer-requested judge-reliability ablation from required reproduction on 2026-11-16. Its frozen study was not recovered or reproduced. The archived arXiv v1 manuscript still contains Appendix E.14/Table 24; preserving that reference does not claim the ablation was independently validated. Readiness reports this as EXCLUDED_FROM_REQUIRED_SCOPE, not PASS.
+
+The following remain separate scientific/platform checks: original execution input/toolchain provenance and label conflicts; fresh checkpoint inference; full compiler/backend replay evidence; native AMD64 evaluation; and fresh environment installation. A passing software workflow or local release candidate does not certify all historical semantic labels or award an AE badge. These limitations are not hidden by the ablation scope decision.
+
+The local reviewer assets are outside Git at `../MLIRBench-AE-assets/reviewer/nova`. The manifest verifies all 914 copied files, including the 11 final adapter directories, compiler records, pilot assembly and additional datasets. These files were copied from Nova, so reviewers can receive the assets directly. Adapter weights are not the Qwen base-model weights. The original GPU experiment scripts are preserved in the scientific snapshot and still require their documented dependencies/resources; this code release does not claim a completed portable GPU inference run.
+
+Public release preparation: review the committed source, run the same Dockerfile from a clean checkout, retain the image/source/checksum manifests, and link the independently published dataset. Original preparation logs and generated results remain outside this code repository.
+
+Python runtime dependencies are constrained to the exact verified versions in requirements/runtime-lock.txt; the package build uses a fixed setuptools version. The image’s base is digest-pinned. Debian apt repository resolution remains distinct from the frozen exported image; retain its installed inventory when distributing an image. CI runs the offline workflow on native AMD64 when pushed, but an unexecuted workflow is not native-platform evidence.

@@ -1,3 +1,5 @@
+from mlirbench.observations import redact, reject_credential_echo
+import re
 from agents.mutation_agent.selector import pick_requirement, get_requirement_by_id
 from agents.mutation_agent.prompts.prompt_builder import build_user_prompt
 from agents.mutation_agent.llm import generate_mutation
@@ -39,121 +41,73 @@ TORCH_INSPECTORS = {
 }
 
 
-MAX_ATTEMPTS = 3
+from agents.api_config import request_limits
+
+
+def complete_module(candidate):
+    """Envelope check only; the compiler still decides validity, not this check."""
+    if not isinstance(candidate, str): return False
+    # Ignore quoted strings and comments when balancing the module envelope.
+    text = re.sub(r'"(?:\\.|[^"\\])*"|//[^\n]*|/\*.*?\*/', '', candidate, flags=re.S).strip()
+    if not re.match(r'^(?:builtin\.)?module\b', text) or not re.search(r'\bfunc\.func\s+@', text) or not text.endswith('}'):
+        return False
+    depth = 0
+    for c in text:
+        if c == '{': depth += 1
+        elif c == '}':
+            depth -= 1
+            if depth < 0: return False
+    return depth == 0 and '{' in text
 
 
 def mutation_agent(payload: dict):
-    print("=== MUTATION ===")
-    input_mlir = payload["input_mlir"]
-    dialect = payload["dialect"]
-    level = payload["level"]
-
-    print(payload)
-
-    # 1. Inspect
-    if dialect == "linalg":
-        metadata = LINALG_INSPECTORS[level](input_mlir)
-    elif dialect == "torch":
-        metadata = TORCH_INSPECTORS[level](input_mlir)
-
-    # 2. Requirement
-    requirement = pick_requirement(input_mlir, dialect, level)
-
-    # 3. Prompt
+    input_mlir, dialect, level = payload['input_mlir'], payload['dialect'], payload['level']
+    reject_credential_echo(payload)
+    if dialect not in ('linalg', 'torch') or type(level) is not int or level not in range(1, 6):
+        raise ValueError('Mutation needs dialect linalg|torch and level 1..5')
+    metadata = (LINALG_INSPECTORS if dialect == 'linalg' else TORCH_INSPECTORS)[level](input_mlir)
+    requirement = (get_requirement_by_id(dialect, level, payload['requirement_id'])
+                   if payload.get('requirement_id') else pick_requirement(input_mlir, dialect, level))
+    validator = validate_mutation if dialect == 'linalg' else validate_torch_mutation
+    # Level 5 deliberately generates invalid programs. Require a valid original
+    # and an explicit catalog rule, so generation failures cannot masquerade as it.
+    if level == 5:
+        if not payload.get('requirement_id'):
+            raise ValueError('Fresh Level 5 requires an explicit catalog rule ID')
+        source_validation = validator(input_mlir, input_mlir)
+        if not source_validation.get('valid'):
+            raise ValueError('Fresh Level 5 requires a compiler-valid original program')
     prompt = build_user_prompt(input_mlir, requirement, metadata)
-
-    mutated_mlir = None
-    validation_result = {"valid": False}
-    attempts = 0
-    attempt_history = []
-
-    # 4. Retry loop
-    for i in range(MAX_ATTEMPTS):
-        attempts += 1
-
+    mutated_mlir, status, history = 'GENERATION_FAILED', 'FAILED', []
+    for attempt in range(1, request_limits('mutation', 8192)['agent_attempts'] + 1):
         try:
             candidate = generate_mutation(prompt)
-
-            if dialect == "linalg":
-                validation_result = validate_mutation(input_mlir, candidate)
-            elif dialect == "torch":
-                validation_result = validate_torch_mutation(input_mlir, candidate)
-
-            attempt_entry = {
-                "attempt": attempts,
-                "candidate": candidate,
-                "validation": validation_result
-            }
-
-            attempt_history.append(attempt_entry)
-
-            if validation_result.get("valid"):
-                mutated_mlir = candidate
+            reject_credential_echo(candidate)
+            validation = validator(input_mlir, candidate)
+            expected_invalid = (level == 5 and candidate != input_mlir and complete_module(candidate)
+                                and validation.get('valid') is False
+                                and type(validation.get('returncode')) is int
+                                and validation['returncode'] > 0
+                                and (validation.get('diagnostic_kind') == 'verification_error'
+                                     or (requirement['id'].endswith('_R4')
+                                         and validation.get('diagnostic_kind') == 'ssa_error')))
+            accepted = expected_invalid if level == 5 else validation.get('valid') is True
+            history.append(redact({'attempt':attempt, 'candidate':candidate, 'validation':validation,
+                                   'accepted':accepted}))
+            if accepted:
+                mutated_mlir, status = candidate, 'EXPECTED_INVALID' if expected_invalid else 'VALIDATED'
                 break
-
         except ValidatorInfrastructureError:
-            # Stop immediately when the compiler or validation service
-            # is unavailable. Retrying mutation generation cannot fix it.
-            raise
-        
-        except Exception as e:
-            error_entry = {
-                "attempt": attempts,
-                "candidate": None,
-                "validation": {"valid": False, "error": str(e)}
-            }
-            attempt_history.append(error_entry)
-
-    # If still invalid
-    if mutated_mlir is None:
-        # mutated_mlir = attempt_history[-1]["candidate"] if attempt_history else "GENERATION_FAILED"
-        mutated_mlir = (
-            attempt_history[-1]["candidate"]
-            if attempt_history and attempt_history[-1]["candidate"]
-            else "GENERATION_FAILED"
-        )
-
-    # 5. Outputs
-
-    metadata_output = {
-        "level": level,
-        "dialect": dialect,
-        "requirement": requirement,
-        "mlir-opt-verify-diagnostics": {
-            "attempts": attempts,
-            "final_validation": attempt_history[-1]["validation"] if attempt_history else {},
-            "history": attempt_history
-        },
-        "input_mlir": input_mlir,
-        "mutated_mlir": mutated_mlir,
-        "metadata": metadata,
-        # "validation": validation_result,
-        # "attempts": attempts
-    }
-
-    blind_output = {
-        "input_mlir": input_mlir,
-        "mutated_mlir": mutated_mlir
-    }
-
-    toExecutionAgent = {
-        "input_mlir": input_mlir,
-        "mutated_mlir": mutated_mlir,
-        "dialect" : dialect
-    }
-
-    # 6. Save dataset
-    # save_run({
-    #     "metadata_output": metadata_output,
-    #     "blind_output": blind_output
-    # })
-
-    return {
-        "Agents": {
-            "Mutation_Agent": {
-                "context_results": metadata_output,
-                "blind_results": blind_output,
-                "toExecutionAgent" : toExecutionAgent 
-            }
-        }
-    }
+            raise  # More paid generation cannot repair missing compiler infrastructure.
+        except Exception as exc:
+            history.append(redact({'attempt':attempt, 'candidate':None,
+                                   'validation':{'valid':False, 'error':str(exc)}}))
+    observation = {'level':level, 'dialect':dialect, 'requirement':requirement,
+        'generation_status':status, 'validator_mode':'ordinary_compiler_verification',
+        # Retain the legacy field name for readers; the actual validator mode is explicit.
+        'mlir-opt-verify-diagnostics':{'attempts':len(history),
+            'final_validation':history[-1]['validation'] if history else {}, 'history':history},
+        'input_mlir':input_mlir, 'mutated_mlir':mutated_mlir, 'metadata':metadata}
+    return {'Agents':{'Mutation_Agent':{'context_results':observation,
+        'blind_results':{'input_mlir':input_mlir, 'mutated_mlir':mutated_mlir},
+        'toExecutionAgent':{'input_mlir':input_mlir, 'mutated_mlir':mutated_mlir, 'dialect':dialect}}}}

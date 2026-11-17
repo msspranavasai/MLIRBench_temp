@@ -1,0 +1,135 @@
+{
+  "frozen_inputs": {
+    "data/README.md": "79db23dd5300d82fd0a6280150b0dc6baef9cb12f1dc56f27c071ef4dba77c90",
+    "data/bundle/MLIRBench/README.md.gz": "2329989429ee5a529098d3e6a4b348578b415a257489065c2a281ce858cf31cd",
+    "data/bundle/MLIRBench/core/core.jsonl.gz": "628df4ccb2da9a5a410f7e3053be8c900e35721ef32f4852163c49bc6cf8e932",
+    "data/bundle/MLIRBench/core/dataset_info.json.gz": "0b4d870c22f0b74e09996081dfe3dc421a06965b1b820a534ebfcd35ae259290",
+    "data/bundle/MLIRBench/datasets.json.gz": "f122c8d54f6f1e3eea5699b7c4f631ff61c662475b152c412bd34f8b6f8038fc",
+    "data/bundle/MLIRBench/difficulty/dataset_info.json.gz": "f35cb3f7fe3f1878b12031a39eb02cebce74a5700d1be5aec2980ff04b6a284c",
+    "data/bundle/MLIRBench/difficulty/difficulty.jsonl.gz": "c76bb1e8860c405db49e4e042a566fc280a0838d824cb8946b73de5903c6fd42",
+    "data/bundle/MLIRBench/errors/dataset_info.json.gz": "b75ade1f26b226bf438673d1a209073d1f32caddd90b3cf54faa518e15455509",
+    "data/bundle/MLIRBench/errors/errors.jsonl.gz": "86c8536fd5795c51bca496beb88ff052711d622757b70809149f10305e14066a",
+    "data/bundle/MLIRBench/evaluation/dataset_info.json.gz": "e26f6da5ac133f19e39efb845bdd38a5a8b476ed1f4fbb7b3b601744c5a7c92b",
+    "data/bundle/MLIRBench/evaluation/evaluation.jsonl.gz": "3c76f28cf0429378aa5f7095f63bf0dd6347c5f991bc494fe2d22aff11eddcfd",
+    "data/bundle/MLIRBench/master/dataset_info.json.gz": "d0a59a81b3f2c3e67249a5de05583d38b010934acf86544f604f92300d7eda74",
+    "data/bundle/MLIRBench/master/master.jsonl.gz": "6015504363fa1d457c9d4b41affbe57f6f2022c0fb077c6281983850bec6ea1d",
+    "data/bundle/MLIRBench/model_arena/dataset_info.json.gz": "e69f7d2f4ffec74970abaa56aef55d05d0279ec977429ebfa0281e30065201e2",
+    "data/bundle/MLIRBench/model_arena/model_arena.jsonl.gz": "4e3c52ef7473b4d39aecba8efb79252a28f7835b723d90cb3c5eaec421fd86f3",
+    "data/bundle/MLIRBench/mutation_provenance/dataset_info.json.gz": "2a0d8ca3802e1a781bfc008df2e3203f7ff95d3e71809f6542b3ee622173c1f8",
+    "data/bundle/MLIRBench/mutation_provenance/mutation_provenance.jsonl.gz": "63950fe2b3571625bec8122780c05a397e33952287271ddb1febf10b584533b4",
+    "data/bundle/MLIRBench/performance/dataset_info.json.gz": "b54bbd331634bd03a46ebdcd1f939dce14241128aade3ee38564e7939e316f1b",
+    "data/bundle/MLIRBench/performance/performance.jsonl.gz": "28ba7270532a4855e87714264fb76f547a3250e4c5d21a6ce1949aa0f100eba4",
+    "data/bundle/MLIRBench/reasoning/dataset_info.json.gz": "6ee683c16920271644f70b0a1a434368f9890ae176b1cfaa6910ea8da9f88f1c",
+    "data/bundle/MLIRBench/reasoning/gemini_provenance.jsonl.gz": "953fd1c0ff49f82c1074ed21e8e571fb7b496e514b809619153647af6cbd90a1",
+    "data/bundle/MLIRBench/reasoning/reasoning.jsonl.gz": "485fecb9a9d27fab78d0d8f7458bdd021ed36f523dad806ebe16396ce05df90e",
+    "data/bundle/manifest.json": "56ede7359293f993b2f14bb8dd530f51407aab7142db129242dcebf524753dd1",
+    "data/downstream/manifest.json": "29864e248a6515601253fe90cbb2558b3ce45a5157101fe1248a83bb76318247",
+    "data/downstream/snapshot.tar.gz": "80203e54b3eb1bbd6efcdf8fc0ee2d75a684cc1c28678b9c267a5fdeaf4a016a",
+    "data/historical/README.md": "1191a782ae8c45525cd158fa513a5a1d44c0fe9311034c0b7456f6901ed59d88",
+    "data/historical/execution_agent_unified_rows.csv.gz": "204bf4f9d67b63b765a6896ba9b0bdefb954afcb6c1a8285fa0a9bdf2bb518dd",
+    "data/historical/historical_execution.jsonl": "14e2eefba5b59a4c560effd4c9e609f2ce004f85d3daf041a38efb3008bfd86a",
+    "data/historical/source_manifest.json": "93aa6c543149cc5a81dfd32035b6414af54f597a83dadca4b0a0e4a1cfc60f14",
+    "data/provenance/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "data/provenance/README.md": "7050a0a24197f29e28c9dca17d5978e7470443a93259af36c84e25412678e015",
+    "data/provenance/checkpoint_source_hashes.json": "a9f418d965fdb4d815b8d7720c5f8c4cff762dd02f01ca9bb2bb470ea20e871e",
+    "data/provenance/hpc_verified_source_hashes.json": "d6c0a7c3de5c1f37ff126489e27a3d4d2df1c91f9130ced8eaa30b6540e6d6ce",
+    "data/provenance/published_files_sha256.json": "cf3621120aabcf65e5fd5824548c5e298debf9257761d7ceea2dc0865279ac76",
+    "data/provenance/workspace_import.json": "0426b9a449fa081711884f1b3e6eaf6785f72ba489829a104933100dbfe68190",
+    "experiments/level2_dataset_change.json": "cf5a3e24ce18b65ad7374e2dab0171a7e5b97a2d33b3708a79db4a51c3edc0e3",
+    "experiments/numeric_agreement.json": "a3ad3d2ab21bf4bf82faf7aebf0639819924fe3b7a6a694b889d915445060c4c",
+    "experiments/paper_reference.json": "8332e68c1c08b7cb30a8f81cec660937c9f1185eef097c6eb226b355d5105f2b",
+    "optional/live_pipeline/agents/mutation_agent/requirements/linalg.json": "2cbed71b2f3448cc49a441a8cbcfe3a2da28409a170c659106fa28fe7cd42ef3",
+    "optional/live_pipeline/agents/mutation_agent/requirements/torch.json": "43563aef35740a53ea6607a4f5b26e795cfe765975c9ae262498afebec8881ee",
+    "paper/reference/arxiv-2611.14881v1.pdf": "5d7f6cf8785344209399a98c3fc7c2212e2dde69123a8bc7e6969f28c1c7bb10",
+    "paper/reference/arxiv-2611.14881v1.txt": "24eec91e03428eba73c6a9585d4cbbfed2dcb9a73a847e3b30459469fc65c7dc",
+    "paper/reference/revision_diff.tex": "d8faead977daf1f45f9d40bc23680baf76acab94494def8df60ef14a17deb092"
+  },
+  "note": "Baseline from the independent 2026-11-16 pre-hardening offline replay. A regression guard, not evidence that historical labels or scientific conclusions are valid. Never substitute these hashes for recalculation.",
+  "recomputed_outputs": {
+    "downstream_metrics/REPORT.md": {
+      "mode": "bytes",
+      "sha256": "e2472ea9c153e9d821a3f070e94ba8d134eb0e115da0aa745460a4d2b6fbe945"
+    },
+    "downstream_metrics/dt1_metrics.csv": {
+      "mode": "bytes",
+      "sha256": "16483568d213216d72a63946091fbfbf74891b8f1bc089c0f68ba5342f443f56"
+    },
+    "downstream_metrics/dt2_class.csv": {
+      "mode": "bytes",
+      "sha256": "ffd302b428246949c327f7b2524a68feb9da56a23ee739387fe89a69d7ed5345"
+    },
+    "downstream_metrics/dt2_dialect.csv": {
+      "mode": "bytes",
+      "sha256": "41bedfcfe2958449ba0a5e54db0d69b3c07b117f8824589a0a3f30110c471f6b"
+    },
+    "downstream_metrics/dt2_metrics.csv": {
+      "mode": "bytes",
+      "sha256": "a469333c90b69156a1e9b3eff4954cda1dc82fa9031fec8b4974cefbead83110"
+    },
+    "downstream_metrics/summary.json": {
+      "mode": "canonical_json",
+      "sha256": "69cc3586d380e161aa85d98be7f03fe24bfec76ce88a5f63617940ba05d84c88"
+    },
+    "pipeline/derived/evaluations.jsonl": {
+      "mode": "bytes",
+      "sha256": "88861ec763d471611bb54c8713add590380dcce0ad6930ed1d7cbafe0eee56e4"
+    },
+    "pipeline/derived/master.jsonl": {
+      "mode": "bytes",
+      "sha256": "69e08c2a4d8c6500fd9c0aa90b423d47512a218e32b763810d6ec77dc9b84658"
+    },
+    "pipeline/derived/reasoning.jsonl": {
+      "mode": "bytes",
+      "sha256": "a5b49656106f58f9ea001d6d7ae3bcf1a3182e2a99d9f4ed0c845f3950c7ae9c"
+    },
+    "pipeline/execution.jsonl": {
+      "mode": "bytes",
+      "sha256": "4de81ebc8cd640fc876b1abec531fce28681b6c3ae0cae3a5fa3822a99fb4665"
+    },
+    "pipeline/judge.jsonl": {
+      "mode": "bytes",
+      "sha256": "a02f56de17fb228e38a8d08850b8aa35fb3528441b30359fc7ad330242efd764"
+    },
+    "pipeline/metrics/by_dialect.csv": {
+      "mode": "bytes",
+      "sha256": "07b356fdb1837231c4a9aac7e8f92e14e4c816ef5bcb6031e1f4c7282511341a"
+    },
+    "pipeline/metrics/by_level.csv": {
+      "mode": "bytes",
+      "sha256": "950fbf529c35c4bac854098d3e3c9848a2065cd1f921afb0891647effd9a146b"
+    },
+    "pipeline/metrics/confusion.csv": {
+      "mode": "bytes",
+      "sha256": "c2161f54bbb794e6f66656916b2b2877a66e490426c476b4797c2d6322ad7503"
+    },
+    "pipeline/metrics/models.csv": {
+      "mode": "bytes",
+      "sha256": "ffb40f9972a27e0df5aaa0e70a12396f7dd7eb83d8ab49599e6bf9c2d25ae596"
+    },
+    "pipeline/metrics/paper_comparison.json": {
+      "mode": "bytes",
+      "sha256": "2db30c96b408c31850816573e3a505e54ebccaf5517faacd49dd8dca62ada569"
+    },
+    "pipeline/metrics/paper_comparison_rounding_hypothesis.json": {
+      "mode": "bytes",
+      "sha256": "b5bafd6705d5ae1db8f52664162a748688641526173902d26b565305d38b79f0"
+    },
+    "pipeline/metrics/paper_comparison_submitted_weighting.json": {
+      "mode": "bytes",
+      "sha256": "7493d9e109a3bd57e0448dd80226b77f107da14c568b71e317b394406f1b4e18"
+    },
+    "pipeline/metrics/results.json": {
+      "mode": "bytes",
+      "sha256": "380ec5bd17b6521f5f286961737a720c3589b9204c2cde4b5d6c3ced439b6f29"
+    },
+    "pipeline/mutation.jsonl": {
+      "mode": "bytes",
+      "sha256": "e48d81298e08b9bbf49327db7c7c3215e4501300159c4685bcf7b903563a1594"
+    },
+    "pipeline/reasoning.jsonl": {
+      "mode": "bytes",
+      "sha256": "c11e8d15f142cbf43868fc88171363b3a8181b54cbd91c7f5283fd03bdedfb14"
+    }
+  },
+  "schema": "mlirbench-release-invariants-v1"
+}

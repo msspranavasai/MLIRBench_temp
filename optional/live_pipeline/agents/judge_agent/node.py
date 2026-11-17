@@ -11,6 +11,9 @@ from __future__ import annotations
 from dotenv import load_dotenv
 
 import json
+import copy
+import hashlib
+import math
 import logging
 import os
 import re
@@ -22,19 +25,28 @@ from langchain_openai import ChatOpenAI
 
 logger = logging.getLogger(__name__)
 
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
+from agents.api_config import model_id, request_limits
 
 judge_llm = None
+_judge_config = None
 
 
 def _get_judge_llm():
-    global judge_llm
-    if judge_llm is None:
-        load_dotenv()
+    global judge_llm, _judge_config
+    load_dotenv()
+    limits = request_limits("judge", 4096)
+    model = model_id("OPENAI_MODEL", "gpt-5.4-mini")
+    config = (model, tuple(limits.items()), os.environ.get("OPENAI_API_KEY"))
+    if judge_llm is None or config != _judge_config:
         judge_llm = ChatOpenAI(
-            model=OPENAI_MODEL,
+            model=model,
+            api_key=os.environ.get("OPENAI_API_KEY"),
+            timeout=limits["timeout_seconds"],
+            max_retries=limits["sdk_retries"],
+            max_completion_tokens=limits["max_output_tokens"],
             model_kwargs={"response_format": {"type": "json_object"}},
         )
+        _judge_config = config
     return judge_llm
 
 
@@ -265,6 +277,7 @@ def _extract_execution_ground_truth(
         "programB_output": source.get("programB_output"),
         "outputs_diverge": source.get("outputs_diverge"),
         "validation_verdict": source.get("validation_verdict"),
+        "label_scope": source.get("label_scope"),
         "divergence_details": source.get("divergence_details"),
         "semantic_explanation": source.get("semantic_explanation"),
     }
@@ -532,11 +545,20 @@ def _extract_mutation_context(
     explicit_rule = _first_value(root, ("mutation_rule", "rule"))
     rule = explicit_rule if isinstance(explicit_rule, dict) else _find_rule_in_json(root, str(mutation_id))
 
+    if mutation_id and (not isinstance(rule,dict) or rule.get('id') != mutation_id
+                        or not isinstance(rule.get('description'),str) or not rule['description'].strip()
+                        or not isinstance(rule.get('rules'),list) or not rule['rules']):
+        raise ValueError('Known mutation ID requires its complete matching rule')
     explicit_rubric = _first_value(root, ("dynamic_structure_rubric", "structure_rubric"))
-    if isinstance(explicit_rubric, dict):
-        structure_rubric = {**DEFAULT_STRUCTURE_RUBRIC, **explicit_rubric}
-    elif rule:
+    if rule:
         structure_rubric = _rubric_from_rule(rule, str(mutation_id))
+        if isinstance(explicit_rubric,dict) and any(
+            key in explicit_rubric and explicit_rubric[key] != structure_rubric[key]
+            for key in ('structure_points_max','exactness_points_max')
+        ):
+            raise ValueError('Explicit rubric conflicts with the supplied mutation rule')
+    elif isinstance(explicit_rubric, dict):
+        structure_rubric = {**DEFAULT_STRUCTURE_RUBRIC, **explicit_rubric}
     else:
         structure_rubric = {**DEFAULT_STRUCTURE_RUBRIC}
 
@@ -918,6 +940,83 @@ def _strip_json_markdown(raw: str) -> str:
     return raw
 
 
+class JudgeResponseError(RuntimeError):
+    """An invalid model observation is preserved without creating a score."""
+    def __init__(self, raw, error):
+        from mlirbench.observations import redact
+        super().__init__(redact('Judge response rejected; no score produced: '+str(error)))
+        self.observation = redact({
+            'status':'invalid_judge_response', 'raw_response':raw,
+            'raw_response_sha256':hashlib.sha256(raw.encode()).hexdigest(),
+            'validation_errors':[str(error)],
+        })
+
+
+def _numeric_score(value, maximum, name, *, integer=False):
+    if (isinstance(value, bool) or not isinstance(value, (int, float))
+            or not 0 <= value <= maximum or not math.isfinite(value)):
+        raise ValueError(f'{name} must be a finite number in [0, {maximum}]')
+    if integer and not float(value).is_integer():
+        raise ValueError(f'{name} must be an integer rating')
+    return float(value)
+
+
+def _validate_judge_response(value, rubric):
+    if not isinstance(value, dict):
+        raise ValueError('Judge response must be an object')
+    scores = value.get('scores')
+    if not isinstance(scores, dict):
+        raise ValueError('Judge response requires a scores object')
+    for field, maximum in (('result_accuracy', 10), ('explanation_rating', 4)):
+        if field not in scores:
+            raise ValueError('Judge response missing scores.'+field)
+        _numeric_score(scores[field], maximum, field, integer=field=='explanation_rating')
+    evidence = value.get('evidence')
+    if not isinstance(evidence, dict):
+        raise ValueError('Judge response requires an evidence object')
+    if not isinstance(value.get('reasoning'), str) or not value['reasoning'].strip():
+        raise ValueError('Judge response requires nonempty reasoning text')
+    components = evidence.get('result_accuracy_components')
+    if components is not None:
+        if not isinstance(components, dict):
+            raise ValueError('result_accuracy_components must be an object')
+        limits = {'shape_structure_points':rubric['structure_points_max'],
+                  'exactness_points':rubric['exactness_points_max'],
+                  'value_precision_points':3, 'error_prediction_points':10}
+        for field, maximum in limits.items():
+            if components.get(field) is not None:
+                _numeric_score(components[field], maximum, field)
+        for field, expected in (('shape_structure_max',rubric['structure_points_max']),
+                                ('exactness_max',rubric['exactness_points_max'])):
+            if components.get(field) is not None:
+                actual = _numeric_score(components[field], expected, field)
+                if actual != expected:
+                    raise ValueError(field+' differs from the supplied mutation rubric')
+    if 'verdict' in value and value['verdict'] not in ('CORRECT','PARTIALLY_CORRECT','INCORRECT'):
+        raise ValueError('Invalid judge verdict')
+    return value
+
+
+def _unique_json_object(pairs):
+    value = {}
+    for key, item in pairs:
+        if key in value:
+            raise ValueError('Duplicate JSON key: '+str(key))
+        value[key] = item
+    return value
+
+
+def _finite_json_float(text):
+    value = float(text)
+    if not math.isfinite(value):
+        raise ValueError('Nonfinite JSON number')
+    return value
+
+
+def _reject_json_constant(text):
+    raise ValueError('Invalid JSON numeric constant')
+
+
 def _invoke_llm_judge(
     program_a: str,
     program_b: str,
@@ -941,56 +1040,32 @@ def _invoke_llm_judge(
         ground_truth,
     )
 
-    response = _get_judge_llm().invoke(
-        [
-            SystemMessage(content=JUDGE_SYSTEM_PROMPT),
-            HumanMessage(content=user_content),
-        ]
-    )
-    raw = _strip_json_markdown(str(response.content))
-
+    from openai import LengthFinishReasonError
     try:
-        return json.loads(raw)
-    except json.JSONDecodeError:
-        logger.warning("Judge LLM returned unparseable JSON: %s", raw[:500])
-        return None
-
-
-def _build_fallback_judge_result(reason: str) -> Dict[str, Any]:
-    return {
-        "scores": {"result_accuracy": 0, "explanation_rating": 0},
-        "evidence": {
-            "correct_claims": [],
-            "incorrect_claims": [],
-            "unverifiable_claims": [],
-            "semantic_audit": [],
-            "result_accuracy_components": {
-                "mode": "not assessed",
-                "shape_structure_points": None,
-                "shape_structure_max": None,
-                "exactness_points": None,
-                "exactness_max": None,
-                "value_precision_points": None,
-                "error_prediction_points": None,
-                "calculation": "not assessed",
-            },
-            "mascod_ice_subcriteria": {
-                "usefulness": "not assessed",
-                "factual_consistency": "not assessed",
-                "semantic_causality": "not assessed",
-                "evidence_specificity": "not assessed",
-                "dialect_grounding": "not assessed",
-            },
-        },
-        "reasoning": reason,
-        "verdict": "INCORRECT",
+        response = _get_judge_llm().invoke(
+            [
+                SystemMessage(content=JUDGE_SYSTEM_PROMPT),
+                HumanMessage(content=user_content),
+            ]
+        )
+    except LengthFinishReasonError as exc:
+        raw = str(exc.completion.choices[0].message.content or '')
+        raise JudgeResponseError(raw, 'Judge response reached the output limit') from exc
+    raw = str(response.content)
+    finish = response.response_metadata.get('finish_reason')
+    if finish not in (None, 'stop') or response.additional_kwargs.get('refusal'):
+        raise JudgeResponseError(raw, 'Judge response was truncated, refused or not completed')
+    try:
+        value = json.loads(_strip_json_markdown(raw), object_pairs_hook=_unique_json_object,
+                           parse_float=_finite_json_float, parse_constant=_reject_json_constant)
+        _validate_judge_response(value, mutation_context['structure_rubric'])
+    except (ValueError, TypeError, RecursionError) as exc:
+        raise JudgeResponseError(raw, exc) from exc
+    value['_response_observation'] = {
+        'status':'validated_judge_response', 'raw_response':raw,
+        'raw_response_sha256':hashlib.sha256(raw.encode()).hexdigest(),
     }
-
-
-def _clamp_score(value: Any, low: float, high: float) -> float:
-    if not isinstance(value, (int, float)):
-        return low
-    return max(low, min(float(value), high))
+    return value
 
 
 def _score_record_from_details(details: Mapping[str, Any]) -> Dict[str, Any]:
@@ -1058,7 +1133,7 @@ def judge_agent(state: Dict[str, Any]) -> Dict[str, Any]:
     )
 
     validation_verdict = ground_truth.get("validation_verdict")
-    if validation_verdict and validation_verdict not in {"DIVERGE", "COMPILE_ERROR", "RUNTIME_ERROR"}:
+    if validation_verdict and validation_verdict not in {"DIVERGE", "NO_DIFFERENCE_OBSERVED", "COMPILE_ERROR", "RUNTIME_ERROR"}:
         logs.append(f"Judge Agent: Skipped unverified canonical ground truth: {validation_verdict}")
         return {**state, "judge_payload": {"status": "skipped_unverified_ground_truth",
                 "validation_verdict": validation_verdict, "ground_truth_label": None}, "logs": logs}
@@ -1102,17 +1177,18 @@ def judge_agent(state: Dict[str, Any]) -> Dict[str, Any]:
             ground_truth_label,
             ground_truth,
         )
-    except Exception as exc:
-        logs.append(f"Judge Agent: LLM judge request failed - {exc}")
-        llm_judge_result = None
-
-    if llm_judge_result is None:
-        llm_judge_result = _build_fallback_judge_result(
-            "Judge LLM failed to return valid JSON or content; result and explanation scores set to 0."
-        )
-
-    raw_scores = llm_judge_result.get("scores", {})
-    result_accuracy = _clamp_score(raw_scores.get("result_accuracy", 0), 0.0, 10.0)
+    except Exception:
+        # Transport and schema failures must propagate to the durable failed-
+        # case journal. There is no fallback judgment or partial numeric score.
+        raise
+    try:
+        _validate_judge_response(llm_judge_result, rubric)
+    except (ValueError, TypeError, RecursionError) as exc:
+        raw = json.dumps(llm_judge_result, ensure_ascii=False, default=str)
+        raise JudgeResponseError(raw, exc) from exc
+    llm_judge_result = copy.deepcopy(llm_judge_result)
+    raw_scores = llm_judge_result['scores']
+    result_accuracy = float(raw_scores['result_accuracy'])
 
     if ground_truth_label == "ERROR":
         error_predicted = _prediction_claims_error(
@@ -1137,7 +1213,7 @@ def judge_agent(state: Dict[str, Any]) -> Dict[str, Any]:
             ),
         }
 
-    explanation_rating = _clamp_score(raw_scores.get("explanation_rating", 0), 0.0, 4.0)
+    explanation_rating = float(raw_scores["explanation_rating"])
     scores = {
         "result_accuracy": result_accuracy,
         "explanation_rating": explanation_rating,
@@ -1168,6 +1244,10 @@ def judge_agent(state: Dict[str, Any]) -> Dict[str, Any]:
         "pair_id": mutation_context.get("pair_id"),
         "execution_program_id": ground_truth.get("program_id", mutation_context.get("program_id")),
         "mutation_rule": mutation_context.get("rule", {}),
+        "inspection_metadata": mutation_context.get("metadata", {}),
+        "mutation_context_provenance": root.get("mutation_context_provenance", {}),
+        "judge_response_validation": "PASS",
+        "judge_response_observation": llm_judge_result.get("_response_observation"),
         "dynamic_structure_rubric": mutation_context.get("structure_rubric", {}),
         "evaluated_model": {
             "model_key": prediction.get("model_key", eval_model_name),
@@ -1175,8 +1255,9 @@ def judge_agent(state: Dict[str, Any]) -> Dict[str, Any]:
             "llm_name": prediction.get("llm_name"),
             "provider": prediction.get("provider"),
         },
-        "judge_model": {"model": OPENAI_MODEL},
+        "judge_model": {"model": model_id("OPENAI_MODEL", "gpt-5.4-mini")},
         "ground_truth_label": ground_truth_label,
+        "label_scope": ground_truth.get("label_scope", "published_historical_observation"),
         "predicted_label": predicted_label,
         "label_match": objective["label_match"],
         "confidence": confidence,

@@ -31,10 +31,12 @@ RUN MLIR_BIN="$(find /usr/bin -maxdepth 1 \
     ln -s "$MLIR_BIN" /usr/local/bin/mlir-opt
 
 COPY requirements/core.txt /tmp/requirements.txt
+COPY requirements/live.txt /tmp/live-requirements.txt
+COPY requirements/runtime-lock.txt /tmp/runtime-lock.txt
 
 # Install the same pinned compiler/runtime versions for the selected architecture.
 RUN python -m pip install --no-cache-dir \
-    -r /tmp/requirements.txt
+    -r /tmp/requirements.txt -r /tmp/live-requirements.txt -c /tmp/runtime-lock.txt
 
 # Verify that the required compiler executables exist.
 RUN python -c "import iree.compiler; import iree.runtime" && \
@@ -46,15 +48,24 @@ RUN python -c "import iree.compiler; import iree.runtime" && \
     torch-mlir-opt --version && \
     iree-compile --version
 
-# Maintained offline code and verified data only.
-COPY Dockerfile ae.sh pyproject.toml README.md ARTIFACT.md LICENSE run.py /app/
-COPY requirements/core.txt /app/requirements/core.txt
+# Preserve the original downstream compiler in an isolated environment. Core
+# validation continues to use the pinned 2024 toolchain in /usr/local/bin.
+COPY requirements/backend.txt /tmp/backend-requirements.txt
+RUN python -m venv --system-site-packages /opt/paper-backend && \
+    /opt/paper-backend/bin/python -m pip install --no-cache-dir --no-deps -r /tmp/backend-requirements.txt && \
+    /opt/paper-backend/bin/iree-compile --version
+
+# Maintained reviewer workflow, original agent implementations and verified data.
+COPY Dockerfile ae.sh pyproject.toml README.md ARTIFACT.md STATUS.md LICENSE DATA_LICENSE.md CITATION.cff run.py .gitignore /app/
+COPY requirements /app/requirements
+COPY optional/live_pipeline /app/optional/live_pipeline
 COPY src /app/src
 COPY tools /app/tools
 COPY tests /app/tests
 COPY experiments /app/experiments
 COPY docs /app/docs
 COPY paper/reference /app/paper/reference
+COPY data/README.md /app/data/README.md
 COPY data/bundle /app/data/bundle
 RUN python tools/data/unpack_artifact_data.py
 COPY data/downstream/snapshot.tar.gz data/downstream/manifest.json /app/data/downstream/

@@ -7,6 +7,21 @@ from tests.unit.test_pair_validation import IDENTITY, GATHER
 
 @unittest.skipUnless(importlib.util.find_spec('iree'), 'IREE required; use Docker artifact')
 class IreeExecution(unittest.TestCase):
+    def test_signed_inputs_expose_a_difference_hidden_by_positive_only_inputs(self):
+        absolute = '''module {
+ func.func @main(%x: tensor<2xf32>) -> tensor<2xf32> {
+ %e = tensor.empty() : tensor<2xf32>
+ %r = linalg.generic {indexing_maps = [affine_map<(d0)->(d0)>, affine_map<(d0)->(d0)>], iterator_types = ["parallel"]} ins(%x : tensor<2xf32>) outs(%e : tensor<2xf32>) {
+ ^bb0(%v: f32, %out: f32):
+ %a = math.absf %v : f32
+ linalg.yield %a : f32
+ } -> tensor<2xf32>
+ return %r : tensor<2xf32>
+ } }'''
+        report = validate_pair(IDENTITY, absolute, 'linalg', seeds=[42])
+        self.assertEqual(report['verdict'], 'DIVERGE', report)
+        self.assertEqual(report['trials'][0]['generation']['pattern'], 'negative_uniform')
+
     def test_identical_and_ssa_renamed(self):
         r = validate_pair(IDENTITY, IDENTITY.replace('%x', '%renamed'), 'linalg', seeds=[0,42])
         self.assertEqual(r['verdict'], 'NO_DIFFERENCE_OBSERVED', r)

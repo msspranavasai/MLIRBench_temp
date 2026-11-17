@@ -1,4 +1,4 @@
-"""Offline artifact commands. Imports no provider clients and never reads .env."""
+"""Reviewer stage commands; provider clients load only after explicit live opt-in."""
 import argparse
 import collections
 import hashlib
@@ -63,13 +63,44 @@ def write_reports(path, reports):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     sub = ap.add_subparsers(dest='command', required=True)
+    pipeline = sub.add_parser('pipeline', help='Replay paper stages without paid calls, or explicitly rerun a selected agent')
+    pipeline.add_argument('--stage', choices=['all','mutation','execution','reasoning','judge','metrics'], default='all')
+    pipeline.add_argument('--mode', choices=['replay','fresh'], default='replay')
+    pipeline.add_argument('--id', action='append')
+    pipeline.add_argument('--model', action='append')
+    pipeline.add_argument('--input', type=Path, help='Verified prior stage-output directory to resume')
+    pipeline.add_argument('--resume-incomplete', action='store_true', help='Continue a stopped fresh run with identical inputs/configuration; reuse completed case observations')
+    pipeline.add_argument('--all', action='store_true', help='Explicitly permit a full fresh experiment')
+    pipeline.add_argument('--allow-paid-api', action='store_true', help='Explicitly enable fresh model calls; never needed for default replay')
+    pipeline.add_argument('--source', type=Path, help='New MLIR source for a fresh mutation/all run')
+    pipeline.add_argument('--dialect', choices=['linalg','torch'])
+    pipeline.add_argument('--level', type=int, choices=range(1,6))
+    pipeline.add_argument('--requirement', help='Specific mutation rule ID')
+    pipeline.add_argument('--output', type=Path, required=True)
+    compiler = sub.add_parser('compiler', help='Recalculate archived compiler metrics or rerun the original pinned compiler experiments')
+    compiler.add_argument('--mode', choices=['replay','fresh'], default='replay')
+    compiler.add_argument('--dialect', choices=['linalg','torch'], default='linalg')
+    compiler.add_argument('--riscv', action='store_true')
+    compiler.add_argument('--limit', type=int)
+    compiler.add_argument('--workers', type=int, default=2)
+    compiler.add_argument('--timeout', type=int, default=180)
+    compiler.add_argument('--output', type=Path, required=True)
+    fetch = sub.add_parser('fetch-data', help='Restore local data; ask before any Hugging Face download')
+    fetch.add_argument('--build-inputs', action='store_true', help='Verify/repair every published gzip needed for a Docker build without unpacking intact bundles on the host')
+    fetch.add_argument('--consent-download', action='store_true', help='Explicit consent to download missing pinned published files')
     for name, help_text in [('quickstart', 'Run the offline reviewer workflow and write one readiness report'),
                             ('reproduce', 'Regenerate paper-facing metrics from archived observations'),
                             ('reproduce-downstream', 'Regenerate downstream metrics from saved predictions')]:
         parser = sub.add_parser(name, help=help_text)
         parser.add_argument('--output', type=Path, required=True)
+    audit = sub.add_parser('audit-provenance', help='Verify original execution sources and audit published labels without changing them')
+    audit.add_argument('--output', type=Path, required=True)
+    audit.add_argument('--all', action='store_true', help='Audit every published pair; default is a stratified diagnostic sample')
+    audit.add_argument('--workers', type=int, default=2)
     parser = sub.add_parser('readiness', help='Report unfinished AE requirements explicitly')
     parser.add_argument('--results', type=Path, required=True)
+    preservation = sub.add_parser('verify-preservation', help='Compare newly calculated archived results against the frozen pre-hardening baseline')
+    preservation.add_argument('--results', type=Path, required=True)
     sub.add_parser('prepare-data', help='Unpack and verify immutable data bundles')
     sub.add_parser('check', help='Check local toolchain and execute tiny programs')
     info = sub.add_parser('dataset-info'); info.add_argument('--dataset', type=Path, default=DATASET)
@@ -87,15 +118,53 @@ def main(argv=None):
     sub.add_parser('test', help='Run offline unit and compiler integration tests')
     sub.add_parser('score-recorded', help='Summarize recorded labels/scores and expose missing predictions')
     args = ap.parse_args(argv)
+    if args.command == 'fetch-data':
+        from .dataset import ensure_data, prepare_distribution
+        resolve = prepare_distribution if args.build_inputs else ensure_data
+        print(json.dumps(resolve(ROOT,consent=args.consent_download),indent=2)); return 0
+    if args.command == 'compiler':
+        from .ae import prepare_data, save
+        from .compiler_experiments import archived_compiler_metrics, fresh_compiler_experiments
+        prepare_data(ROOT)
+        if args.mode == 'replay':
+            if args.output.exists(): raise FileExistsError('Choose a new compiler output directory')
+            report = archived_compiler_metrics(ROOT); save(args.output/'summary.json', report)
+            passed=report['passed']
+        else:
+            report=fresh_compiler_experiments(ROOT,args.output,dialect=args.dialect,limit=args.limit,
+                workers=args.workers,timeout=args.timeout,riscv=args.riscv)
+            passed=report['transformation_agreement'] and not report.get('riscv_mismatches')
+        print(json.dumps({'mode':report['mode'],'passed':passed,'output':str(args.output),
+                          'full_corpus':report.get('full_corpus'),'programs':report.get('programs')},indent=2))
+        return 0 if passed else 1
+    if args.command == 'pipeline':
+        from .pipeline import run_pipeline
+        try:
+            result = run_pipeline(ROOT,args.output,stage=args.stage,mode=args.mode,ids=args.id,
+                                  models=args.model,input_run=args.input,all_records=args.all,resume_incomplete=args.resume_incomplete,
+                                  allow_paid=args.allow_paid_api,source=args.source,dialect=args.dialect,
+                                  level=args.level,requirement=args.requirement)
+        except (ValueError,FileNotFoundError,FileExistsError,PermissionError,RuntimeError) as exc:
+            ap.error(str(exc))
+        print(json.dumps(result,indent=2)); return 0
+    if args.command == 'verify-preservation':
+        from .preservation import verify_preservation
+        report = verify_preservation(ROOT,args.results)
+        print(json.dumps(report,indent=2)); return 0 if report['passed'] else 1
     if args.command == 'prepare-data':
         from .ae import prepare_data
         print(json.dumps(prepare_data(ROOT), indent=2)); return 0
     if args.command == 'quickstart':
         from .ae import quickstart
         return quickstart(ROOT, args.output)
+    if args.command == 'audit-provenance':
+        from .execution.provenance import audit_provenance
+        report = audit_provenance(ROOT, args.output, all_records=args.all, workers=args.workers)
+        print(json.dumps({k: report[k] for k in ('validation_system_passed', 'canonical_records', 'assessment_counts', 'published_label_provenance_status')}, indent=2))
+        return 0 if report['validation_system_passed'] else 1
     if args.command == 'reproduce':
-        from .evaluation.reproduce import reproduce
-        print(json.dumps(reproduce(ROOT, args.output), indent=2)); return 0
+        from .pipeline import run_pipeline
+        print(json.dumps(run_pipeline(ROOT,args.output,stage='metrics'),indent=2)); return 0
     if args.command == 'reproduce-downstream':
         from .evaluation.downstream import reproduce_downstream
         print(json.dumps(reproduce_downstream(ROOT, args.output), indent=2)); return 0
@@ -127,10 +196,13 @@ def main(argv=None):
         print(json.dumps(report, indent=2)); return 0 if report['passed'] else 1
     if args.command == 'historical-candidate':
         from mlirbench.execution.historical_replay import replay_candidate
-        row = next((r for r in load(DATASET) if r['program_id'] == args.id), None)
+        from mlirbench.execution.provenance import load_verified_sources
+        master, historical, verification = load_verified_sources(ROOT)
+        row = master.get(args.id)
         if row is None: ap.error('Unknown program ID')
-        evidence = next(r for r in load(HISTORICAL) if r['program_id'] == args.id)
+        evidence = historical[args.id]
         report = replay_candidate(row, evidence)
+        report['source_verification'] = verification
         args.output.parent.mkdir(parents=True, exist_ok=True)
         with args.output.open('x') as f: json.dump(report, f, indent=2, allow_nan=False)
         print(json.dumps({k: report[k] for k in ('program_id', 'status')})); return 0
@@ -146,7 +218,10 @@ def main(argv=None):
     # Preflight all destinations before spending compilation time.
     for p in (args.output, args.output.with_suffix('.csv'), args.output.with_suffix('.md')):
         if p.exists(): ap.error(f'Output exists: {p}; choose a new report path')
-    evidence = {r['program_id']: r for r in load(HISTORICAL)} if args.stored_metadata else {}
+    evidence = {}
+    if args.stored_metadata:
+        from mlirbench.execution.provenance import load_verified_sources
+        _, evidence, _ = load_verified_sources(ROOT)
     reports = []
     for i, r in enumerate(selected, 1):
         print(f"[{i}/{len(selected)}] {r['program_id']}", file=sys.stderr, flush=True)

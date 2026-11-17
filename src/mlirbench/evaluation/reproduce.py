@@ -1,6 +1,6 @@
 """Recompute paper summaries from immutable archived records, without APIs."""
 from collections import Counter, defaultdict
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal, ROUND_HALF_UP, localcontext
 import csv
 import hashlib
 import json
@@ -37,6 +37,29 @@ def average(records, field):
     return math.fsum(values) / len(values)
 
 
+def rounded_dialect_mean_score(dialect_groups):
+    """Diagnostic: round each dialect mean first; preserve the decimal midpoint.
+
+    Return a string so JSON/CSV serialization does not reintroduce a binary
+    floating-point approximation before the final printed-value rounding.
+    This is a hypothesis about table formatting, not a confirmed historical rule.
+    """
+    if set(dialect_groups) != {'linalg', 'torch'}:
+        raise ValueError('Expected Linalg and Torch groups')
+    if not all(dialect_groups.values()):
+        return None
+    with localcontext() as context:
+        context.prec = 50
+        means = []
+        for records in dialect_groups.values():
+            values = [Decimal(str(r['total_score'])) for r in records]
+            if not all(v.is_finite() for v in values):
+                raise ValueError('Nonfinite total_score')
+            mean = sum(values, Decimal(0)) / len(values)
+            means.append(mean.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))
+        return str(sum(means, Decimal(0)) / 2)
+
+
 def summarize(master_rows, evaluation_rows):
     master, models = {}, defaultdict(dict)
     for r in master_rows:
@@ -70,11 +93,44 @@ def summarize(master_rows, evaluation_rows):
                 group = [r for r in available if master[r['program_id']][field] == value]
                 expected_count = sum(r[field] == value for r in master.values())
                 if group:
-                    target.append({'model': model, field: value, 'expected_pairs': expected_count,
-                                   'available_scores': len(group), 'aggregate_score': average(group, 'total_score'),
-                                   'hard_label_accuracy_percent': 100 * sum(r['predicted_label'] == r['ground_truth_label'] for r in group) / expected_count,
-                                   'result_behavior_score': average(group, 'result_accuracy'),
-                                   'explanation_quality_score': average(group, 'explanation_rating')})
+                    entry = {
+                        'model': model,
+                        field: value,
+                        'expected_pairs': expected_count,
+                        'available_scores': len(group),
+                        'aggregate_score': average(group, 'total_score'),
+                        'hard_label_accuracy_percent': (
+                            100 * sum(
+                                r['predicted_label'] == r['ground_truth_label']
+                                for r in group
+                            ) / expected_count
+                        ),
+                        'result_behavior_score': average(group, 'result_accuracy'),
+                        'explanation_quality_score': average(group, 'explanation_rating'),
+                    }
+
+                    if field == 'level':
+                        dialect_groups = {
+                            dialect: [
+                                r for r in group
+                                if master[r['program_id']]['dialect'] == dialect
+                            ]
+                            for dialect in ('linalg', 'torch')
+                        }
+
+                        # Each dialect contributes 50%, regardless of record count.
+                        # Missing an entire dialect makes this average unavailable.
+                        entry['equal_dialect_score'] = (
+                            math.fsum(
+                                average(records, 'total_score')
+                                for records in dialect_groups.values()
+                            ) / 2
+                            if all(dialect_groups.values())
+                            else None
+                        )
+                        entry['equal_dialect_score_rounded_means'] = rounded_dialect_mean_score(dialect_groups)
+
+                    target.append(entry)
         for label in ('EQUIV', 'DIVERGE', 'ERROR'):
             for predicted in ('EQUIV', 'DIVERGE', 'ERROR'):
                 confusion.append({'model': model, 'ground_truth': label, 'prediction': predicted,
@@ -98,11 +154,27 @@ def summarize(master_rows, evaluation_rows):
             'by_dialect': dialects, 'confusion': confusion}
 
 
-def compare_reference(result, reference):
+def compare_reference(result, reference, *, use_submitted_gemini_weighting=False,
+                      use_intermediate_rounding=False):
     checks = []
     for spec in reference['checks']:
+        path = spec['path']
+        # Table 4's submitted Gemini row pooled scored LinAlg and Torch pairs.
+        # Use that documented rule only in the separate submitted-weighting check.
+        if (
+            use_submitted_gemini_weighting
+            and len(path) == 3
+            and path[0] == 'by_level'
+            and isinstance(path[1], dict)
+            and path[1].get('model') == 'gemini-3.1-pro-preview'
+            and path[2] == 'equal_dialect_score'
+        ):
+            path = [*path[:-1], 'aggregate_score']
+        if (use_intermediate_rounding and len(path) == 3
+                and path[0] == 'by_level' and path[2] == 'equal_dialect_score'):
+            path = [*path[:-1], 'equal_dialect_score_rounded_means']
         value = result
-        for part in spec['path']:
+        for part in path:
             if isinstance(part, dict):
                 matches = [r for r in value if all(r.get(k) == v for k, v in part.items())]
                 if len(matches) != 1:
@@ -111,7 +183,8 @@ def compare_reference(result, reference):
             else:
                 value = value[part]
         actual = rounded(value, spec['digits']) if 'digits' in spec else value
-        checks.append({**spec, 'actual': actual, 'status': 'MATCH' if actual == spec['expected'] else 'MISMATCH'})
+        checks.append({**spec, 'evaluated_path': path, 'actual': actual,
+                       'status': 'MATCH' if actual == spec['expected'] else 'MISMATCH'})
     return {'reference_status': reference['status'], 'source': reference['source'],
             'matched': sum(c['status'] == 'MATCH' for c in checks),
             'mismatched': sum(c['status'] == 'MISMATCH' for c in checks), 'checks': checks}
@@ -124,13 +197,15 @@ def write_csv(path, records):
         writer.writerows(records)
 
 
-def reproduce(root, output):
+def reproduce(root, output, *, input_paths=None):
     output = Path(output)
     if output.exists():
         raise FileExistsError(f'Use a new output directory: {output}')
     data = Path(root) / 'data/processed/MLIRBench'
     inputs = {'master': data / 'master/master.jsonl', 'evaluations': data / 'evaluation/evaluation.jsonl',
               'reasoning': data / 'reasoning/reasoning.jsonl'}
+    if input_paths is not None:
+        inputs = {key: Path(input_paths[key]) for key in ('master','evaluations','reasoning')}
     result = summarize(rows(inputs['master']), rows(inputs['evaluations']))
     seen, attempts = set(), Counter()
     for r in rows(inputs['reasoning']):
@@ -147,20 +222,47 @@ def reproduce(root, output):
                                 'labels': 'published labels, not a newly validated semantic dataset'}
     reference = json.loads((Path(root) / 'experiments/paper_reference.json').read_text())
     comparison = compare_reference(result, reference)
+    submitted_weighting = compare_reference(
+        result, reference, use_submitted_gemini_weighting=True
+    )
+    rounding_hypothesis = compare_reference(
+        result, reference, use_submitted_gemini_weighting=True,
+        use_intermediate_rounding=True
+    )
+    rounding_hypothesis['hypothesis'] = (
+        'Gemini uses pooled archived scores; other level cells equally average '
+        'the two dialect means rounded first to two decimals using decimal '
+        'ROUND_HALF_UP. Historical table-generation procedure remains unconfirmed.'
+    )
+    from .numeric_agreement import assess_agreement, report_lines
+    policy_path = Path(root) / 'experiments/numeric_agreement.json'
+    policy = json.loads(policy_path.read_text())
+    policy_digest = sha256(policy_path)
+    comparison = assess_agreement(comparison, policy, policy_digest)
+    submitted_weighting = assess_agreement(submitted_weighting, policy, policy_digest)
+    rounding_hypothesis = assess_agreement(rounding_hypothesis, policy, policy_digest)
     output.mkdir(parents=True)
     (output / 'results.json').write_text(json.dumps(result, indent=2, allow_nan=False) + '\n')
     (output / 'paper_comparison.json').write_text(json.dumps(comparison, indent=2, allow_nan=False) + '\n')
+    (output / 'paper_comparison_submitted_weighting.json').write_text(
+        json.dumps(submitted_weighting, indent=2, allow_nan=False) + '\n'
+    )
+    (output / 'paper_comparison_rounding_hypothesis.json').write_text(
+        json.dumps(rounding_hypothesis, indent=2, allow_nan=False) + '\n'
+    )
     for name in ('models', 'by_level', 'by_dialect', 'confusion'):
         write_csv(output / f'{name}.csv', result[name])
-    lines = ['# Archived-results reproduction', '', f"Paper reference: **{comparison['reference_status']}**.",
-             f"Checks: **{comparison['matched']} match / {comparison['mismatched']} differ**.", '',
-             'Metric aggregation uses archived responses and judge observations; it does not validate historical semantic labels.', '',
-             '| Model | Available / expected | Label accuracy (%) | Recorded aggregate | Result /10 | Explanation /4 |',
-             '|---|---:|---:|---:|---:|---:|']
-    for r in result['models']:
-        lines.append(f"| {r['model']} | {r['available_scores']} / {r['expected_pairs']} | {r['hard_label_accuracy_percent']:.2f} | {r['aggregate_score_available']:.2f} | {r['result_behavior_score']:.2f} | {r['explanation_quality_score']:.2f} |")
-    lines += ['', '## Reference differences', '']
-    lines += [f"- {r['claim']}: expected {r['expected']}; computed {r['actual']}." for r in comparison['checks'] if r['status'] != 'MATCH'] or ['None at the stated rounding precision.']
+    note_path = Path(root) / 'experiments/level2_dataset_change.json'
+    snapshot_note = json.loads(note_path.read_text()) if note_path.exists() else None
+    lines = report_lines(result, [
+        ('Equal dialect weighting', comparison),
+        ('Submitted Gemini weighting', submitted_weighting),
+        ('Intermediate rounding hypothesis', rounding_hypothesis),
+    ], snapshot_note)
     (output / 'REPORT.md').write_text('\n'.join(lines) + '\n')
+    agreement = comparison['numeric_agreement']
     return {'output': str(output), 'reference_status': comparison['reference_status'],
-            'matched': comparison['matched'], 'mismatched': comparison['mismatched']}
+            'agreement_status': 'PASS' if agreement['passed'] else 'REVIEW_REQUIRED',
+            'accepted': agreement['accepted'], 'checks': agreement['checks'],
+            'exact': agreement['exact'], 'within_tolerance': agreement['within_tolerance'],
+            'requires_review': agreement['requires_review']}

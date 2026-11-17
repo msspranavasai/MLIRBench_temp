@@ -1,3 +1,5 @@
+import hashlib
+import math
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -571,6 +573,8 @@ def _evaluate_once(
 
     # ── Pull text out (handles content lists, reasoning fields) ──
     raw_content = _extract_response_text(response)
+    rec["raw_response"] = raw_content or ""
+    rec["raw_response_sha256"] = hashlib.sha256(rec["raw_response"].encode()).hexdigest()
     rec["raw_response_head"] = (raw_content or "")[:500] or None
 
     # ── Parse JSON ──
@@ -603,7 +607,7 @@ def _evaluate_once(
         rec.update(status="SCHEMA_ERROR",
                    error=f"invalid_confidence_type: {raw_conf!r}")
         return rec
-    if raw_conf < 0.0:
+    if not math.isfinite(raw_conf) or raw_conf < 0.0:
         rec.update(status="SCHEMA_ERROR",
                    error=f"confidence_out_of_range: {raw_conf}")
         return rec

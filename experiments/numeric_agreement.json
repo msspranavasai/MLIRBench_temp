@@ -1,0 +1,18 @@
+{
+  "schema": "mlirbench-numeric-agreement-v1",
+  "absolute_score_tolerance": "0.15",
+  "score_min": "0",
+  "score_max": "100",
+  "table4_metrics": [
+    "aggregate_score",
+    "equal_dialect_score",
+    "equal_dialect_score_rounded_means"
+  ],
+  "expected_model_count": 9,
+  "expected_levels": [1, 2, 3, 4, 5],
+  "comparison_basis": "Absolute difference between scores at the manuscript's printed precision, in points on the 0-100 scale; inclusive boundary.",
+  "requires_unchanged_table4_orderings": true,
+  "authority": "Author-defined numerical agreement policy; not a CGO-approved tolerance or an award of an AE badge.",
+  "rationale": "Observed Table 4 differences are at most 0.15 points out of 100. All model rankings within levels and level orderings within models are checked independently. Rounding, aggregation conventions and the reported historical dataset snapshot change are disclosed; their exact historical reconstruction remains incomplete.",
+  "strict_checks": "All checks outside Table 4 remain exact. This policy does not apply to program outputs, labels, IDs, row counts, input validity, nondeterminism or downstream metric replay."
+}

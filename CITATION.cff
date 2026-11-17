@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "Please cite the MLIRBench paper when using this artifact."
+title: "MLIRBench — A Benchmark and Dataset for Compiler and Hardware-Aware Reasoning"
+type: software
+version: 0.3.0rc1
+license: Apache-2.0
+authors:
+  - family-names: Maganti
+    given-names: Pranava Sai
+  - family-names: Peddireddy
+    given-names: Meghasyam
+  - family-names: Hossain
+    given-names: Muzakker
+  - family-names: Gao
+    given-names: Kaining
+  - family-names: Ahmed
+    given-names: Farhan
+  - family-names: Jannesari
+    given-names: Ali
+identifiers:
+  - type: url
+    value: "https://arxiv.org/abs/2611.14881"

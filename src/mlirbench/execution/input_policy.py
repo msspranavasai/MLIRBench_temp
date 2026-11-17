@@ -5,10 +5,11 @@ Linalg currently supports static indexing and constant nonzero division denomina
 """
 import re
 import ast
+import struct
 import numpy as np
 from .execution import _parse_mlir_type
 
-POLICY_VERSION = 'valid-domain-v3'
+POLICY_VERSION = 'valid-domain-v5'
 SSA = r'%[\w.$-]+'
 
 
@@ -24,6 +25,16 @@ def unsupported(message):
 
 def invalid(message):
     raise InputPolicyError('INVALID_INPUT', message)
+
+
+def torch_float_literal(text):
+    text = text.strip()
+    if re.fullmatch(r'0x[0-9A-Fa-f]{16}', text):
+        return struct.unpack('>d', bytes.fromhex(text[2:]))[0]
+    try:
+        return float(text)
+    except ValueError:
+        unsupported('Unsupported Torch floating-point literal syntax')
 
 
 def gather_bounds(source, names):
@@ -59,28 +70,64 @@ def gather_bounds(source, names):
     return bounds
 
 
-def generate_inputs(a, b, specs, names_a, names_b, seed):
-    rng = np.random.default_rng(seed)
+def generate_input_case(a, b, specs, names_a, names_b, seed, dialect=None):
+    """Search a bounded deterministic candidate suite, validating both programs.
+
+    Sign and zero coverage is attempted where legal; positivity is a fallback
+    when actual operations require it, not a global assumption about all inputs.
+    """
+    dialect = dialect or ('torch' if 'torch.' in a or 'torch.' in b else 'linalg')
     bounds = gather_bounds(a, names_a)
     for i, n in gather_bounds(b, names_b).items():
         bounds[i] = min(bounds.get(i, n), n)
-    values = []
-    for i, spec in enumerate(specs):
-        dtype, shape = np.dtype(spec['dtype']), tuple(spec['shape'])
-        if i in bounds:
-            if dtype.kind not in 'iu' or bounds[i] <= 0:
-                invalid('gather index type or extent invalid')
-            v = rng.integers(0, bounds[i], size=shape, dtype=dtype)
-        elif dtype.kind == 'b':
-            v = rng.integers(0, 2, size=shape).astype(dtype)
-        elif dtype.kind == 'f':
-            # Positive values make common normalization/log/sqrt programs admissible.
-            # Actual operations are checked below; positivity alone is not a proof.
-            v = rng.uniform(0.25, 2.0, size=shape).astype(dtype)
-        else:
-            v = rng.integers(1, 5, size=shape).astype(dtype)
-        values.append(np.asarray(v))
-    return values
+    patterns = ('signed_normal', 'positive_uniform', 'negative_uniform', 'zeros', 'ones', 'small_signed', 'positive_large')
+    first = patterns[seed % 4]
+    order = (first,) + tuple(p for p in patterns if p != first)
+    attempts = []
+    for attempt in range(21):
+        pattern = order[attempt % len(order)]
+        rng = np.random.default_rng(np.random.SeedSequence([seed, attempt]))
+        values = []
+        for i, spec in enumerate(specs):
+            dtype, shape = np.dtype(spec['dtype']), tuple(spec['shape'])
+            if i in bounds:
+                if dtype.kind not in 'iu' or bounds[i] <= 0:
+                    invalid('gather index type or extent invalid')
+                v = rng.integers(0, bounds[i], size=shape, dtype=dtype)
+            elif pattern in ('zeros', 'ones'):
+                v = np.full(shape, int(pattern == 'ones'), dtype=dtype)
+            elif dtype.kind == 'b':
+                v = rng.integers(0, 2, size=shape).astype(dtype)
+            elif dtype.kind == 'f':
+                if pattern == 'signed_normal': v = rng.normal(0, 1, size=shape)
+                elif pattern == 'positive_uniform': v = rng.uniform(.25, 2, size=shape)
+                elif pattern == 'negative_uniform': v = rng.uniform(-2, -.25, size=shape)
+                elif pattern == 'small_signed': v = rng.uniform(-.25, .25, size=shape)
+                else: v = rng.uniform(128, 256, size=shape)
+                v = v.astype(dtype)
+            else:
+                low, high = ((1, 5) if pattern in ('positive_uniform', 'positive_large')
+                             else (-4, 0) if pattern == 'negative_uniform' else (-4, 5))
+                if dtype.kind == 'u': low, high = max(0, low), max(1, high)
+                v = rng.integers(low, high, size=shape, dtype=dtype)
+            values.append(np.asarray(v))
+        try:
+            check_inputs(a, names_a, values, dialect)
+            check_inputs(b, names_b, values, dialect)
+        except InputPolicyError as exc:
+            if exc.status != 'INVALID_INPUT':
+                raise
+            attempts.append({'attempt': attempt, 'pattern': pattern, 'reason': str(exc)})
+            continue
+        return values, {'strategy': 'deterministic_domain_checked_candidates',
+                        'seed': seed, 'attempt': attempt, 'pattern': pattern,
+                        'rejected_candidates': attempts}
+    raise InputPolicyError('INPUT_GENERATION_FAILED',
+                           'No valid shared candidate in the bounded suite; last failure: ' + attempts[-1]['reason'])
+
+
+def generate_inputs(a, b, specs, names_a, names_b, seed):
+    return generate_input_case(a, b, specs, names_a, names_b, seed)[0]
 
 
 def _torch_preflight(source, inputs):
@@ -92,10 +139,12 @@ def _torch_preflight(source, inputs):
         if token not in env:
             unsupported(f'unresolved Torch operand {token}')
         return env[token]
+    parsed_operations = 0
     for line in source.splitlines():
         m = re.match(r'\s*(%[^=]+?)\s*=\s*(torch\.[\w.]+)\s*(.*)', line)
         if not m:
             continue
+        parsed_operations += 1
         lhs, op, rest = m.groups()
         args = [value(t) for t in re.findall(SSA, rest.split(' : ')[0])]
         try:
@@ -114,8 +163,10 @@ def _torch_preflight(source, inputs):
                     if rest.strip() != '"cpu"': unsupported('only CPU device constants supported')
                     out = 'cpu'
                 elif op == 'torch.constant.int': out = int(rest)
-                elif op == 'torch.constant.float': out = float(rest)
-                elif op == 'torch.constant.bool': out = rest.strip() == 'true'
+                elif op == 'torch.constant.float': out = torch_float_literal(rest)
+                elif op == 'torch.constant.bool':
+                    if rest.strip() not in ('true', 'false'): unsupported('Unsupported Torch boolean literal syntax')
+                    out = rest.strip() == 'true'
                 elif op == 'torch.constant.none': out = None
                 elif op == 'torch.prim.ListConstruct': out = args
                 elif op in ('torch.aten.add.Tensor', 'torch.aten.add.Scalar'): out = args[0] + args[1] * args[2]
@@ -133,6 +184,7 @@ def _torch_preflight(source, inputs):
                     out = np.sqrt(args[0])
                 elif op == 'torch.aten.exp': out = np.exp(args[0])
                 elif op == 'torch.aten.abs': out = np.abs(args[0])
+                elif op == 'torch.aten.relu': out = np.maximum(args[0], 0)
                 elif op == 'torch.aten.neg': out = -args[0]
                 elif op == 'torch.aten.sum': out = np.sum(args[0])
                 elif op == 'torch.aten.sum.dim_IntList': out = np.sum(args[0], axis=tuple(args[1]), keepdims=args[2])
@@ -180,25 +232,32 @@ def _torch_preflight(source, inputs):
                     if args[4] <= 0: invalid('slice step must be positive')
                     sl = [slice(None)] * args[0].ndim; sl[args[1]] = slice(*args[2:5]); out = args[0][tuple(sl)]
                 else: unsupported(f'no Torch preflight for {op}')
-        except (FloatingPointError, IndexError, ValueError, TypeError) as exc:
-            if isinstance(exc, InputPolicyError): raise
+        except FloatingPointError as exc:
             invalid(f'{op}: {exc}')
+        except (IndexError, ValueError, TypeError) as exc:
+            if isinstance(exc, InputPolicyError): raise
+            unsupported(f'Cannot validate source operation {op}: {exc}')
         outputs = out if isinstance(out, tuple) else (out,)
         names = [n.strip() for n in lhs.split(',')]
         if len(names) != len(outputs): unsupported(f'result mapping for {op}')
         env.update(zip(names, outputs))
+    if parsed_operations != len(re.findall(r'=\s*"?torch\.[\w.]+', source)):
+        unsupported('Unparsed Torch operations; use one supported operation per line')
 
 
 def _linalg_preflight(source):
     # No attempt to interpret arbitrary affine maps, helper calls or dynamic indexing.
     if len(re.findall(r'func.func\s+', source)) != 1:
         unsupported('Linalg helper functions require a separate domain analysis')
-    if re.search(r'\b(math\.(log|sqrt|fpowi)|arith\.(div[su]i|rem[su]i|fptosi)|linalg\.gather)\b', source):
+    if re.search(r'\b(math\.(log|log2|log10|sqrt|rsqrt|fpowi|powf)|arith\.(div[su]i|ceildiv[su]i|floordivsi|rem[su]i|fptosi|fptoui)|linalg\.gather)\b', source):
         unsupported('Linalg log/sqrt/power/integer-domain operation requires analysis')
-    if re.search(r'tensor\.extract\s', source) or re.search(r'tensor\.extract_slice[^\n]*\[[^\]\n]*%', source):
+    if re.search(r'tensor\.(extract|insert)\s', source) or re.search(r'tensor\.(extract_slice|insert_slice)[^\n]*\[[^\]\n]*%', source):
         unsupported('dynamic or scalar tensor indexing requires analysis')
     if re.search(r'\b(memref\.|scf\.|cf\.|vector\.)', source):
         unsupported('unanalysed memory/control-flow operation')
+    for mapping in re.findall(r'affine_map<\([^>]*?->\s*\((.*?)\)>', source):
+        if any(not re.fullmatch(r'\s*(d\d+|0)\s*', part) for part in mapping.split(',') if part.strip()):
+            unsupported('Non-projection affine indexing map requires bounds analysis')
     constants = set()
     for m in re.finditer(rf'({SSA})\s*=\s*arith.constant\s+(?:dense<)?([-+\d.eE]+)([^\n]*)', source):
         declared = re.search(r':\s*(?:tensor<)?(?:\d+x)*(f16|f32|f64)>?', m[3])

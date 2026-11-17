@@ -1,5 +1,6 @@
 
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -56,7 +57,12 @@ def _run_validator(command, mlir_text):
             check=False,
         )
 
+        location = r'(?m)^' + re.escape(temp_path) + r':\d+:\d+: '
+        diagnostic_kind = ('verification_error' if re.search(location + r'note: see current operation:', result.stderr)
+                           else 'ssa_error' if re.search(location + r'error: use of undeclared SSA value name', result.stderr)
+                           else 'other_error' if result.returncode else 'none')
         return {
+            "diagnostic_kind": diagnostic_kind,
             "valid": result.returncode == 0,
             "stdout": result.stdout,
             "stderr": result.stderr,
@@ -83,7 +89,7 @@ def validate_mutation(input_mlir: str, mutated_mlir: str):
     """Validate a mutation in the MLIR linalg dialect."""
 
     return _run_validator(
-        [MLIR_OPT, "--verify-diagnostics"],
+        [MLIR_OPT],
         mutated_mlir,
     )
 
@@ -92,7 +98,7 @@ def validate_with_local_torch_mlir(mutated_mlir: str):
     """Validate Torch dialect MLIR using a local executable."""
 
     return _run_validator(
-        [TORCH_MLIR_OPT, "--verify-diagnostics"],
+        [TORCH_MLIR_OPT],
         mutated_mlir,
     )
 

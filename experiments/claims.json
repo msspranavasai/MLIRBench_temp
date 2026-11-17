@@ -5,8 +5,8 @@
       "id": "archived_model_metrics",
       "paper": "dataset_summary, reasoning_scale, reasoning_scoring, benchmark, level_results",
       "command": "reproduce --output /results/paper-run",
-      "status": "open",
-      "remaining": "Reconcile and document Table 4 averaging against the confirmed accepted paper; preserve the raw pooled and alternative aggregation results."
+      "status": "runtime_checked",
+      "remaining": "Per-run numerical agreement is assessed using experiments/numeric_agreement.json: at most 0.15 points out of 100 for Table 4, unchanged model rankings and level orderings, and exact checks elsewhere. Exact historical aggregation remains a disclosed limitation rather than a requirement for identical printed scores."
     },
     {
       "id": "archived_downstream_metrics",
@@ -18,9 +18,9 @@
     {
       "id": "execution_label_provenance",
       "paper": "execution-derived semantic labels",
-      "command": "validate --sample --output /results/audit.jsonl",
-      "status": "open",
-      "remaining": "Historical shared-input discrepancies and unsupported domains require a scientific resolution."
+      "command": "audit-provenance --output /results/provenance-run",
+      "status": "runtime_checked",
+      "remaining": "The validation system and published-label provenance are evaluated separately. Original Supabase rows are packaged and verified; actual historical runtime inputs are not recorded. Shared-input conflicts, unsafe stored metadata and unsupported cases require explicit scientific review; labels are preserved."
     },
     {
       "id": "gpu_checkpoint_evaluation",
@@ -47,15 +47,16 @@
       "id": "judge_reliability",
       "paper": "appendix E.14 judge repeatability/sensitivity",
       "command": null,
-      "status": "open",
-      "remaining": "Locate and package the frozen 100-pair/900-response judging study, saved scores and aggregation script; rerunning paid judging is optional."
+      "status": "excluded_from_required_scope",
+      "remaining": "Author excludes this reviewer-requested judging ablation from required reproduction (2026-11-16). The archived arXiv reference contains Appendix E.14/Table 24; its frozen study was not recovered or reproduced. No paid rerun is required or claimed.",
+      "required": false
     },
     {
       "id": "compiler_backend_experiments",
       "paper": "DT1 transformation coverage and RISC-V backend analysis",
-      "command": null,
+      "command": "compiler --mode fresh --dialect linalg --riscv --output /results/riscv; compiler --mode fresh --dialect torch --output /results/torch-compiler",
       "status": "open",
-      "remaining": "Port and test the original compiler/RISC-V experiment drivers. Source and archived scan records are present; new code generation has not been reproduced."
+      "remaining": "Portable commands now use the original isolated IREE 3.12.0rc20260916 toolchain. Per-run full-corpus transformation and RISC-V comparison evidence is required; subset smoke tests do not verify the full experiment."
     }
   ]
 }

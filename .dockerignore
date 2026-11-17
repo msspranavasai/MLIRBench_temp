@@ -10,8 +10,9 @@
 .pytest_cache
 .ruff_cache
 archive
-optional
 results
 data/processed
 data/downstream/records
 data/checkpoints
+
+evidence

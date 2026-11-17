@@ -1,13 +1,10 @@
+"""The installed distribution and source must identify the same release."""
+import importlib.metadata
+import unittest
 import mlirbench
 
 
-def test_package_version():
-    assert mlirbench.__version__ == "0.2.0"
-
-
-import unittest
-
-
-class Package(unittest.TestCase):
-    def test_version(self):
-        test_package_version()
+class PackageVersion(unittest.TestCase):
+    def test_installed_version_matches_source(self):
+        self.assertEqual(mlirbench.__version__, "0.3.0rc1")
+        self.assertEqual(importlib.metadata.version("mlirbench"), mlirbench.__version__)

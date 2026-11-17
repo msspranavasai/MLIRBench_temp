@@ -1,0 +1,8 @@
+# Original agent adapters; no provider is called during installation or archived replay.
+openai==2.41.0
+python-dotenv==1.2.2
+langchain-core==1.4.1
+langchain-openai==1.2.2
+langchain-anthropic==1.4.4
+langchain-google-genai==4.2.4
+langgraph==1.2.4

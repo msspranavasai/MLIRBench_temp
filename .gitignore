@@ -151,6 +151,7 @@ activemq-data/
 
 # Environments
 .env
+.env.*
 .envrc
 .venv
 env/
@@ -231,3 +232,6 @@ old_readme.txt
 /data/downstream/records/
 /data/checkpoints/
 /results/
+
+# Reviewer output roots live outside this repository by default.
+/.agent-history/

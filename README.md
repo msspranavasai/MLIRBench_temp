@@ -1,40 +1,45 @@
 # MLIRBench — CGO 2027 Artifact Evaluation
 
-This is the **AE preparation workspace**. The sibling ../MLIRBench is the preserved reference repository.
+Run the default reviewer workflow without paid model calls:
 
-Start with one command:
-
-~~~bash
+```bash
 ./ae.sh quickstart
-~~~
+```
 
-It builds one Linux image for the Docker host CPU (ARM64 on Apple Silicon, AMD64 on Intel/AMD), verifies the data, executes compiler and core tests, and recomputes archived benchmark and downstream metrics **without API keys or runtime network access**. Native execution avoids instruction emulation; the selected platform and available CPU count are recorded in the environment report.
+The single Docker image, `mlirbench-ae:reviewer`, uses the host's native ARM64 or AMD64 CPU. No model credentials or paid API calls are needed. The workflow verifies published inputs, tests the implementation, replays **mutation → execution → reasoning → judge**, recomputes score totals and paper tables, reproduces downstream prediction metrics, and runs the execution agent locally on one Linalg and one Torch pair.
 
-**Reviewers do not need an ARM device.** The same command selects either supported CPU architecture:
+Open the printed **START_HERE.md**. All new run artifacts go outside the repository into **../MLIRBench-AE-runs/** by default. Console logs are not saved. Set AE_OUTPUT_ROOT to choose another destination.
 
-| Reviewer machine | Linux architecture name | Docker platform | Local image |
-|---|---|---|---|
-| Intel or AMD workstation/server | x86_64 | linux/amd64 | mlirbench-ae:dev-amd64 |
-| Apple Silicon or ARM64 server | aarch64 | linux/arm64 | mlirbench-ae:dev-arm64 |
+The paper route uses archived model responses and subjective judge ratings, as permitted by the evaluation guidance. They are identified as replayed inputs. Objective correctness, weighted score arithmetic and aggregate tables are recomputed; printed manuscript values are used only for comparison. Fresh model generation is optional code for additional experiments and may differ from the paper. Reviewers are not asked to obtain API keys or buy credits for the archived reproduction route; author-provided API credentials, credits and an API access server are not part of this submission plan. See [the email guidance and scope](docs/woodruff-guidance.md).
 
-Here, aarch64 and arm64 name the same 64-bit ARM architecture; x86_64 and amd64 name the corresponding Intel/AMD architecture. Both image variants use the same pinned compiler versions and datasets. Native ARM64 and emulated AMD64 passed the core suite locally; native Intel/AMD host verification remains open. See ARTIFACT.md for explicit platform selection and the combined reviewer image.
+## Individual agents
 
-Read the generated results/<run>/START_HERE.md first. It distinguishes working software from unresolved submission requirements. **The current artifact is not submission-ready.**
+```bash
+./ae.sh pipeline --stage mutation --output /results/01-mutation
+./ae.sh pipeline --stage execution --input /results/01-mutation --output /results/02-execution
+./ae.sh pipeline --stage reasoning --input /results/02-execution --output /results/03-reasoning
+./ae.sh pipeline --stage judge --input /results/03-reasoning --output /results/04-judge
+./ae.sh pipeline --stage metrics --input /results/04-judge --output /results/05-metrics
+```
 
-| Location | Purpose |
-|---|---|
-| src/mlirbench/ | Maintained offline execution, validation, scoring and CLI |
-| experiments/ | Paper expectations, claim-to-command map and downstream inventory |
-| data/ | Verified distribution bundles, historical evidence and provenance |
-| tests/ | Unit tests and actual compiler/runtime integration |
-| tools/data/ | Explicit data packaging and unpacking |
-| optional/live_pipeline/ | Provider-based pipeline with separate dependencies |
-| docs/ | Current evaluator instructions and limitations |
-| archive/ | Preserved earlier documentation and verification |
-| results/ | New generated outputs, ignored by Git |
+These commands cost nothing and explicitly replay archived stages. Inside Docker, /results maps to the external run folder. Each output retains its verified prerequisites and can be resumed independently.
 
-Default reproduction covers archived model metrics, downstream saved-prediction metrics, and actual CPU compiler execution. GPU checkpoint inference and training remain a separately validated path.
+To rerun the execution agent using the real CPU compiler/runtime:
 
-Published inputs are immutable. Historical observation replay and new shared-input semantic auditing are labeled separately.
+```bash
+./ae.sh pipeline --stage execution --mode fresh --id seed1_linalg_prog1_L1_R1
+```
 
-See [ARTIFACT.md](ARTIFACT.md) for commands, [STATUS.md](STATUS.md) for readiness gaps and [repository layout](docs/repository-layout.md) for the migration.
+Fresh execution uses valid shared inputs, five seeds and two fresh-process repeats per program/input. EQUIV means agreement on that declared suite. Unsupported cases remain unscored. An archived downstream response/score cannot silently attach to a fresh upstream stage.
+
+If local scientific records and bundled copies are missing, restore them with:
+
+```bash
+./ae.sh fetch-data
+```
+
+The resolver asks yes/no before downloading missing files from the pinned Hugging Face revision and verifies their published hashes. Declining makes no network request. Replay and CPU execution run with Docker networking disabled.
+
+See [ARTIFACT.md](ARTIFACT.md) for explicit platform selection, optional fresh model calls and new test cases; [STATUS.md](STATUS.md) for remaining AE work; and [repository layout](docs/repository-layout.md) for the source map. The sibling ../MLIRBench remains a preserved reference. Published data, labels and manuscript expectations are unchanged.
+
+Compiler/backend reproduction is available through `./ae.sh compiler`; see [the commands](ARTIFACT.md#compiler-and-risc-v-experiments). See [release scope](docs/release-scope.md) for required versus optional experiments, local checkpoint assets and remaining evidence. Code and data licenses are described in [DATA_LICENSE.md](DATA_LICENSE.md).

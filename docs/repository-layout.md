@@ -1,13 +1,25 @@
-# Repository organization
+# Repository layout
 
-Camera-Ready/MLIRBench-AE derives from Camera-Ready/MLIRBench commit 9af0239. The original repository and Active/MLIRBench remain reference sources. New work belongs here.
+MLIRBench-AE is the maintained AE workspace. The sibling MLIRBench and the older Active/MLIRBench remain preserved references.
 
-The maintained implementation is a Python package in src/mlirbench. CLI entry points are python run.py, python -m mlirbench after installation, and Docker. Compiler/runtime child processes import this same package.
+| Location | Purpose |
+|---|---|
+| src/mlirbench/pipeline.py | Ordered stage replay/fresh orchestration and score arithmetic |
+| src/mlirbench/stage_artifacts.py | Checkpoint hashes, parent validation and resume |
+| src/mlirbench/dataset.py | Local-first data resolution and consented pinned downloads |
+| src/mlirbench/live.py | Lazy adapters to the original model agents |
+| src/mlirbench/execution/ | Real compiler/runtime, input domains and historical diagnostics |
+| src/mlirbench/evaluation/ | Independent score aggregation and downstream metrics |
+| optional/live_pipeline/agents/ | Original mutation, execution, reasoning and judge implementations |
+| data/ | Frozen scientific inputs, prediction/score observations and provenance |
+| experiments/ | Independent manuscript expectations, numerical policy and claim map |
+| tests/ | Boundary, consent, scoring and actual execution tests |
+| requirements/ | Core toolchain and live-agent dependency pins |
+| docs/ | Current instructions and scientific limitations |
+| paper/reference/ | Accepted manuscript and source identification |
 
-The previous agents/graph/services live under optional/live_pipeline. Compatibility imports delegate execution to the maintained package. Provider requirements are separate from requirements/core.txt. Stale instructions and preparation tools moved to archive, retaining original content; their commands describe the previous layout.
+The Docker image includes both offline and optional live agent code. No model client is initialized during archived replay. Expected paper values are loaded only after metrics are calculated.
 
-Published data is restored from committed verified bundles into ignored working directories. The downstream snapshot contains original source, predictions and split files imported read-only from Nova, verified against remote SHA-256 hashes. Model weights, optimizer state, environments and credentials are excluded.
+Old runs, build logs, preparation evidence and legacy documentation were moved outside the repository into MLIRBench-AE-history. HISTORY.md records their location. New reviewer artifacts go to MLIRBench-AE-runs by default. Scientific input records remain under data; these include necessary original outputs and validation evidence, not disposable console logs.
 
-experiments/claims.json maps claims to commands and unfinished work. experiments/paper_reference.json holds independent printed expectations with manuscript provenance and rounding. Generated results never overwrite expectations or published inputs.
-
-STATUS.md is the author-facing starting point. Quickstart creates START_HERE.md and machine-readable readiness evidence. Core test success and submission readiness are reported separately.
+`experiments/release_invariants.json` records pre-hardening hashes of frozen scientific inputs and recalculated archived outputs. `src/mlirbench/preservation.py` checks them after quickstart; mismatches fail the workflow. It never supplies metric values to the scorer. New live outputs are independent and are not required to match archived output hashes. A preservation PASS does not establish the correctness of historical labels or unresolved paper claims.

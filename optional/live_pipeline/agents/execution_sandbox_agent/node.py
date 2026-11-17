@@ -141,7 +141,7 @@ def execution_sandbox_agent(state: dict) -> dict:
     if status == "success":
         logs.append("Execution Sandbox Agent: Comparing outputs")
         validation = shared_input_metadata["validation_report"]
-        outputs_diverge = True if validation["verdict"] == "DIVERGE" else None
+        outputs_diverge = validation["verdict"] == "DIVERGE"
         divergence_details = validation["verdict"]
         # Equal finite trials do not establish semantic equivalence.
         if payload.get("generate_semantic_explanation", False):
@@ -178,6 +178,7 @@ def execution_sandbox_agent(state: dict) -> dict:
                     "semantic_explanation": semantic_explanation,
                     "status": status,
                     "validation_verdict": shared_input_metadata["validation_report"]["verdict"],
+                    "label_scope": "declared_valid_input_suite",
                 },
                 "benchmark_results": {
                     "benchmark_result_program_a": benchmark_a,

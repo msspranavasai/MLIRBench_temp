@@ -30,6 +30,7 @@ OpenRouter to its native provider, change `via` and `base_url`/`model_id`/
 from __future__ import annotations
 
 import os
+from agents.api_config import request_limits
 from dataclasses import dataclass, field
 from typing import Dict, Optional
 
@@ -55,11 +56,8 @@ class ModelSpec:
     max_tokens: int = 2048
     family: str = "open-source" # "open-source" | "closed-source"
     notes: str = ""
-    # extra_body: arbitrary key/value pairs merged into the request body. Used
-    # primarily for OpenRouter's reasoning controls — e.g. for reasoning-mode
-    # models we set {"reasoning": {"exclude": true}} so the model emits only
-    # the final JSON answer in `content` instead of burning the token budget
-    # on hidden reasoning that never makes it into the response.
+    # OpenRouter-specific Chat Completions body fields. Excluding returned
+    # reasoning does not disable its computation, token use or billing.
     extra_body: dict = field(default_factory=dict)
 
     @property
@@ -161,10 +159,7 @@ MODELS: Dict[str, ModelSpec] = {
         model_id="moonshotai/kimi-k2.6",
         api_key_env="OPENROUTER_API_KEY",
         family="open-source",
-        # Empirically: without reasoning controls Kimi-K2.6 burns 200+ s on
-        # internal thinking and returns empty content. Excluding reasoning
-        # collapses latency to a normal ~10-20 s and pushes the JSON answer
-        # into `content`. max_tokens=4096 keeps credit pre-auth modest.
+        # Hide returned reasoning; this does not guarantee lower latency/cost.
         max_tokens=4096,
         extra_body={"reasoning": {"exclude": True}},
         notes=(
@@ -243,6 +238,19 @@ MODELS: Dict[str, ModelSpec] = {
         family="closed-source",
         max_tokens=4096,
         notes="Fast and cost-efficient Claude model.",
+    ),
+
+    "gemini-3.1-pro-preview": ModelSpec(
+        key="gemini-3.1-pro-preview",
+        provider_label="Google",
+        llm_name="Gemini 3.1 Pro Preview",
+        via="google",
+        base_url=None,
+        model_id="gemini-3.1-pro-preview",
+        api_key_env="GOOGLE_API_KEY",
+        family="closed-source",
+        max_tokens=4096,
+        notes="Exact paper model ID; access and availability require provider verification. No fallback substitution.",
     ),
 
     "gemini-3-flash": ModelSpec(
@@ -348,21 +356,23 @@ def get_model_client(name: str, temperature: Optional[float] = None, max_tokens:
             f"Missing API key for {spec.llm_name}: set env var {spec.api_key_env}"
         )
 
+    limits = request_limits("reasoning", spec.max_tokens)
     temp = spec.default_temp if temperature is None else temperature
-    mt = spec.max_tokens if max_tokens is None else max_tokens
+    mt = limits["max_output_tokens"] if max_tokens is None else max_tokens
 
     if spec.via in ("openrouter", "native_openai_compat"):
         from langchain_openai import ChatOpenAI
-        # model_kwargs are merged into the chat-completions request body, which
-        # is how OpenRouter's `reasoning` parameter gets passed through.
+        # Force Chat Completions: Responses ignores OpenRouter reasoning.exclude.
         return ChatOpenAI(
             model=spec.model_id,
             temperature=temp,
             max_tokens=mt,
             base_url=spec.base_url,
             api_key=api_key,
-            timeout=180,
-            model_kwargs=dict(spec.extra_body) if spec.extra_body else {},
+            timeout=limits["timeout_seconds"],
+            max_retries=limits["sdk_retries"],
+            use_responses_api=False,
+            extra_body=dict(spec.extra_body),
         )
 
     if spec.via == "openai":
@@ -372,7 +382,8 @@ def get_model_client(name: str, temperature: Optional[float] = None, max_tokens:
             temperature=temp,
             max_tokens=mt,
             api_key=api_key,
-            timeout=180,
+            timeout=limits["timeout_seconds"],
+            max_retries=limits["sdk_retries"],
             model_kwargs=dict(spec.extra_body) if spec.extra_body else {},
         )
 
@@ -383,7 +394,8 @@ def get_model_client(name: str, temperature: Optional[float] = None, max_tokens:
             temperature=temp,
             max_tokens=mt,
             api_key=api_key,
-            timeout=120,
+            timeout=limits["timeout_seconds"],
+            max_retries=limits["sdk_retries"],
         )
 
     if spec.via == "google":
@@ -394,7 +406,8 @@ def get_model_client(name: str, temperature: Optional[float] = None, max_tokens:
             temperature=temp,
             max_output_tokens=mt,
             google_api_key=api_key,
-            timeout=180,
+            timeout=limits["timeout_seconds"],
+            max_retries=limits["sdk_retries"],
         )
 
     raise ValueError(f"Unknown 'via' value for model {spec.key}: {spec.via}")

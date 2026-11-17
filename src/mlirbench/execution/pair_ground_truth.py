@@ -18,8 +18,9 @@ def _decode(output):
 def execute_pair_shared_inputs(program_a, program_b, dialect, seed=None):
     kwargs = {'seeds': [seed]} if seed is not None else {}
     report = validate_pair(program_a, program_b, dialect, **kwargs)
-    trial = next((t for t in report['trials'] if t['status'] == 'DIVERGE'), None)
-    if trial is None: trial = next((t for t in report['trials'] if t['status'] == 'NO_DIFFERENCE_OBSERVED'), None)
+    trial = None
+    if report['verdict'] in {'DIVERGE', 'NO_DIFFERENCE_OBSERVED'}:
+        trial = next((t for t in report['trials'] if t['status'] == report['verdict']), None)
     metadata = {'strategy': report['mode'], 'validation_report': report,
                 'program_a': {}, 'program_b': {}}
     if trial:

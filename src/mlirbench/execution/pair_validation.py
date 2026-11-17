@@ -9,7 +9,7 @@ from pathlib import Path
 
 import numpy as np
 from .execution import compile_mlir, run_compiled, parse_input_spec, _compile_extra_args
-from .input_policy import (POLICY_VERSION, InputPolicyError, generate_inputs, check_inputs)
+from .input_policy import (POLICY_VERSION, InputPolicyError, generate_input_case, check_inputs)
 
 COMPARISON = 'typed-exact-value-v1'  # signed zeros equal; NaNs/nonfinite unverified
 DEFAULT_SEEDS = (0, 1, 42, 123, 2026)
@@ -136,7 +136,10 @@ def validate_pair(a, b, dialect, seeds=DEFAULT_SEEDS, recorded_inputs=None,
         trial = {'seed': seed, 'status': 'UNVERIFIED'}
         report['trials'].append(trial)
         try:
-            values = deserialize_inputs(items, specs) if items is not None else generate_inputs(a, b, specs, *names, seed)
+            if items is not None:
+                values = deserialize_inputs(items, specs)
+            else:
+                values, trial['generation'] = generate_input_case(a, b, specs, *names, seed, dialect=dialect)
             trial['inputs'] = serialize_inputs(values)
             trial['input_sha256'] = digest(trial['inputs'])
             for source, ns in zip((a, b), names): check_inputs(source, ns, values, dialect)

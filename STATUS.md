@@ -1,28 +1,20 @@
-# Start here: AE preparation status
+# AE preparation status
 
-**Organized for AE preparation; not submission-ready yet.**
+The default reviewer route now follows mutation → execution → reasoning → judge → independently computed metrics, using archived model observations without paid API calls. Each stage can be replayed independently. Real CPU execution is available without provider credentials. Fresh model stages are optional source for additional experiments, outside the required reviewer route; no author-provided API keys, credits or access server are promised.
 
-Default evaluation uses archived model responses/judge observations, downstream saved predictions and actual CPU compilation/execution.
+Run ./ae.sh quickstart and open its printed START_HERE.md. New run artifacts are stored outside this repository. Old preparation history and console logs have been moved to the sibling MLIRBench-AE-history folder; see HISTORY.md.
 
-Established in this preparation work:
+Published data, labels and paper reference values remain unchanged. The paper metric agreement policy is unchanged. Current results and per-run test outcomes are generated rather than embedded as asserted successes in this file.
 
-- Published input bundles are preserved and checksum-verified.
-- Downstream source, predictions and original splits were located on Nova and copied read-only.
-- All 76 downstream metric comparisons match archived final-figure CSVs.
-- All 13 family-split checks passed; DT1 and DT2 prediction IDs/gold labels match the original held-out files.
-- The organized package passed 31 core tests and actual compiler execution in both workspace and clean-source builds.
-- Provider code and dependencies are optional.
+The complete artifact is still under preparation. Remaining work includes:
 
-Remaining author work:
+- Original execution runtime inputs/toolchain provenance and scientific label conflicts.
+- GPU checkpoint inference/access and evaluation on agreed hardware.
+- Native AMD64 evaluator-host verification.
+- Final dependency/build/resource freezing.
+- Judge-reliability ablation: excluded from required reproduction by the author; not reproduced (docs/release-scope.md).
+- Full compiler/RISC-V execution evidence; portable commands and the original isolated compiler are now included.
 
-1. Reconcile level-wise aggregation against the confirmed accepted paper; preserve current numerical differences for review.
-2. Reconcile historical input/label provenance and state supported execution claims accurately.
-3. Validate portable GPU/checkpoint evaluation and arrange distribution/access.
-4. Complete native AMD64 and final dependency/resource verification. The launcher now selects native ARM64 on Apple Silicon; the native_cpu_execution gate separately reports whether the current run uses emulation.
+Paid provider calls were not used to validate this implementation. Tests use mocked model endpoints and real CPU execution where appropriate; saved subjective judge ratings are disclosed inputs to the no-cost paper replay.
 
-Run ./ae.sh quickstart and read the generated results/<run>/START_HERE.md. It reports actual checks and open gates. A passing test suite does not substitute for those remaining requirements.
-
-The checked-in baseline is evidence/preparation-2026-11-14/VERIFICATION.md. Full quickstart runtime was 39.055 seconds on the local emulated CPU setup.
-
-
-Native CPU update: 35 tests and all 76 downstream comparisons passed on ARM64 without emulation; offline quickstart took 12.867 seconds. Explicit AMD64 emulation also passed. See evidence/native-cpu-2026-11-14-final/VERIFICATION.md. Native AMD64 hardware remains unverified.
+Release hardening adds failed-mutation rejection (with explicit expected-invalid Level 5 handling), sanitized failure evidence, explicit OpenRouter Chat Completions routing, environment-file exclusions and a pre-hardening preservation guard. Quickstart uses the single `mlirbench-ae:reviewer` image and writes `preservation.json`; archived scientific claims still require the outstanding evidence above. Optional fresh validation differs from the paper’s historical fallback/clamping failure protocol, as disclosed in docs/live-configuration.md.

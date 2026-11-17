@@ -1,0 +1,30 @@
+name: Reviewer reproduction
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-amd64:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Build the single reviewer image
+        run: docker build --platform linux/amd64 -t mlirbench-ae:reviewer .
+      - name: Offline reviewer workflow
+        run: AE_SKIP_BUILD=1 AE_OUTPUT_ROOT="$RUNNER_TEMP/mlirbench-results" ./ae.sh quickstart --output /results/ci
+      - name: Show result and preservation checks
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'mlirbench-results/ci'
+          for name in ['tests.json','preservation.json','readiness.json']:
+              path=root/name
+              if path.exists():
+                  report=json.loads(path.read_text())
+                  print(name, {k:report[k] for k in ('passed','tests_run','failures','errors','skipped','status') if k in report})
+          PY

@@ -1,0 +1,15 @@
+{
+  "schema": "mlirbench-historical-source-v1",
+  "source_kind": "Original read-only Supabase CSV export",
+  "source_filename": "execution_agent_unified_rows.csv",
+  "source_sha256": "08a14fa1f9f14ffdda5ec2e9191334113ebd44bcb3a73956eb15eb5bea6eff17",
+  "source_bytes": 4412187,
+  "source_rows": 1804,
+  "archive_filename": "execution_agent_unified_rows.csv.gz",
+  "archive_sha256": "204bf4f9d67b63b765a6896ba9b0bdefb954afcb6c1a8285fa0a9bdf2bb518dd",
+  "sidecar_filename": "historical_execution.jsonl",
+  "sidecar_sha256": "14e2eefba5b59a4c560effd4c9e609f2ce004f85d3daf041a38efb3008bfd86a",
+  "published_master_sha256": "84718efccae10e5bbd66fd7c4455ca9f22a8957c968151465b830855335a0541",
+  "published_rows": 1768,
+  "runtime_input_provenance": "NOT_RECORDED: embedded inputs are metadata; there is no per-program actual-runtime input record in this export."
+}

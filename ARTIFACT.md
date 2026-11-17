@@ -1,103 +1,188 @@
-# Artifact evaluation instructions
+# Reviewer instructions
 
-## Scope
+## Default: no paid model calls
 
-The default route reproduces metrics from archived responses/judge observations and downstream predictions, without provider credentials or runtime network. This follows the email guidance summarized in docs/woodruff-guidance.md.
+Prerequisites: Docker with Linux containers and Python 3 (standard library only for host-side build-input checks) and disk space for the compiler image, published data and generated stage artifacts. Windows users can use WSL2/Bash. The launcher builds one image containing the compiler/runtime and the original optional agent dependencies. Building downloads package dependencies; replay needs no runtime network or credentials.
 
-The artifact remains under preparation. STATUS.md and experiments/claims.json identify open requirements. No paper values or semantic labels are silently corrected.
-
-## Start
-
-Prerequisites: Docker on an ARM64 or AMD64 host, and space for compiler tools and unpacked data. The launcher selects the Docker daemon's architecture, including when using a remote Docker context. Apple Silicon uses native Linux ARM64; Intel/AMD hosts use Linux AMD64. Both platforms use the same pinned compiler/runtime versions. Building requires network access to pinned package sources. Runtime networking is disabled.
-
-~~~bash
+```bash
 ./ae.sh quickstart
-~~~
+```
 
-This builds current source and creates a fresh result directory containing data verification, compiler execution, core tests, benchmark metrics, downstream metrics and a readiness report. Open the printed START_HERE.md first.
+This verifies frozen input hashes, runs unit/integration tests, reconstructs the archived mutation/execution/reasoning/judge stages, recalculates objective correctness and score totals, computes paper tables, replays downstream saved-prediction metrics, and runs two real CPU execution demonstrations. The default does not call any model API. This archived-response route is the planned AE reviewer path: no API account, credential, credit purchase or remote API service is required. Saved model responses and judge observations are declared inputs; reviewers rerun the transformations, scoring/aggregation and CPU validation themselves. Optional live-agent source is included for additional experiments and is not a required paid reproduction step. Follow the printed START_HERE.md; its pipeline/REPORT.md identifies each stage and its data source.
 
-## Reviewer CPU alternatives
+Generated artifacts are written to ../MLIRBench-AE-runs, outside the code repository. Set AE_OUTPUT_ROOT to change that host folder. /results in commands maps to that folder. Every run requires a new output directory; prior results are never overwritten. Successful prerequisites are checkpointed, and completed fresh cases are saved individually. Use the explicit continuation command below to recover a stopped fresh stage without repeating its committed cases. No console-log files are created.
 
-An ARM device is not required. On an Intel/AMD Docker host, ./ae.sh quickstart automatically builds linux/amd64. On Apple Silicon or an ARM64 Docker host, the same command automatically builds linux/arm64. Linux reports these as x86_64 and aarch64 respectively; Docker calls them amd64 and arm64. Windows reviewers need Docker configured for Linux containers and a Bash environment such as WSL2.
+## Reproduce one stage at a time
 
-Explicit alternatives use the same launcher:
+```bash
+./ae.sh pipeline --stage mutation --output /results/01-mutation
+./ae.sh pipeline --stage execution --input /results/01-mutation --output /results/02-execution
+./ae.sh pipeline --stage reasoning --input /results/02-execution --output /results/03-reasoning
+./ae.sh pipeline --stage judge --input /results/03-reasoning --output /results/04-judge
+./ae.sh pipeline --stage metrics --input /results/04-judge --output /results/05-metrics
+```
 
-~~~bash
-# Intel/AMD variant (native on an x86-64 Docker host).
+Replay is the default. A requested stage loads or replays its prerequisites and writes a self-contained stage checkpoint. Use --id PROGRAM_ID and --model MODEL_KEY to select a subset. Subset results are clearly marked and are not presented as complete paper tables.
+
+Mutation replay restores the published pairs and mutation metadata. Execution replay restores archived observations, rather than claiming a new compiler run. Reasoning replay restores the actual saved model answers. Judge replay retains saved subjective result/explanation ratings and recalculates correctness and weighting. Missing observations are disclosed. Missing judge observations are recomputed from the selected reasoning records without a matching judge record, including metrics resumes and ID/model subsets. Stored counts from older runs are not trusted. An explicitly unscored judge record is retained as an observation, rather than counted as missing. Raw null predictions retain their original values alongside the historical failure-to-ERROR normalization. Recomputed and archived total scores remain side by side.
+
+The total score is 100/3 × (label correctness + result_accuracy/10 + explanation_rating/4). The archived scoring fields can have finite precision; the new totals preserve their raw arithmetic and disclose differences. The existing author-defined Table 4 agreement policy remains at 0.15 points on a 0–100 scale, requiring all 45 cells and unchanged model/level orderings. Other checks retain their criteria. This is not an AE badge decision or an execution-output tolerance.
+
+Source files, record contents, program pairs and parent stages have SHA-256 identities. Resuming verifies the saved artifacts and their dependency links. New programs or responses cannot quietly reuse old downstream scores. Reconstructed archive lineage is not proof that the unavailable original runtime arguments have been recovered.
+
+## Actual execution without API charges
+
+```bash
+./ae.sh pipeline --stage execution --mode fresh --id seed1_linalg_prog1_L1_R1
+./ae.sh pipeline --stage execution --mode fresh --id torch_seed1_prog10_T1_R1
+```
+
+The execution agent compiles and executes both programs with positional shared inputs, operation-aware domain checks, five deterministic seeds and two fresh-process repetitions per program/input. Exact typed outputs are compared. EQUIV means observed equality across this suite, not universal equivalence. Unsupported input domains, timeouts and nonfinite outputs remain unscored. Fresh execution is kept separate from the archived observations used for paper metrics.
+
+## Optional live-agent code (outside the required reviewer route)
+
+The optional live implementation is provided for users who independently choose and arrange provider access. The submission does not provide or promise API keys, credits or an API access server, and evaluators are not expected to supply them for the required route. Its runtime guards still require explicit --allow-paid-api, a valid configuration and the relevant credentials before any model call; no credentials are distributed with the code. The launcher enables networking only for this explicit opt-in and forwards named provider environment variables or an explicitly supplied AE_ENV_FILE. Credentials are not copied into the image or saved in run artifacts.
+
+```bash
+# Optional additional experiment using independently arranged access; may incur API costs.
+./ae.sh pipeline --mode fresh --id seed1_linalg_prog1_L1_R1 \
+  --model gpt-4.1-mini --allow-paid-api
+
+# Continue from a fresh execution checkpoint, using its actual inputs.
+./ae.sh pipeline --stage reasoning --mode fresh --input /results/FRESH_EXECUTION_RUN \
+  --model gpt-4.1-mini --allow-paid-api
+```
+
+The runner validates all requested live models, credentials and request budgets before starting any agent. See [fresh API configuration](docs/live-configuration.md) for exact provider IDs, stage-specific credentials, limits and the limits of local preflight. Each fresh run records the resolved configuration without credential values.
+
+Fresh runs default to one pair and one reasoning model. --all explicitly permits a larger selected experiment. Mutation uses the original gpt-5-mini configuration (MLIRBENCH_MUTATION_MODEL overrides it); judging uses the original judge implementation/configuration (OPENAI_MODEL overrides it). Provider/model availability and a real paid request have not been validated in this no-cost preparation run. Failures remain failures; fresh scores are never filled with archived values. Invalid raw judge JSON, missing component fields, nonnumeric/nonfinite/out-of-range ratings and inconsistent component maxima are rejected before scoring. The raw invalid response and its hash are retained in the failed case observation. No fallback rating or clamped value is substituted. The judge receives the full recorded mutation rule and inspection metadata, or an explicitly identified packaged-catalog rule for an archived pair; unknown or inconsistent rules are refused. These corrections affect optional fresh judging only, not archived ratings or paper aggregation.
+
+To use a new MLIR source rather than a published pair:
+
+```bash
+./ae.sh pipeline --mode fresh --source /absolute/path/program.mlir \
+  --dialect linalg --level 1 --requirement L1_R1 \
+  --model gpt-4.1-mini --allow-paid-api
+```
+
+The source is mounted read-only. Fresh mutations get content-derived identifiers. Fresh/subset metrics are reported separately from the full archived paper comparison. To proceed from fresh execution to reasoning and judging, rerun those stages explicitly; archived outputs are refused when their upstream stage has changed.
+
+## Continue a stopped fresh run
+
+New fresh runs save each completed case in `cases/` immediately, before starting the next case. Failure/interruption types and attempt history are recorded separately from successful stage records; no score is invented for a failed call. Stage artifacts and manifests are committed with atomic replacement and filesystem sync. Partial stages are not exposed as completed stage outputs to metric replay.
+
+Use a new output directory and repeat the original stage, model, selection and request-limit settings:
+
+```bash
+# Example: the stopped command originally requested a multi-pair reasoning stage.
+./ae.sh pipeline --stage reasoning --mode fresh \
+  --input /results/STOPPED_REASONING_RUN --output /results/CONTINUED_REASONING_RUN \
+  --model gpt-4.1-mini --all --allow-paid-api --resume-incomplete
+
+# Example: continue an original full fresh pipeline (default stage: all).
+./ae.sh pipeline --mode fresh \
+  --input /results/STOPPED_FULL_RUN --output /results/CONTINUED_FULL_RUN \
+  --model gpt-4.1-mini --allow-paid-api --resume-incomplete
+```
+
+Only continue a stopped run. Keep `--all` if the original selection contained multiple pairs. Omit `--id` to retain the saved selection, or repeat exactly the original IDs; changing the selection is refused in continuation mode. A custom source is restored from the saved case plan, so omit `--source`, `--dialect`, `--level` and `--requirement` when continuing it. Self-contained fresh checkpoints and custom-source continuations do not require published views at runtime. Reusing an existing image as described below also avoids rebuilding from unrelated host bundles.
+
+`--resume-incomplete` verifies the plan, case records, parent identities, source fingerprint and resolved live configuration. Completed stages and committed successful cases are copied into the new run; failed, interrupted or unfinished cases are retried. Changed code, model identities, settings or selected input records require a separate run. Credentials can be replaced without changing the saved configuration because credential values are not recorded. Earlier runs are preserved. The fresh run manifest lists reused stages and per-stage reused case counts; `cases/` retains attempt history. Completed unscored judge observations are reused as unscored observations.
+
+Ordinary `--input` without `--resume-incomplete` still reruns the requested target stage. Older runs without a case plan cannot recover calls that were never saved. Archived replay and paper scoring are unchanged.
+
+A request left `IN_FLIGHT` after abrupt termination has an unknown remote outcome. Explicit continuation may send that request again. A response lost between the provider returning and the local atomic commit cannot be recovered, and provider-level exactly-once billing is not guaranteed. Responses committed locally are not requested again. This recovery operates between agent cases; a mutation case retains the original bounded internal generation/validation attempts.
+
+## Missing data and download consent
+
+The checkout includes checksum-verified scientific data bundles. Local working copies are used first, then bundled copies. With missing local records and bundles, use:
+
+```bash
+./ae.sh fetch-data
+```
+
+Verified local raw files are used to rebuild absent gzip bundles, using the frozen compression recipe and checking the exact committed gzip hash. Existing raw files or bundles with unexpected hashes are refused, not overwritten. The launcher verifies every manifest entry required by the Docker build (currently 21), including non-stage views and metadata, rather than checking only the master/reasoning/evaluation sentinels. Intact bundles are not unpacked on the host during this check. Docker still verifies raw hashes while unpacking.
+
+The launcher runs `fetch-data --build-inputs` before building. `./ae.sh fetch-data` also restores raw working copies; both repair missing bundles from verified local bytes without network access or a consent prompt. If both copies are absent, the host-side recovery asks before accessing Hugging Face. Only an affirmative yes permits downloads from mlirbench/MLIRBench at revision 1af6c3c7a29946a7cd0e2aafd9386686d7fec9d1. Every file is verified against the committed manifest. Modified local files are refused rather than overwritten. --consent-download is the explicit noninteractive equivalent; do not pass it without reviewer consent. Historical runtime evidence absent from the published dataset cannot be invented by downloading it again.
+
+If Python/zlib cannot recreate a frozen gzip hash, recovery fails clearly and retains the verified raw data. No replacement manifest or differently compressed distribution is accepted. Retry repair in the artifact's Python/Docker environment, or reuse an already-built image. No actual download is performed by the automated consent tests; their remote bytes are fixtures.
+
+## Reuse an already-built image
+
+```bash
+# Recompute scoped metrics from a self-contained fresh checkpoint.
+AE_SKIP_BUILD=1 ./ae.sh pipeline --stage metrics \
+  --input /results/FRESH_COMPLETED_RUN --output /results/FRESH_METRICS_RUN
+```
+
+`AE_SKIP_BUILD=1` requires the selected `AE_IMAGE` to exist locally; it does not pull an image. It skips host bundle checks and Docker rebuilding and uses that image's code and dependencies. This is useful when the host published bundles are absent but the container and checkpoint already exist. Without this setting the launcher verifies/repairs all build inputs and builds the complete artifact image. Live API opt-in remains separate and explicit.
+
+At runtime, fresh checkpoints supply their own program pairs and stage outputs. Fresh execution/reasoning/judging and fresh/mixed scoped metrics resolve only the published views actually needed. Archived execution checkpoints still require frozen master/history verification, and full archived paper reproduction still needs its published views. Source/parent checks and Hugging Face consent are not bypassed.
+
+
+## CPU alternatives
+
+ARM64 and Intel/AMD reviewers use the same commands. The launcher selects the Docker daemon's native architecture. Linux aarch64 is Docker arm64; Linux x86_64 is Docker amd64.
+
+```bash
 AE_PLATFORM=linux/amd64 ./ae.sh quickstart
-
-# ARM64 variant (native on an ARM64 Docker host).
 AE_PLATFORM=linux/arm64 ./ae.sh quickstart
-~~~
+```
 
-Running the opposite architecture requires emulation. The launcher and environment.json identify this. Both variants passed 35 core tests and all 76 downstream comparisons on the preparation Mac; only ARM64 was native. A native Intel/AMD evaluator-host run remains required before marking that hardware gate verified.
+Selecting the opposite architecture uses emulation. Native ARM64 is tested locally; native AMD64 evaluator verification remains outstanding. Both variants retain the same compiler/runtime pins and semantic compiler flags. CPU semantic checks are not performance benchmarks.
 
-## Combined reviewer image
+A multi-platform distribution image can be built with a manifest-capable Docker image store:
 
-Authors can build both variants under one local tag using a manifest-capable image store, such as Docker Desktop's containerd image store:
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 --load -t mlirbench-ae:reviewer .
+```
 
-~~~bash
-docker buildx build --platform linux/amd64,linux/arm64 --load \
-  --tag mlirbench-ae:reviewer .
-~~~
+This builds a local image; it does not publish one.
 
-This creates a local multi-platform image. It does not upload or publish an image. Docker automatically selects its ARM64 variant on ARM64 hosts and its AMD64 variant on Intel/AMD hosts. Engines without multi-platform local image support can use the single-platform ./ae.sh route above. An eventual registry/archive distribution must retain both platform manifests.
+## Additional checks
 
-From the repository root, run the already-built combined image offline:
-
-~~~bash
-mkdir -p results
-docker run --rm --network none \
-  -e "MLIRBENCH_DOCKER_HOST_ARCH=$(docker info --format '{{.Architecture}}')" \
-  -v "$PWD/results:/results" \
-  mlirbench-ae:reviewer quickstart --output /results/reviewer-run
-~~~
-
-Use a fresh output directory name for each run. The host-architecture environment value allows the native-execution check to verify the selected variant. With the combined image, omit --platform to let Docker select the native variant. These are CPU evaluation paths; GPU checkpoint inference remains a separate requirement.
-
-## Individual experiments
-
-~~~bash
-./ae.sh check
+```bash
 ./ae.sh test
-./ae.sh dataset-info
-./ae.sh reproduce --output /results/paper-run
-./ae.sh reproduce-downstream --output /results/downstream-run
-./ae.sh validate --id torch_seed4_prog40_T1_R1 --output /results/pair-run.jsonl
-./ae.sh readiness --results /results/quickstart-EXISTING-RUN
-~~~
+./ae.sh check
+./ae.sh reproduce-downstream --output /results/downstream-new
+./ae.sh audit-provenance --all --workers 4 --output /results/author-label-audit-new
+```
 
-Use fresh output names. Outputs are JSON and, where appropriate, CSV/Markdown. Readiness exits 2 while requirements remain open. Quickstart exits nonzero for functional environment/test failure and separately reports submission readiness.
+The historical label audit is an additional scientific diagnostic. It is no longer the main reviewer pipeline or a required rerun within quickstart. GPU checkpoint inference, training, judge-reliability evidence and backend experiments retain the limitations listed in STATUS.md. Archived replay supports the guidance in docs/woodruff-guidance.md; it does not certify every historical semantic label.
 
-Images are tagged mlirbench-ae:dev-arm64 or mlirbench-ae:dev-amd64 so the two architectures remain distinguishable. The environment report records the Docker host architecture, container architecture, emulation status and visible CPU counts. Runs through ./ae.sh supply the host metadata needed to verify native execution. A direct Docker run without that metadata reports native execution as unverified.
+## One reviewer image and one container
 
-To explicitly test emulation or build for another supported platform:
+The launcher builds and uses one image reference, `mlirbench-ae:reviewer`, from the sole root `Dockerfile`. All four agents, both dialect toolchains, CPU validation, archived records, downstream replay and optional live SDKs are included. Every invocation starts exactly one disposable container (`docker run --rm`); there is no Compose stack, database, external compiler service or second live-agent image to start. Sequential stage commands use the same image and external `/results` directory. Set `AE_SKIP_BUILD=1` to reuse it; the launcher checks that its architecture matches the requested platform.
 
-~~~bash
-AE_PLATFORM=linux/amd64 ./ae.sh quickstart
-~~~
+ARM64 and AMD64 need different native binaries. The same Dockerfile and image reference support both; build on the reviewer's host to select native execution. An ARM64 image archive must not be described as native AMD64. Native AMD64 verification remains a separate outstanding check. `AE_IMAGE` remains an explicit expert override, not a required extra image.
 
-The launcher reports when this differs from the Docker host. AMD64 names the x86-64 instruction set used by both Intel and AMD; it is not a processor speed or quality rating. The native platform avoids instruction emulation, but actual performance also depends on CPU, memory and Docker resource allocation. The launcher adds no CPU limit; Docker Desktop's VM allocation still applies. Canonical semantic audits retain their existing deterministic compiler flags and do not become optimized performance measurements.
+To transfer the built image for a reviewer with the **same architecture**, use Docker's export command outside the repository:
 
-Direct container use (ARM64 example; replace arm64 with amd64 on an Intel/AMD Docker host):
+```bash
+docker image save --output ../MLIRBench-AE-runs/mlirbench-ae-reviewer.tar mlirbench-ae:reviewer
+shasum -a 256 ../MLIRBench-AE-runs/mlirbench-ae-reviewer.tar
+# Reviewer: docker image load --input mlirbench-ae-reviewer.tar
+AE_SKIP_BUILD=1 ./ae.sh quickstart
+```
 
-~~~bash
-docker build --platform linux/arm64 -t mlirbench-ae:dev-arm64 .
-docker run --rm --platform linux/arm64 --network none mlirbench-ae:dev-arm64 dataset-info
-~~~
+A single published image reference can later contain a multi-architecture manifest; native verification of each variant is still required. No registry publication is performed by these commands.
 
-## What is recomputed
+Quickstart also writes `preservation.json`, comparing newly recalculated archived results and frozen inputs against the pre-hardening baseline. This check fails on changed numbers or records, without changing expected paper values, tolerances, labels or scoring rules. For a completed full quickstart run, repeat it with `./ae.sh verify-preservation --results /results/<run-folder>`. Scientific provenance and fresh experimental outcomes remain separate evidence.
 
-The reproduce command derives dataset counts, model summaries, level/dialect summaries and confusion counts from immutable records. Subjective judge observations remain archived inputs; objective label comparisons and aggregations are recalculated. Denominators and missing observations are explicit. Independent manuscript expectations live in experiments/paper_reference.json. They reference the author-confirmed accepted arXiv v1 PDF, preserved with a checksum and page/table citations.
+## Compiler and RISC-V experiments
 
-The reproduce-downstream command independently computes accuracy, macro-F1, per-class F1, dialect metrics and false-EQUIV rates from per-example predictions. It compares them with original final-figure CSVs, audits family separation and verifies DT2 held-out IDs/gold labels. Metric serialization agreement is checked at 12 decimal places, much finer than printed paper percentages. This does not change exact program-output comparison.
+The original downstream IREE 3.12.0rc20260916 is installed at `/opt/paper-backend/bin`, isolated from the core execution compiler. Both are inside the same image. The backend wheels for ARM64 and AMD64 are pinned to exact official release URLs and SHA-256 values in requirements/backend.txt. Original compiler experiment sources and observations are preserved, and the portable driver resolves source text by its immutable published hash.
 
-The validate command is a separately versioned shared-input audit: five seeds, two fresh-process repeats per program, positional input mapping and operation-aware preconditions. Incompatible signatures and invalid/unsupported inputs do not become divergences. Finite equal outputs do not prove equivalence.
+```bash
+# Recompute 1,369 arithmetic checks from archived compiler observations.
+./ae.sh compiler --output /results/compiler-replay
+# Fresh transformations for all 857 Linalg or 845 Torch scan inputs.
+./ae.sh compiler --mode fresh --dialect linalg --output /results/compiler-linalg
+./ae.sh compiler --mode fresh --dialect torch --output /results/compiler-torch
+# Fresh static RISC-V code generation for the 693 archived fusion-valid programs.
+./ae.sh compiler --mode fresh --dialect linalg --riscv --workers 4 --output /results/compiler-riscv
+```
 
-## GPU and live providers
+Add `--limit 8` for a small demonstration. Subsets are explicitly identified and cannot certify the full experiment. Fresh commands save exact commands, IR, diagnostics, assembly and observed comparisons outside the repository. RISC-V analysis is cross-compilation/static instruction analysis, not measured RISC-V hardware speedup. A mismatch returns a failing status and retains both observed and archived values.
 
-Original downstream source and adapter metadata are indexed under experiments/downstream. Checkpoint inference, training, weight distribution and reviewer GPU access still need validation. Archived-prediction replay is the implemented CPU route.
-
-Live API generation lives under optional/live_pipeline, with separate requirements and explicit invocation. It is outside the default image and quickstart. Authors arrange any needed paid API access.
-
-See docs/known-limitations.md for scientific caveats and docs/repository-layout.md for source organization. Runtime measurements from the new image are recorded in preparation evidence; CPU metric replay is not presented as GPU training reproduction.
+See [release scope](docs/release-scope.md) for the author-excluded judging ablation, the separately published dataset and remaining scientific checks. The code does not upload or replace the existing Zenodo dataset.
